@@ -194,41 +194,57 @@ input, select { font-family: inherit; }
 
 /* Mobile Video Lightbox */
 .m-video-lightbox {
-  position: fixed; inset: 0; background: rgba(0,0,0,.95);
-  z-index: 2000; display: none; flex-direction: column;
-  align-items: center; justify-content: center;
+  position: fixed; inset: 0; background: #000;
+  z-index: 2000; display: none;
 }
-.m-video-lightbox.open { display: flex; }
+.m-video-lightbox.open { display: block; }
 .m-vlb-close {
   position: absolute; top: 16px; right: 20px;
-  color: #ccc; font-size: 1.8rem; cursor: pointer; background: none; border: none;
-  z-index: 10;
+  color: rgba(255,255,255,.85); font-size: 1.8rem; cursor: pointer;
+  background: rgba(0,0,0,.4); border: none; border-radius: 50%;
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  z-index: 20; line-height: 1;
 }
-/* Carousel */
+.m-vlb-counter {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,.85); font-size: .78rem; font-weight: 600;
+  background: rgba(0,0,0,.4); padding: 5px 14px; border-radius: 20px;
+  z-index: 20; pointer-events: none;
+}
+/* Vertical snap carousel */
 .m-vlb-carousel {
-  display: flex; overflow-x: scroll; scroll-snap-type: x mandatory;
-  width: 100%; scrollbar-width: none; -ms-overflow-style: none;
+  position: absolute; inset: 0;
+  overflow-y: scroll; scroll-snap-type: y mandatory;
+  scrollbar-width: none; -ms-overflow-style: none;
 }
 .m-vlb-carousel::-webkit-scrollbar { display: none; }
 .m-vlb-slide {
-  flex: 0 0 100%; scroll-snap-align: start;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 0 20px; box-sizing: border-box;
+  height: 100dvh; scroll-snap-align: start;
+  position: relative; background: #000; overflow: hidden;
 }
 .m-vlb-thumb-wrap {
-  position: relative; width: 100%;
-  aspect-ratio: 9/16; max-height: 70vh;
-  overflow: hidden; border-radius: 12px; background: #111;
+  position: absolute; inset: 0;
 }
 .m-vlb-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
 .m-vlb-play {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 70px; height: 70px; background: rgba(229,57,53,.88); border-radius: 50%;
+  width: 72px; height: 72px; background: rgba(229,57,53,.82); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 30px; padding-left: 6px; pointer-events: none;
 }
-.m-vlb-title { color: #f0f0f0; font-size: .95rem; font-weight: 600; margin-top: 14px; text-align: center; line-height: 1.4; padding: 0 4px; }
-.m-vlb-note { color: #555; font-size: .75rem; margin-top: 10px; }
+.m-vlb-slide-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 80px 20px 36px;
+  background: linear-gradient(transparent, rgba(0,0,0,.72));
+  pointer-events: none;
+}
+.m-vlb-title { color: #fff; font-size: .95rem; font-weight: 700; line-height: 1.45; }
+.m-vlb-hint {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,.35); font-size: .7rem; white-space: nowrap;
+  z-index: 20; pointer-events: none;
+}
+.m-vlb-note { display: none; }
 
 /* ============================================================
    HAMBURGER MENU
@@ -898,9 +914,11 @@ input, select { font-family: inherit; }
 
 <!-- MOBILE VIDEO LIGHTBOX -->
 <div class="m-video-lightbox" id="mVideoLightbox">
+  <div class="m-vlb-counter" id="mVlbCounter">1 / 5</div>
   <button class="m-vlb-close" id="mVlbClose">✕</button>
   <div class="m-vlb-carousel" id="mVlbCarousel"></div>
-  <div class="m-vlb-note">← Kéo sang để xem tiếp · Video sẽ phát khi tích hợp nguồn thật</div>
+  <div class="m-vlb-hint" id="mVlbHint">↑↓ Vuốt để chuyển · Demo: xem ảnh thay video</div>
+  <div class="m-vlb-note"></div>
 </div>
 
 <!-- PAGE: ARTICLE -->
@@ -1252,7 +1270,7 @@ input, select { font-family: inherit; }
         <span class="m-v-duration">${mDurations[i]}</span>
       </div>
       <div class="m-v-title">${a.title}</div>`;
-      vItem.addEventListener('click', () => location.hash = `#article/${a.id}`);
+      vItem.addEventListener('click', () => openMobileVideoLightbox(D.MOBILE_VIDEO_ARTICLES, i));
       mVideoStrip.appendChild(vItem);
     });
     videoSection.appendChild(mVideoStrip);
@@ -1504,6 +1522,7 @@ input, select { font-family: inherit; }
 
   function openMobileVideoLightbox(articles, clickedIdx) {
     const carousel = $('#mVlbCarousel');
+    const counter  = $('#mVlbCounter');
     carousel.innerHTML = '';
     articles.forEach(a => {
       const slide = el('div', 'm-vlb-slide');
@@ -1511,13 +1530,21 @@ input, select { font-family: inherit; }
         <img class="m-vlb-thumb" src="${a.avaUrl}" alt="" loading="lazy">
         <div class="m-vlb-play">&#9654;</div>
       </div>
-      <div class="m-vlb-title">${a.title}</div>`;
+      <div class="m-vlb-slide-info">
+        <div class="m-vlb-title">${a.title}</div>
+      </div>`;
       carousel.appendChild(slide);
     });
+    if (counter) counter.textContent = `${clickedIdx + 1} / ${articles.length}`;
     $('#mVideoLightbox').classList.add('open');
     requestAnimationFrame(() => {
-      carousel.scrollLeft = clickedIdx * carousel.clientWidth;
+      carousel.scrollTop = clickedIdx * carousel.clientHeight;
     });
+    // Update counter while scrolling
+    carousel.onscroll = () => {
+      const idx = Math.round(carousel.scrollTop / carousel.clientHeight);
+      if (counter) counter.textContent = `${idx + 1} / ${articles.length}`;
+    };
   }
 
   // ============================================================

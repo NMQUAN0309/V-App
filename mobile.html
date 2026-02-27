@@ -1192,6 +1192,7 @@ input, select { font-family: inherit; }
     if (kdArts[1]) kdCard.appendChild(halfCard(kdArts[1]));
     kdArts.slice(2, 5).forEach(a => kdCard.appendChild(compactCard(a)));
     stream.appendChild(kdCard);
+    stream.appendChild(renderBoxStockSearch());
 
     // 5 bài mix top #1 (thay thế box VN-Index)
     D.MOBILE_MIX_1.forEach(a => stream.appendChild(midCard(a)));
@@ -1270,8 +1271,16 @@ input, select { font-family: inherit; }
     // === REMAINING CATEGORIES ===
     // Boxes that appear after specific categories
     const boxAfter = {
-      'thoi-su': renderBoxWeather,
-      'xe': renderBoxTraffic
+      'thoi-su':   renderBoxWeather,
+      'xe':        renderBoxTraffic,
+      'the-gioi':  renderBoxWarMapHome,
+      'cong-nghe': renderBoxProductSearch,
+      'phap-luat': renderBoxLawSearch,
+      'giao-duc':  renderBoxExamSearch,
+      'du-lich':   renderBoxDestinationSearch,
+    };
+    const boxInit = {
+      'the-gioi': () => initWarMapMini('homeWmWrap'),
     };
     const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id));
     remCats.forEach(cat => {
@@ -1279,7 +1288,11 @@ input, select { font-family: inherit; }
       if (!articles || !articles.length) return;
       appendSectionHead(stream, cat.id, cat.name);
       appendCatArticles(stream, articles);
-      if (boxAfter[cat.id]) stream.appendChild(boxAfter[cat.id]());
+      if (boxAfter[cat.id]) {
+        const box = boxAfter[cat.id]();
+        stream.appendChild(box);
+        if (boxInit[cat.id]) boxInit[cat.id]();
+      }
     });
   }
 
@@ -1370,6 +1383,82 @@ input, select { font-family: inherit; }
       <div class="m-project-search">
         <input type="text" placeholder="Nhập tên bệnh, triệu chứng...">
         <button class="m-search-btn">Tra cứu</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxStockSearch() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Tra cứu mã chứng khoán</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Nhập mã CK (VD: VIC, FPT...)">
+        <button class="m-search-btn">Tìm kiếm</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxWarMapHome() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">🌍 Bản đồ Chiến sự</div>
+      <div class="wm-mini-wrap" id="homeWmWrap">
+        <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
+      </div>
+      <div class="wm-mini-legend">
+        <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#FF7043"></span>Ukraine — Nga</div>
+        <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#29B6F6"></span>Israel — Gaza</div>
+        <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#AB47BC"></span>Mỹ — Iran</div>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxProductSearch() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Tìm kiếm sản phẩm công nghệ</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Điện thoại, laptop, tivi, tủ lạnh...">
+        <button class="m-search-btn">Tìm kiếm</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxLawSearch() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Thư viện văn bản pháp luật</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Nhập số hiệu, tên văn bản...">
+        <button class="m-search-btn">Tìm kiếm</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxExamSearch() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Tra cứu đề thi &amp; đáp án</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Nhập từ khóa...">
+        <button class="m-search-btn">Tìm kiếm</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxDestinationSearch() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Khám phá điểm đến</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Nhập tên địa danh, thành phố...">
+        <button class="m-search-btn">Tìm kiếm</button>
       </div>
     </div>`;
     return box;

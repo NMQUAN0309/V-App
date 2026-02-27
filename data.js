@@ -41,7 +41,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "bat-dong-san", name: "BĐS",
+    id: "bat-dong-san", name: "Bất động sản",
     subs: [
       { id: "chinh-sach", name: "Chính sách" },
       { id: "thi-truong", name: "Thị trường" },

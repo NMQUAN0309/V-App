@@ -200,19 +200,57 @@ ul, ol { list-style: none; }
   position: sticky; top: 59px; z-index: 90;
 }
 .nav-inner {
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: stretch; gap: 0;
   max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter);
-  overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
 }
-.nav-inner::-webkit-scrollbar { display: none; }
+.nav-fixed-group {
+  display: flex; align-items: center; flex-shrink: 0;
+  border-right: 2px solid var(--border);
+}
+.nav-cats-scroll {
+  flex: 1; min-width: 0; overflow: hidden;
+  position: relative; display: flex; align-items: center;
+}
+/* Inner wrapper animates — duplicated twice for seamless loop */
+.nav-cats-inner {
+  display: flex; align-items: center; flex-shrink: 0;
+  animation: navCatsAutoScroll 60s linear infinite;
+  will-change: transform;
+}
+.nav-cats-inner:hover { animation-play-state: paused; }
+@keyframes navCatsAutoScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 .nav-special-btn {
   padding: 10px 16px; font-size: .85rem; font-weight: 600;
   white-space: nowrap; border-right: 1px solid var(--border);
   color: var(--red); transition: background var(--transition);
-  position: relative;
+  position: relative; display: flex; align-items: center;
 }
 .nav-special-btn:hover { background: var(--red-light); }
+
+/* Subcategory bar below nav */
+.web-cat-subs-bar {
+  display: none; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 100px; z-index: 85;
+}
+.web-cat-subs-inner {
+  display: flex; align-items: center;
+  max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter);
+  overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; gap: 0;
+}
+.web-cat-subs-inner::-webkit-scrollbar { display: none; }
+.web-cat-sub-link {
+  padding: 7px 14px; font-size: .82rem; font-weight: 500;
+  white-space: nowrap; color: var(--ink-secondary);
+  border-bottom: 2px solid transparent; transition: all .2s;
+}
+.web-cat-sub-link:hover, .web-cat-sub-link.active {
+  color: var(--red); border-bottom-color: var(--red);
+}
 
 .nav-local-wrapper { position: relative; }
 .local-dropdown {
@@ -775,6 +813,45 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   ARTICLE QUICK ICONS (AI + Audio overlays on cards)
+   ============================================================ */
+.article-row { position: relative; }
+.card-h { position: relative; }
+.article-card { position: relative; }
+.title-only-card { position: relative; }
+.art-quick-icons {
+  position: absolute; bottom: 6px; right: 6px;
+  display: flex; gap: 3px; align-items: center; z-index: 5;
+  opacity: 0; transition: opacity .18s;
+}
+.article-row:hover .art-quick-icons,
+.card-h:hover .art-quick-icons,
+.article-card:hover .art-quick-icons,
+.title-only-card:hover .art-quick-icons { opacity: 1; }
+.art-icon-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.93); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0,0,0,.18); transition: all .18s; padding: 0; line-height: 1;
+}
+.art-icon-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+/* AI Summary Popup */
+.art-summary-popup {
+  position: fixed; max-width: 300px; width: 88vw;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; z-index: 5000;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15); display: none;
+}
+.art-summary-popup.open { display: block; }
+.art-summary-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+}
+.art-summary-badge { font-size: .78rem; font-weight: 700; color: var(--red); letter-spacing: .02em; }
+#artSummaryClose { font-size: 1rem; color: var(--ink-tertiary); cursor: pointer; background: none; border: none; }
+.art-summary-text { font-size: .83rem; color: var(--ink-secondary); line-height: 1.55; }
+
+/* ============================================================
    ANIMATIONS
    ============================================================ */
 @keyframes fadeUp {
@@ -814,6 +891,7 @@ ul, ol { list-style: none; }
 <nav class="main-nav">
   <div class="nav-inner" id="navInner"></div>
 </nav>
+<div class="web-cat-subs-bar" id="webCatSubsBar"></div>
 
 <!-- ============================================================
      QUAN TÂM OVERLAY
@@ -968,6 +1046,15 @@ ul, ol { list-style: none; }
     return e;
   }
 
+  // Quick icons: AI summary + audio, overlaid on article cards
+  function quickIconsHTML(a) {
+    const sapo = (a.sapo || '').replace(/"/g, '&quot;');
+    return `<div class="art-quick-icons">
+      <button class="art-icon-btn art-audio-btn" data-art-id="${a.id}" title="Nghe bài">🔊</button>
+      <button class="art-icon-btn art-ai-btn" data-art-id="${a.id}" data-sapo="${sapo}" title="Tóm tắt AI">✦</button>
+    </div>`;
+  }
+
   function articleCardHTML(a, opts = {}) {
     const showAva = opts.ava !== false;
     const avaClass = opts.avaClass || 'ava';
@@ -979,6 +1066,7 @@ ul, ol { list-style: none; }
     h += `<div class="title" style="${titleSize ? 'font-size:'+titleSize : ''}">${a.title}</div>`;
     if (showSapo) h += `<div class="sapo">${a.sapo}</div>`;
     if (showTime) h += `<div class="meta-time">${a.time}</div>`;
+    h += quickIconsHTML(a);
     return h;
   }
 
@@ -987,11 +1075,12 @@ ul, ol { list-style: none; }
       <div class="info">
         <div class="title">${a.title}</div>
         <div class="sapo">${a.sapo}</div>
-      </div>`;
+      </div>
+      ${quickIconsHTML(a)}`;
   }
 
   function titleOnlyHTML(a) {
-    return `<div class="title">${a.title}</div><div class="sapo">${a.sapo}</div>`;
+    return `<div class="title">${a.title}</div><div class="sapo">${a.sapo}</div>${quickIconsHTML(a)}`;
   }
 
   // Create a horizontal card element (ava left + title/sapo right)
@@ -1004,7 +1093,8 @@ ul, ol { list-style: none; }
       <div class="h-info">
         <div class="title"${titleSize ? ' style="font-size:'+titleSize+'"' : ''}>${a.title}</div>
         <div class="sapo">${a.sapo}</div>
-      </div>`;
+      </div>
+      ${quickIconsHTML(a)}`;
     makeClickable(div, a);
     return div;
   }
@@ -1015,7 +1105,11 @@ ul, ol { list-style: none; }
   }
 
   function makeClickable(elem, a) {
-    elem.addEventListener('click', () => goArticle(a));
+    const handler = () => goArticle(a);
+    const title = elem.querySelector('.title');
+    const img = elem.querySelector('img');
+    if (title) { title.style.cursor = 'pointer'; title.addEventListener('click', handler); }
+    if (img) { img.style.cursor = 'pointer'; img.addEventListener('click', handler); }
   }
 
   function findArticleById(id) {
@@ -1058,37 +1152,39 @@ ul, ol { list-style: none; }
   // ============================================================
   function buildNav() {
     const nav = $('#navInner');
-    let html = '';
-    html += `<a href="#home" class="nav-special-btn" style="font-size:1.1rem;border-right:1px solid var(--border)">🏠</a>`;
-    html += `<a href="javascript:void(0)" class="nav-special-btn" id="navLatest">Mới nhất</a>`;
-    html += `<a href="javascript:void(0)" class="nav-special-btn" id="navLocal">Địa phương ▾</a>`;
-    html += `<a href="javascript:void(0)" class="nav-special-btn" id="navQuantam">Quan tâm ▾</a>`;
-    D.CATEGORIES.forEach(cat => {
-      html += `<a href="#category/${cat.id}" class="nav-cat-link" data-cat="${cat.id}">${cat.name}</a>`;
-    });
-    nav.innerHTML = html;
+
+    // Fixed pinned group (never scrolls)
+    const fixedGroup = el('div', 'nav-fixed-group');
+    fixedGroup.innerHTML = `
+      <a href="#home" class="nav-special-btn" style="font-size:1.1rem">🏠</a>
+      <a href="javascript:void(0)" class="nav-special-btn" id="navLatest">Mới nhất</a>
+      <a href="javascript:void(0)" class="nav-special-btn" id="navLocal">Địa phương ▾</a>
+      <a href="javascript:void(0)" class="nav-special-btn" id="navQuantam" style="border-right:none">Quan tâm ▾</a>`;
+
+    // Scrollable category list — inner wrapper duplicated for seamless CSS animation
+    const catsScroll = el('div', 'nav-cats-scroll');
+    catsScroll.id = 'navCatsScroll';
+    const catsInner = el('div', 'nav-cats-inner');
+    catsInner.id = 'navCatsInner';
+    // Duplicate categories twice so the -50% translate loops seamlessly
+    for (let pass = 0; pass < 2; pass++) {
+      D.CATEGORIES.forEach(cat => {
+        const a = el('a', 'nav-cat-link');
+        a.href = `#category/${cat.id}`;
+        a.dataset.cat = cat.id;
+        a.textContent = cat.name;
+        catsInner.appendChild(a);
+      });
+    }
+    catsScroll.appendChild(catsInner);
+
+    nav.innerHTML = '';
+    nav.appendChild(fixedGroup);
+    nav.appendChild(catsScroll);
 
     $('#navLatest').addEventListener('click', () => { showLatestNews(); });
     $('#navLocal').addEventListener('click', () => { showLocalNews(); });
     $('#navQuantam').addEventListener('click', () => { showQuantamPanel(); });
-
-    // Auto-scroll nav slowly left→right, pause on hover/interaction
-    let navPaused = false, navResetTimeout;
-    function navScrollStep() {
-      if (!navPaused) {
-        nav.scrollLeft += 0.45;
-        if (nav.scrollLeft >= nav.scrollWidth - nav.clientWidth - 1) {
-          navPaused = true;
-          clearTimeout(navResetTimeout);
-          navResetTimeout = setTimeout(() => { nav.scrollLeft = 0; navPaused = false; }, 1800);
-        }
-      }
-      requestAnimationFrame(navScrollStep);
-    }
-    nav.addEventListener('mouseenter', () => navPaused = true);
-    nav.addEventListener('mouseleave', () => { navPaused = false; });
-    nav.addEventListener('wheel', () => { navPaused = true; clearTimeout(navResetTimeout); navResetTimeout = setTimeout(() => navPaused = false, 6000); }, { passive: true });
-    setTimeout(navScrollStep, 2500);
   }
 
   // ============================================================
@@ -1239,6 +1335,7 @@ ul, ol { list-style: none; }
   // RENDER HOME
   // ============================================================
   function renderHome() {
+    $('#webCatSubsBar').style.display = 'none';
     // Top cluster
     const tc = $('#topCluster');
     tc.innerHTML = '';
@@ -1436,6 +1533,15 @@ ul, ol { list-style: none; }
     // highlight nav
     $$('.nav-cat-link').forEach(l => l.classList.toggle('active', l.dataset.cat === catId));
 
+    // Subcategory bar below nav
+    const subBar = $('#webCatSubsBar');
+    subBar.style.display = 'block';
+    subBar.innerHTML = `<div class="web-cat-subs-inner">${
+      cat.subs.map(sub =>
+        `<a href="#category/${catId}/${sub.id}" class="web-cat-sub-link${subId === sub.id ? ' active' : ''}">${sub.name}</a>`
+      ).join('')
+    }</div>`;
+
     // Special box
     const specialContainer = $('#catSpecial');
     specialContainer.innerHTML = '';
@@ -1507,15 +1613,16 @@ ul, ol { list-style: none; }
     // Stream remaining
     const stream = $('#catStream');
     stream.innerHTML = '';
-    const streamHead = el('div', 'section-head');
-    streamHead.innerHTML = `<span class="sec-title" style="cursor:default">Bài viết khác</span>`;
-    stream.appendChild(streamHead);
     articles.slice(14).forEach(a => {
       const row = el('div', 'article-row');
       row.innerHTML = articleRowHTML(a);
       makeClickable(row, a);
       stream.appendChild(row);
     });
+    const moreWrap = el('div', '');
+    moreWrap.style.cssText = 'text-align:center;padding:16px 0 24px;';
+    moreWrap.innerHTML = `<button class="btn-more">Xem thêm bài viết ›</button>`;
+    stream.appendChild(moreWrap);
   }
 
   function buildSpecialBox(sub) {
@@ -1600,6 +1707,7 @@ ul, ol { list-style: none; }
   // RENDER ARTICLE DETAIL
   // ============================================================
   function renderArticle(articleId) {
+    $('#webCatSubsBar').style.display = 'none';
     const a = findArticleById(articleId);
     const cat = D.CATEGORIES.find(c => c.id === a.categoryId);
     const sub = cat ? cat.subs.find(s => s.id === a.subId) : null;
@@ -1713,6 +1821,18 @@ ul, ol { list-style: none; }
       });
     });
 
+    // Bind summary button in article detail
+    const summaryBtn = detail.querySelector('.summary-btn');
+    if (summaryBtn) {
+      summaryBtn.addEventListener('click', e => { e.stopPropagation(); artShowSummary(e, a.sapo); });
+    }
+
+    // Bind related section rows — navigate only on title/img click
+    $$('.related-list .article-row', detail).forEach(row => {
+      const art = findArticleById(row.dataset.id);
+      if (art) makeClickable(row, art);
+    });
+
     // Show sticky bottom
     $('#stickyBottom').classList.add('visible');
 
@@ -1727,7 +1847,7 @@ ul, ol { list-style: none; }
       <div class="section-head"><span class="sec-title" style="cursor:default">${title}</span></div>
       <div class="related-list">`;
     articles.forEach(a => {
-      html += `<div class="article-row" data-id="${a.id}" onclick="location.hash='#article/${a.id}'">
+      html += `<div class="article-row" data-id="${a.id}">
         ${articleRowHTML(a)}
       </div>`;
     });
@@ -1772,7 +1892,55 @@ ul, ol { list-style: none; }
   handleRoute();
 
   window.addEventListener('hashchange', handleRoute);
+
+  // ============================================================
+  // ARTICLE QUICK ICONS — event delegation
+  // ============================================================
+  function artShowSummary(e, sapo) {
+    const popup = $('#artSummaryPopup');
+    $('#artSummaryText').textContent = sapo || 'Không có tóm tắt.';
+    popup.classList.add('open');
+    requestAnimationFrame(() => {
+      const vw = window.innerWidth;
+      const pw = popup.offsetWidth, ph = popup.offsetHeight;
+      let left = e.clientX - pw + 20;
+      let top = e.clientY - ph - 10;
+      if (left < 8) left = 8;
+      if (left + pw > vw - 8) left = vw - pw - 8;
+      if (top < 8) top = e.clientY + 24;
+      popup.style.left = left + 'px';
+      popup.style.top = top + 'px';
+    });
+  }
+
+  document.addEventListener('click', e => {
+    const aiBtn = e.target.closest('.art-ai-btn');
+    if (aiBtn) {
+      e.stopPropagation();
+      artShowSummary(e, aiBtn.dataset.sapo);
+      return;
+    }
+    const audioBtn = e.target.closest('.art-audio-btn');
+    if (audioBtn) {
+      e.stopPropagation();
+      return;
+    }
+    if (!e.target.closest('#artSummaryPopup')) {
+      $('#artSummaryPopup').classList.remove('open');
+    }
+  });
+  $('#artSummaryClose').addEventListener('click', () => $('#artSummaryPopup').classList.remove('open'));
 })();
 </script>
+
+<!-- AI SUMMARY POPUP -->
+<div class="art-summary-popup" id="artSummaryPopup">
+  <div class="art-summary-header">
+    <span class="art-summary-badge">✦ AI Tóm tắt</span>
+    <button id="artSummaryClose">✕</button>
+  </div>
+  <div class="art-summary-text" id="artSummaryText"></div>
+</div>
+
 </body>
 </html>

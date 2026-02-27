@@ -714,6 +714,35 @@ input, select { font-family: inherit; }
 .m-footer p { font-size: .75rem; color: var(--ink-faint); }
 
 /* ============================================================
+   ARTICLE QUICK ICONS
+   ============================================================ */
+.m-card, .m-card-compact, .m-related-item { position: relative; }
+.art-quick-icons {
+  position: absolute; bottom: 6px; right: 6px;
+  display: flex; gap: 3px; align-items: center; z-index: 5;
+}
+.art-icon-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.93); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0,0,0,.18); transition: all .18s; padding: 0; line-height: 1;
+}
+.art-icon-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+/* AI Summary Popup */
+.art-summary-popup {
+  position: fixed; max-width: 300px; width: 88vw;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; z-index: 5000;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15); display: none;
+}
+.art-summary-popup.open { display: block; }
+.art-summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.art-summary-badge { font-size: .78rem; font-weight: 700; color: var(--red); }
+#mArtSummaryClose { font-size: 1rem; color: var(--ink-tertiary); cursor: pointer; background: none; border: none; }
+.art-summary-text { font-size: .82rem; color: var(--ink-secondary); line-height: 1.55; }
+
+/* ============================================================
    ANIMATION
    ============================================================ */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -983,6 +1012,15 @@ input, select { font-family: inherit; }
   // ============================================================
   // RENDER ARTICLE CARD
   // ============================================================
+  // Quick icons: AI summary + audio, overlaid on article cards
+  function quickIconsHTML(a) {
+    const sapo = (a.sapo || '').replace(/"/g, '&quot;');
+    return `<div class="art-quick-icons">
+      <button class="art-icon-btn art-audio-btn" data-art-id="${a.id}" title="Nghe bài">🔊</button>
+      <button class="art-icon-btn art-ai-btn" data-art-id="${a.id}" data-sapo="${sapo}" title="Tóm tắt AI">✦</button>
+    </div>`;
+  }
+
   function fullCard(a) {
     const card = el('div', 'm-card fade-in');
     card.innerHTML = `<img class="m-card-ava" src="${a.avaUrl}" alt="" loading="lazy">
@@ -990,8 +1028,10 @@ input, select { font-family: inherit; }
         <div class="m-card-title">${a.title}</div>
         <div class="m-card-sapo">${a.sapo}</div>
         <div class="m-card-time">${a.time}</div>
-      </div>`;
-    card.addEventListener('click', () => goArticle(a));
+      </div>
+      ${quickIconsHTML(a)}`;
+    card.querySelector('.m-card-ava')?.addEventListener('click', () => goArticle(a));
+    card.querySelector('.m-card-title')?.addEventListener('click', () => goArticle(a));
     return card;
   }
 
@@ -1002,16 +1042,19 @@ input, select { font-family: inherit; }
         <div class="m-card-title">${a.title}</div>
         <div class="m-card-sapo">${a.sapo}</div>
         <div style="clear:both"></div>
-      </div>`;
-    card.addEventListener('click', () => goArticle(a));
+      </div>
+      ${quickIconsHTML(a)}`;
+    card.querySelector('.m-card-ava-half')?.addEventListener('click', () => goArticle(a));
+    card.querySelector('.m-card-title')?.addEventListener('click', () => goArticle(a));
     return card;
   }
 
   function compactCard(a) {
     const card = el('div', 'm-card-compact');
     card.innerHTML = `<div class="m-card-title">${a.title}</div>
-      <div class="m-card-sapo">${a.sapo}</div>`;
-    card.addEventListener('click', () => goArticle(a));
+      <div class="m-card-sapo">${a.sapo}</div>
+      ${quickIconsHTML(a)}`;
+    card.querySelector('.m-card-title')?.addEventListener('click', () => goArticle(a));
     return card;
   }
 
@@ -1022,8 +1065,10 @@ input, select { font-family: inherit; }
         <div class="m-card-title" style="font-size:.9rem">${a.title}</div>
         <div class="m-card-sapo">${a.sapo}</div>
         <div style="clear:both"></div>
-      </div>`;
-    card.addEventListener('click', () => goArticle(a));
+      </div>
+      ${quickIconsHTML(a)}`;
+    card.querySelector('.m-card-ava-mid')?.addEventListener('click', () => goArticle(a));
+    card.querySelector('.m-card-title')?.addEventListener('click', () => goArticle(a));
     return card;
   }
 
@@ -1164,10 +1209,10 @@ input, select { font-family: inherit; }
   function renderBoxProject() {
     const box = el('div', 'm-box');
     box.innerHTML = `<div class="m-box-inner">
-      <div class="m-box-label">Bất động sản</div>
+      <div class="m-box-label">Tìm dự án</div>
       <div class="m-project-search">
-        <input type="text" placeholder="Tìm dự án bất động sản...">
-        <button class="m-search-btn">Tìm kiếm dự án</button>
+        <input type="text" placeholder="Gợi ý: Vinhomes Global Gates, Vinhomes Smart City...">
+        <button class="m-search-btn">Tìm kiếm</button>
       </div>
     </div>`;
     return box;
@@ -1485,6 +1530,12 @@ input, select { font-family: inherit; }
       card.querySelector('.m-ai-q-trigger').addEventListener('click', () => card.classList.toggle('open'));
     });
 
+    // Bind Tóm tắt button → show AI summary popup
+    const summaryBtn = detail.querySelector('.m-summary-btn');
+    if (summaryBtn) {
+      summaryBtn.addEventListener('click', e => { e.stopPropagation(); mArtShowSummary(e, a.sapo); });
+    }
+
     // Bind 3-dot more menu
     const mMoreBtn = $('#mMoreBtn');
     const mMoreDrop = $('#mMoreDropdown');
@@ -1569,7 +1620,56 @@ input, select { font-family: inherit; }
   renderHome();
   handleRoute();
   window.addEventListener('hashchange', handleRoute);
+
+  // ============================================================
+  // ARTICLE QUICK ICONS — event delegation
+  // ============================================================
+  function mArtShowSummary(e, sapo) {
+    const popup = $('#mArtSummaryPopup');
+    $('#mArtSummaryText').textContent = sapo || 'Không có tóm tắt.';
+    popup.classList.add('open');
+    requestAnimationFrame(() => {
+      const vw = window.innerWidth;
+      const pw = popup.offsetWidth, ph = popup.offsetHeight;
+      let left = e.clientX - pw + 20;
+      let top = e.clientY - ph - 10;
+      if (left < 8) left = 8;
+      if (left + pw > vw - 8) left = vw - pw - 8;
+      if (top < 8) top = e.clientY + 24;
+      popup.style.left = left + 'px';
+      popup.style.top = top + 'px';
+    });
+  }
+
+  document.addEventListener('click', e => {
+    const aiBtn = e.target.closest('.art-ai-btn');
+    if (aiBtn) {
+      e.stopPropagation();
+      mArtShowSummary(e, aiBtn.dataset.sapo);
+      return;
+    }
+    const audioBtn = e.target.closest('.art-audio-btn');
+    if (audioBtn) {
+      e.stopPropagation();
+      return;
+    }
+    if (!e.target.closest('#mArtSummaryPopup')) {
+      $('#mArtSummaryPopup').classList.remove('open');
+    }
+  });
+  $('#mArtSummaryClose').addEventListener('click', () => $('#mArtSummaryPopup').classList.remove('open'));
+
 })();
 </script>
+
+<!-- AI SUMMARY POPUP -->
+<div class="art-summary-popup" id="mArtSummaryPopup">
+  <div class="art-summary-header">
+    <span class="art-summary-badge">✦ AI Tóm tắt</span>
+    <button id="mArtSummaryClose">✕</button>
+  </div>
+  <div class="art-summary-text" id="mArtSummaryText"></div>
+</div>
+
 </body>
 </html>

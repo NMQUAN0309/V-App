@@ -74,7 +74,7 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 - Chính trị | Dân sinh | Quốc tế | Giao thông
 
 ### 2. Thế giới
-- Phân tích | Quân sự | Khám phá
+- Phân tích | Quân sự ⚙ (Bản đồ chiến sự) | Khám phá
 
 ### 3. Kinh doanh
 - Đầu tư | Doanh nghiệp | Chứng khoán ⚙ | Bank ⚙ | Vĩ mô
@@ -104,7 +104,7 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 - Nhịp sống | Bài học cuộc sống | Phong cách | Việc làm
 
 ### 12. Xe
-- Thị trường | Xe điện | Kinh nghiệm lái xe | Chăm xe
+- Thị trường | Xe điện | Kinh nghiệm lái xe ⚙ (Tra cứu phạt nguội) | Chăm xe
 
 ### 13. Du lịch
 - Điểm đến ⚙ | Ẩm thực | Khám phá
@@ -124,7 +124,7 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 > Khi người dùng vào trang mục con tương ứng, phía trên cùng hiển thị search box. Các bài viết hiển thị bình thường phía dưới.
 > **Không** đánh dấu icon hay label đặc biệt trong navigation.
 
-| Mục con | Search box |
+| Mục con | Search box / Widget |
 |---------|------------|
 | Chứng khoán (Kinh doanh) | Ô tìm mã CK (VD: VIC, VNM) |
 | Bank (Kinh doanh) | Ô tìm lãi suất + bộ lọc: Gửi/Vay, Ngân hàng, Kỳ hạn |
@@ -132,8 +132,10 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 | Dự án (BĐS) | Ô tìm dự án bất động sản |
 | Quy hoạch (BĐS) | Ô tìm quy hoạch theo tỉnh/thành phố, quận/huyện |
 | Các bệnh (Sức khỏe) | Ô tìm loại bệnh, triệu chứng |
+| Quân sự (Thế giới) | **Bản đồ chiến sự**: SVG world map, highlight các quốc gia đang xung đột |
 | Thư viện pháp luật (Pháp luật) | Ô tìm văn bản pháp luật |
 | Đề thi & Đáp án (Giáo dục) | Ô tìm + bộ lọc: Năm, Cấp (trường/tỉnh/QG/TG), Môn học |
+| Kinh nghiệm lái xe (Xe) | **Tra cứu phạt nguội**: Nhập biển số xe |
 | Điểm đến (Du lịch) | Ô tìm địa danh du lịch trong nước & thế giới |
 
 ---
@@ -155,8 +157,14 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
      - Bài top 1: layout ngang — ava nhỏ (~40%) + title & sapo bên phải
      - 1 bài chỉ title+sapo (bên phải top1)
      - 3 bài chỉ title+sapo
-6. **Mục còn lại**: 2 cột
-   - Mỗi mục: Tên mục + mục con | Bài top 1 (layout ngang: ava nhỏ + title+sapo bên cạnh) | 2 bài chỉ title+sapo
+6. **Mục còn lại**: Một số mục có box tiện ích bên phải (grid 2 cột: bài viết 1fr + box 300px)
+   - Thời sự → Box Thời tiết (5 thành phố)
+   - Thế giới → Box Bản đồ Chiến sự (compact: danh sách xung đột + link xem bản đồ đầy đủ)
+   - Công nghệ → Box Tìm kiếm sản phẩm công nghệ
+   - Pháp luật → Box Tra cứu văn bản pháp luật
+   - Giáo dục → Box Tra cứu đề thi
+   - Xe → Box Tra cứu phạt nguội
+   - Du lịch → Box Tra cứu điểm đến
 
 ### Trang mục
 1. Header + Ticker + Nav (giống trang chủ)
@@ -254,6 +262,31 @@ Remaining (mỗi mục 5 bài):
 8. Tin cùng chuyên mục (5 bài)
 9. Đọc nhiều nhất 48h (5 bài)
 10. **Sticky bottom**: [Hỏi tiếp về tin này...] ❤️ 🔖 🔗
+
+---
+
+## Tính năng Bản đồ Chiến sự
+
+### Widget bản đồ đầy đủ (trang mục Thế giới/Quân sự)
+- Hiển thị bản đồ thế giới SVG (simplified, viewBox 900×420)
+- Tô màu các quốc gia đang xung đột:
+  - Ukraine + Nga: màu cam (#FF7043)
+  - Israel + Palestine/Gaza: màu xanh (#29B6F6)
+- Đường nối dashed + animated pulse dot giữa 2 quốc gia xung đột
+- **Hover**: Tooltip hiển thị tên xung đột
+- **Click vào quốc gia hoặc legend**: Hiện panel bên dưới với danh sách 5 bài viết liên quan
+- **Legend bar**: 2 mục - "Chiến tranh Ukraine - Nga" và "Xung đột Israel - Gaza"
+- **Articles panel** (collapsible): Tiêu đề xung đột + 5 bài viết có thể click để đọc
+
+### Box compact (trang chủ, bên phải cụm Thế giới)
+- Danh sách 2 xung đột với flag + tên nước + màu tương ứng
+- Click vào card → điều hướng đến #category/the-gioi/quan-su
+- Link "Xem bản đồ đầy đủ →"
+
+### Mobile (trang mục Thế giới/Quân sự)
+- Hiển thị 2 conflict cards (accordion)
+- Click vào card → expand/collapse danh sách bài viết liên quan
+- Click vào bài → vào trang chi tiết
 
 ---
 

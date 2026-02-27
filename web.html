@@ -430,6 +430,8 @@ ul, ol { list-style: none; }
   display: grid; grid-template-columns: 1fr 2fr;
   gap: 32px; margin-bottom: 48px;
 }
+/* min-width:0 prevents grid columns blowing up due to wide children (e.g. match ticker) */
+.home-left, .home-right { min-width: 0; }
 
 .home-left { border-right: 1px solid var(--border-light); padding-right: 32px; }
 .home-left .article-row:first-child { padding-top: 0; }
@@ -440,6 +442,75 @@ ul, ol { list-style: none; }
 .fc-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
 .fc-row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 
+/* featured interstitial boxes (between clusters in right col) */
+.featured-interstitial { margin-bottom: 28px; }
+.match-schedule-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; overflow: hidden;
+}
+.match-box-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.match-box-title {
+  font-size: .8rem; font-weight: 700; color: var(--ink); letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.match-box-more {
+  font-size: .75rem; color: var(--red); text-decoration: none;
+}
+.match-box-more:hover { text-decoration: underline; }
+.match-ticker-wrap { overflow: hidden; position: relative; height: 24px; }
+.match-ticker-inner {
+  display: flex; align-items: center; gap: 0;
+  white-space: nowrap;
+  animation: matchTicker 30s linear infinite;
+}
+.match-ticker-wrap:hover .match-ticker-inner { animation-play-state: paused; }
+@keyframes matchTicker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.match-item {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: .75rem; color: var(--ink-secondary);
+  padding: 0 14px;
+  border-right: 1px solid var(--border);
+}
+.match-item:last-child { border-right: none; }
+.match-time { color: var(--red); font-weight: 600; font-size: .7rem; }
+.match-vs { color: var(--ink-tertiary); font-size: .7rem; }
+
+/* quote box */
+.quote-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden; padding: 0;
+}
+.quote-photo-wrap { width: 100%; overflow: hidden; line-height: 0; }
+.quote-photo { width: 100%; height: 130px; object-fit: cover; object-position: top center; display: block; filter: grayscale(15%); }
+.quote-body { padding: 12px 14px 14px; }
+.quote-text {
+  font-size: .81rem; line-height: 1.55; color: var(--ink);
+  font-style: italic; margin-bottom: 8px;
+}
+.quote-text::before { content: '"'; }
+.quote-text::after  { content: '"'; }
+.quote-author { font-size: .74rem; font-weight: 600; color: var(--ink-secondary); text-align: right; }
+
+/* coming soon page */
+.coming-soon-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 380px; padding: 60px 24px;
+  text-align: center;
+}
+.coming-soon-icon { font-size: 3rem; margin-bottom: 16px; }
+.coming-soon-title {
+  font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 8px;
+}
+.coming-soon-sub {
+  font-size: .9rem; color: var(--ink-secondary); max-width: 340px; line-height: 1.6;
+}
+
 /* ============================================================
    HOMEPAGE — REMAINING CATEGORIES
    ============================================================ */
@@ -449,6 +520,109 @@ ul, ol { list-style: none; }
 }
 .remaining-cat .rem-featured { margin-bottom: 8px; }
 .remaining-cat .rem-featured .title { font-size: 1rem; }
+/* Remaining cat with side box */
+.remaining-cat.rem-with-box {
+  display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start;
+}
+.rem-articles-col { min-width: 0; }
+.rem-box-col { min-width: 0; }
+/* Weather box */
+.weather-cities { display: flex; flex-direction: column; gap: 0; }
+.weather-city {
+  display: flex; align-items: center; gap: 8px; padding: 7px 0;
+  border-bottom: 1px solid var(--border-light); font-size: .84rem;
+}
+.weather-city:last-child { border-bottom: none; }
+.w-city-name { font-weight: 600; min-width: 68px; color: var(--ink); }
+.w-icon { font-size: 1.15rem; }
+.w-temp { font-weight: 700; color: var(--red); min-width: 44px; }
+.w-desc { color: var(--ink-tertiary); font-size: .78rem; }
+/* War map compact (home page side box) */
+.conflict-list-compact { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.conflict-card {
+  padding: 9px 12px; border-radius: 6px; background: var(--white);
+  border: 1px solid var(--border); cursor: pointer; transition: all .2s;
+}
+.conflict-card:hover { border-color: var(--red); box-shadow: var(--shadow-sm); }
+.conflict-flag-row { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+.cf-tag {
+  padding: 2px 7px; border-radius: 4px; font-size: .72rem; font-weight: 600;
+  color: #fff; flex: 1; text-align: center; white-space: nowrap;
+}
+.cf-vs { font-size: .85rem; flex-shrink: 0; }
+.conflict-sub { font-size: .72rem; color: var(--ink-tertiary); }
+.war-map-more-link {
+  display: block; text-align: right; font-size: .79rem; color: var(--red);
+  font-weight: 600; margin-top: 2px;
+}
+.war-map-more-link:hover { text-decoration: underline; }
+/* Mini war map (home sidebar + mobile) */
+.wm-mini-wrap {
+  position: relative; line-height: 0; background: #b8d4e8;
+  border-radius: 6px; overflow: hidden; margin-bottom: 10px; cursor: pointer;
+}
+.wm-mini-wrap .wm-svg { width: 100%; display: block; }
+.wm-mini-wrap .wm-loading { min-height: 100px; font-size: .78rem; }
+.wm-mini-legend { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+.wm-mini-conflict { display: flex; align-items: center; gap: 7px; font-size: .74rem; color: var(--ink-secondary); }
+.wm-mini-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+/* Full war map widget (category page) */
+.war-map-full {
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px;
+}
+.wm-full-header {
+  padding: 13px 20px; background: #1a237e;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.wm-full-header h3 { color: #fff; font-size: .95rem; margin: 0; font-weight: 700; }
+.wm-full-subtitle { font-size: .74rem; color: rgba(255,255,255,.65); }
+.wm-svg-wrap { position: relative; line-height: 0; background: #b8d4e8; min-height: 180px; }
+.wm-svg { width: 100%; display: block; }
+.wm-country { transition: filter .18s; cursor: pointer; }
+.wm-country:hover { filter: brightness(1.12) drop-shadow(0 0 5px rgba(0,0,0,.25)); }
+.wm-loading {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 40px 20px; min-height: 180px; color: #6b8fa8; font-size: .84rem;
+}
+.wm-loading-spinner {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid rgba(107,143,168,.3);
+  border-top-color: #6b8fa8;
+  animation: wmSpin .8s linear infinite;
+}
+@keyframes wmSpin { to { transform: rotate(360deg); } }
+.wm-load-error {
+  padding: 32px 20px; color: #999; font-size: .82rem; text-align: center; min-height: 120px;
+  display: flex; align-items: center; justify-content: center;
+}
+.wm-tooltip {
+  position: absolute; background: rgba(20,20,40,.88); color: #fff;
+  padding: 5px 11px; border-radius: 5px; font-size: .79rem; white-space: nowrap;
+  pointer-events: none; display: none; z-index: 10;
+}
+.wm-legend {
+  display: flex; border-top: 1px solid var(--border); background: var(--white);
+}
+.wm-legend-item {
+  flex: 1; padding: 11px 16px; display: flex; align-items: center; gap: 10px;
+  border-right: 1px solid var(--border); cursor: pointer; transition: background .2s;
+}
+.wm-legend-item:last-child { border-right: none; }
+.wm-legend-item:hover { background: var(--surface); }
+.wm-legend-color { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+.wm-legend-texts { flex: 1; }
+.wm-conflict-name { font-size: .83rem; font-weight: 600; color: var(--ink); }
+.wm-conflict-date { font-size: .73rem; color: var(--ink-tertiary); margin-top: 1px; }
+.wm-legend-arr { color: var(--ink-tertiary); font-size: 1.1rem; }
+.wm-articles-panel {
+  border-top: 1px solid var(--border); padding: 14px 20px; background: var(--surface);
+}
+.wm-articles-panel h4 { font-size: .88rem; margin-bottom: 10px; color: var(--ink); font-weight: 700; }
+.wm-art-item { padding: 7px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.wm-art-item:last-child { border-bottom: none; }
+.wm-art-item:hover .wm-art-title { color: var(--red); }
+.wm-art-title { font-size: .84rem; font-weight: 600; line-height: 1.4; color: var(--ink); }
+.wm-art-time { font-size: .73rem; color: var(--ink-tertiary); margin-top: 2px; }
 
 /* ============================================================
    CATEGORY PAGE
@@ -1404,6 +1578,14 @@ ul, ol { list-style: none; }
       cluster.appendChild(row3);
 
       hr.appendChild(cluster);
+
+      // Insert interstitial box after this cluster if defined
+      const interstitialType = FEATURED_INTERSTITIALS[catId];
+      if (interstitialType) {
+        const ibox = el('div', 'featured-interstitial');
+        ibox.innerHTML = buildHomeSideBox(interstitialType);
+        hr.appendChild(ibox);
+      }
     });
 
     // Video cluster (trước remaining)
@@ -1435,28 +1617,40 @@ ul, ol { list-style: none; }
     remCats.forEach(cat => {
       const articles = D.HOME_REMAINING[cat.id];
       if (!articles) return;
-      const div = el('div', 'remaining-cat');
+      const sideBoxType = HOME_SIDE_BOXES[cat.id];
+      const div = el('div', sideBoxType ? 'remaining-cat rem-with-box' : 'remaining-cat');
+
+      // Content goes into articlesCol (or div directly if no side box)
+      const articlesCol = sideBoxType ? el('div', 'rem-articles-col') : div;
 
       const head = el('div', 'section-head');
       head.innerHTML = `<a href="#category/${cat.id}" class="sec-title">${cat.name}</a>
         <div class="sec-subs">${cat.subs.map(s =>
           `<a href="#category/${cat.id}/${s.id}" class="sec-sub">${s.name}</a>`
         ).join('')}</div>`;
-      div.appendChild(head);
+      articlesCol.appendChild(head);
 
       // Featured article (horizontal)
       const featCard = makeCardH(articles[0], { medium: true, extraClass: 'rem-featured', titleSize: '1rem' });
-      div.appendChild(featCard);
+      articlesCol.appendChild(featCard);
 
       // 2 title-only
       articles.slice(1, 3).forEach(a => {
         const tc2 = el('div', 'title-only-card');
         tc2.innerHTML = titleOnlyHTML(a);
         makeClickable(tc2, a);
-        div.appendChild(tc2);
+        articlesCol.appendChild(tc2);
       });
 
-      rc.appendChild(div);
+      if (sideBoxType) {
+        div.appendChild(articlesCol);
+        const boxCol = el('div', 'rem-box-col');
+        boxCol.innerHTML = buildHomeSideBox(sideBoxType);
+        div.appendChild(boxCol);
+      }
+
+      rc.appendChild(div); // must be in DOM before calling initWarMapMini
+      if (sideBoxType === 'war-map-compact') initWarMapMini('wmCompactSvgWrap');
     });
   }
 
@@ -1519,9 +1713,38 @@ ul, ol { list-style: none; }
   // ============================================================
   // RENDER CATEGORY PAGE
   // ============================================================
+  function renderComingSoon(catId, subId) {
+    $('#videoFeedPage').classList.remove('active');
+    $('#catNormalContainer').style.display = '';
+    const cat = D.CATEGORIES.find(c => c.id === catId);
+    // Show subcategory bar
+    const subBar = $('#webCatSubsBar');
+    subBar.style.display = 'block';
+    subBar.innerHTML = cat ? `<div class="web-cat-subs-inner">${
+      cat.subs.map(s =>
+        `<a href="#category/${catId}/${s.id}" class="web-cat-sub-link${subId === s.id ? ' active' : ''}">${s.name}</a>`
+      ).join('')
+    }</div>` : '';
+    // Clear all sections
+    ['catSpecial','catTopCluster','catLeft','catRight','catStream'].forEach(id => { $('#' + id).innerHTML = ''; });
+    // Show coming soon in stream container
+    const stream = $('#catStream');
+    stream.innerHTML = `<div class="coming-soon-wrap">
+      <div class="coming-soon-icon">🚧</div>
+      <div class="coming-soon-title">Đang phát triển</div>
+      <div class="coming-soon-sub">Tính năng này đang được xây dựng. Vui lòng quay lại sau!</div>
+    </div>`;
+  }
+
   function renderCategory(catId, subId) {
     const cat = D.CATEGORIES.find(c => c.id === catId);
     if (!cat) return;
+
+    // Check comingSoon on sub
+    if (subId) {
+      const sub = cat.subs.find(s => s.id === subId);
+      if (sub && sub.comingSoon) { renderComingSoon(catId, subId); return; }
+    }
 
     // Video: special dark feed
     if (catId === 'video') { renderVideoFeed(); return; }
@@ -1550,6 +1773,7 @@ ul, ol { list-style: none; }
       const sub = cat.subs.find(s => s.id === subId);
       if (sub && sub.special) {
         specialContainer.innerHTML = buildSpecialBox(sub);
+        if (sub.special === 'war-map') initWarMap();
       }
     } else if (specialSubs.length > 0) {
       // show first special sub
@@ -1625,8 +1849,309 @@ ul, ol { list-style: none; }
     stream.appendChild(moreWrap);
   }
 
+  // ============================================================
+  // HOME PAGE SIDE BOX MAPPING
+  // ============================================================
+  const HOME_SIDE_BOXES = {
+    'thoi-su':   'weather-box',
+    'the-gioi':  'war-map-compact',
+    'cong-nghe': 'thietbi-search',
+    'phap-luat': 'law-search',
+    'giao-duc':  'exam-search',
+    'xe':        'traffic-fine',
+    'du-lich':   'destination-search',
+    'doi-song':  'quote-box',
+  };
+
+  // Featured interstitials: which box appears below each featured cluster
+  const FEATURED_INTERSTITIALS = {
+    'kinh-doanh':  'stock-search',
+    'bat-dong-san':'project-search',
+    'the-thao':    'match-schedule',
+    'suc-khoe':    'disease-search',
+  };
+
+  // ============================================================
+  // WAR MAP — SHARED DATA & HELPERS (used by full map + mini map)
+  // ============================================================
+  let _wmCache = null;
+  async function loadWorldAtlas() {
+    if (_wmCache) return _wmCache;
+    if (!window.topojson) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
+    _wmCache = window.topojson.feature(world, world.objects.countries);
+    return _wmCache;
+  }
+
+  const WAR_CONFLICTS_META = {
+    'ukraine-russia':   { label: 'Chiến tranh Ukraine — Nga', catId: 'the-gioi', color: '#FF7043' },
+    'israel-palestine': { label: 'Xung đột Israel — Gaza',    catId: 'the-gioi', color: '#29B6F6' },
+    'usa-iran':         { label: 'Căng thẳng Mỹ — Iran',      catId: 'the-gioi', color: '#AB47BC' },
+  };
+
+  // ISO 3166-1 numeric codes
+  const WAR_COUNTRY_MAP = {
+    '804': { conflictKey: 'ukraine-russia',   color: '#FF7043', name: 'Ukraine' },
+    '643': { conflictKey: 'ukraine-russia',   color: '#FF8A65', name: 'Nga' },
+    '376': { conflictKey: 'israel-palestine', color: '#29B6F6', name: 'Israel' },
+    '275': { conflictKey: 'israel-palestine', color: '#4FC3F7', name: 'Palestine' },
+    '840': { conflictKey: 'usa-iran',         color: '#AB47BC', name: 'Mỹ' },
+    '364': { conflictKey: 'usa-iran',         color: '#CE93D8', name: 'Iran' },
+  };
+
+  const WAR_PULSES = [
+    { lon: 37.0, lat: 48.5, color: '#E64A19', r: 5,   dur: '2s'   }, // Donbas
+    { lon: 34.3, lat: 31.5, color: '#0288D1', r: 3.8, dur: '2.3s' }, // Gaza
+    { lon: 53.5, lat: 32.5, color: '#8E24AA', r: 4,   dur: '2.6s' }, // Gulf/Iran
+  ];
+
+  function wmProject(lon, lat, W, H) {
+    const x = (lon + 180) / 360 * W;
+    const y = (73 - Math.max(-55, Math.min(73, lat))) / 128 * H;
+    return [x, y];
+  }
+  function wmRingPath(ring, W, H) {
+    if (ring.length < 2) return '';
+    let d = '';
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y] = wmProject(ring[i][0], ring[i][1], W, H);
+      if (i === 0) {
+        d += 'M' + x.toFixed(1) + ',' + y.toFixed(1);
+      } else {
+        const dLon = Math.abs(ring[i][0] - ring[i-1][0]);
+        d += (dLon > 180 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+      }
+    }
+    return d + 'Z';
+  }
+  function wmFeaturePath(feature, W, H) {
+    const g = feature.geometry;
+    if (!g) return '';
+    const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+    return polys.map(poly => poly.map(ring => wmRingPath(ring, W, H)).join('')).join('');
+  }
+  function buildConflictMapSVG(countries, W, H, withPulses) {
+    const sorted = [...countries.features].sort((a, b) =>
+      (WAR_COUNTRY_MAP[String(a.id)] ? 1 : 0) - (WAR_COUNTRY_MAP[String(b.id)] ? 1 : 0)
+    );
+    let paths = '';
+    sorted.forEach(f => {
+      const id = String(f.id);
+      const conf = WAR_COUNTRY_MAP[id];
+      const d = wmFeaturePath(f, W, H);
+      if (!d) return;
+      if (conf) {
+        paths += `<path d="${d}" fill="${conf.color}" fill-opacity="0.82" stroke="#fff" stroke-width="0.8" class="wm-country" data-id="${id}" data-conflict="${conf.conflictKey}" data-cname="${conf.name}"/>`;
+      } else {
+        paths += `<path d="${d}" fill="#ddd8c2" stroke="#bfbba8" stroke-width="0.3"/>`;
+      }
+    });
+    let dots = '';
+    if (withPulses) {
+      WAR_PULSES.forEach(p => {
+        const [x, y] = wmProject(p.lon, p.lat, W, H);
+        dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${p.r}" fill="${p.color}" opacity="0.2">
+          <animate attributeName="r" values="${p.r};${(p.r*2.2).toFixed(1)};${p.r}" dur="${p.dur}" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.2;0;0.2" dur="${p.dur}" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(p.r*0.55).toFixed(1)}" fill="${p.color}" opacity="0.9"/>`;
+      });
+    }
+    return `<svg viewBox="0 0 ${W} ${H}" class="wm-svg" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${W}" height="${H}" fill="#b8d4e8"/>
+      <g>${paths}</g><g>${dots}</g>
+    </svg>`;
+  }
+
+  // Mini map: renders into any container, click → go to full war map
+  async function initWarMapMini(wrapperId) {
+    const wrap = document.getElementById(wrapperId);
+    if (!wrap) return;
+    try {
+      const countries = await loadWorldAtlas();
+      wrap.innerHTML = buildConflictMapSVG(countries, 400, 200, false);
+      const svg = wrap.querySelector('svg');
+      if (svg) { svg.style.cursor = 'pointer'; svg.addEventListener('click', () => { location.hash = '#category/the-gioi/quan-su'; }); }
+    } catch(e) {
+      wrap.innerHTML = `<div class="wm-load-error">⚠ Lỗi tải bản đồ</div>`;
+    }
+  }
+
+  // ============================================================
+  // FULL WAR MAP WIDGET (category page)
+  // ============================================================
+  function buildWarMapWidget() {
+    return `<div class="war-map-full">
+      <div class="wm-full-header">
+        <h3>🌍 Bản đồ Chiến sự Thế giới</h3>
+        <span class="wm-full-subtitle">Cập nhật 27/02/2026 · Hover để xem, click để đọc tin</span>
+      </div>
+      <div class="wm-svg-wrap" id="wmSvgWrap">
+        <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
+      </div>
+      <div class="wm-legend">
+        <div class="wm-legend-item" data-conflict="ukraine-russia">
+          <div class="wm-legend-color" style="background:#FF7043"></div>
+          <div class="wm-legend-texts">
+            <div class="wm-conflict-name">⚔ Chiến tranh Ukraine — Nga</div>
+            <div class="wm-conflict-date">Từ tháng 2/2022 · Đông Âu</div>
+          </div><span class="wm-legend-arr">›</span>
+        </div>
+        <div class="wm-legend-item" data-conflict="israel-palestine">
+          <div class="wm-legend-color" style="background:#29B6F6"></div>
+          <div class="wm-legend-texts">
+            <div class="wm-conflict-name">⚔ Xung đột Israel — Gaza</div>
+            <div class="wm-conflict-date">Từ tháng 10/2023 · Trung Đông</div>
+          </div><span class="wm-legend-arr">›</span>
+        </div>
+        <div class="wm-legend-item" data-conflict="usa-iran">
+          <div class="wm-legend-color" style="background:#AB47BC"></div>
+          <div class="wm-legend-texts">
+            <div class="wm-conflict-name">⚔ Căng thẳng Mỹ — Iran</div>
+            <div class="wm-conflict-date">Vùng Vịnh · Trung Đông</div>
+          </div><span class="wm-legend-arr">›</span>
+        </div>
+      </div>
+      <div class="wm-articles-panel" id="wmArticlesPanel" style="display:none">
+        <h4 id="wmArticlesTitle"></h4>
+        <div id="wmArticlesList"></div>
+      </div>
+    </div>`;
+  }
+
+  async function initWarMap() {
+    const wrap = document.getElementById('wmSvgWrap');
+    const panel = document.getElementById('wmArticlesPanel');
+    const panelTitle = document.getElementById('wmArticlesTitle');
+    const panelList = document.getElementById('wmArticlesList');
+    if (!wrap) return;
+
+    function showConflictArticles(conflictKey) {
+      const c = WAR_CONFLICTS_META[conflictKey];
+      if (!c || !panel) return;
+      const arts = D.generateArticles(c.catId, 5);
+      panelTitle.textContent = c.label;
+      panelList.innerHTML = arts.map(a =>
+        `<div class="wm-art-item" onclick="location.hash='#article/${a.id}'">
+          <div class="wm-art-title">${a.title}</div>
+          <div class="wm-art-time">${a.time}</div>
+        </div>`
+      ).join('');
+      const alreadySame = panelTitle.dataset.current === conflictKey;
+      panel.style.display = (panel.style.display !== 'none' && alreadySame) ? 'none' : 'block';
+      panelTitle.dataset.current = conflictKey;
+    }
+
+    let countries;
+    try { countries = await loadWorldAtlas(); }
+    catch(e) { wrap.innerHTML = `<div class="wm-load-error">⚠ Không thể tải bản đồ. Vui lòng kiểm tra kết nối mạng.</div>`; return; }
+
+    const W = 960, H = 480;
+    const tooltipEl = document.createElement('div');
+    tooltipEl.className = 'wm-tooltip'; tooltipEl.id = 'wmTooltip';
+
+    wrap.innerHTML = buildConflictMapSVG(countries, W, H, true);
+    wrap.appendChild(tooltipEl);
+
+    wrap.querySelectorAll('.wm-country').forEach(country => {
+      country.addEventListener('mouseenter', () => {
+        const conf = WAR_CONFLICTS_META[country.dataset.conflict];
+        tooltipEl.textContent = conf ? `${country.dataset.cname} · ${conf.label}` : country.dataset.cname;
+        tooltipEl.style.display = 'block';
+      });
+      country.addEventListener('mousemove', e => {
+        const rect = wrap.getBoundingClientRect();
+        tooltipEl.style.left = (e.clientX - rect.left + 12) + 'px';
+        tooltipEl.style.top  = (e.clientY - rect.top  - 32) + 'px';
+      });
+      country.addEventListener('mouseleave', () => { tooltipEl.style.display = 'none'; });
+      country.addEventListener('click', e => { e.stopPropagation(); showConflictArticles(country.dataset.conflict); });
+    });
+    document.querySelectorAll('.wm-legend-item').forEach(item => {
+      item.addEventListener('click', () => showConflictArticles(item.dataset.conflict));
+    });
+  }
+
+  // ============================================================
+  // HOME PAGE SIDE BOX BUILDER
+  // ============================================================
+  function buildHomeSideBox(type) {
+    switch(type) {
+      case 'weather-box': return `<div class="cat-special-box">
+        <h3>🌤 Thời tiết hôm nay</h3>
+        <div class="weather-cities">
+          <div class="weather-city"><span class="w-city-name">Hà Nội</span><span class="w-icon">⛅</span><span class="w-temp">24°C</span><span class="w-desc">Có mây</span></div>
+          <div class="weather-city"><span class="w-city-name">TP.HCM</span><span class="w-icon">☀️</span><span class="w-temp">33°C</span><span class="w-desc">Nắng đẹp</span></div>
+          <div class="weather-city"><span class="w-city-name">Đà Nẵng</span><span class="w-icon">🌦</span><span class="w-temp">27°C</span><span class="w-desc">Mưa nhẹ</span></div>
+          <div class="weather-city"><span class="w-city-name">Đà Lạt</span><span class="w-icon">🌧</span><span class="w-temp">18°C</span><span class="w-desc">Mưa vừa</span></div>
+          <div class="weather-city"><span class="w-city-name">Cần Thơ</span><span class="w-icon">🌤</span><span class="w-temp">32°C</span><span class="w-desc">Nắng nhẹ</span></div>
+        </div></div>`;
+      case 'war-map-compact': return `<div class="cat-special-box">
+        <h3>🌍 Bản đồ Chiến sự</h3>
+        <div class="wm-mini-wrap" id="wmCompactSvgWrap">
+          <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải...</span></div>
+        </div>
+        <div class="wm-mini-legend">
+          <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#FF7043"></span>Chiến tranh Ukraine — Nga</div>
+          <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#29B6F6"></span>Xung đột Israel — Gaza</div>
+          <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#AB47BC"></span>Căng thẳng Mỹ — Iran</div>
+        </div>
+        <a href="#category/the-gioi/quan-su" class="war-map-more-link">Xem bản đồ đầy đủ →</a>
+        </div>`;
+      case 'traffic-fine': return `<div class="cat-special-box">
+        <h3>🚗 Tra cứu phạt nguội</h3>
+        <div class="search-row">
+          <input type="text" placeholder="Nhập biển số xe (VD: 30A-12345)">
+          <button class="search-btn">Tra cứu</button>
+        </div></div>`;
+      case 'match-schedule': {
+        const matches = D.MATCH_SCHEDULE;
+        const doubled = [...matches, ...matches];
+        const items = doubled.map(m =>
+          `<span class="match-item"><span class="match-time">${m.time}</span> ${m.home} <span class="match-vs">vs</span> ${m.away}</span>`
+        ).join('');
+        return `<div class="match-schedule-box">
+          <div class="match-box-header">
+            <span class="match-box-title">⚽ Lịch thi đấu</span>
+            <a href="#category/the-thao/lich-thi-dau" class="match-box-more">Xem thêm →</a>
+          </div>
+          <div class="match-ticker-wrap"><div class="match-ticker-inner">${items}</div></div>
+        </div>`;
+      }
+      case 'quote-box': {
+        const quotes = D.FAMOUS_QUOTES;
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        const photoSeed = encodeURIComponent(q.author);
+        return `<div class="quote-box">
+          <div class="quote-photo-wrap">
+            <img src="https://picsum.photos/seed/${photoSeed}/320/130" alt="${q.author}" class="quote-photo" loading="lazy">
+          </div>
+          <div class="quote-body">
+            <div class="quote-text">${q.quote}</div>
+            <div class="quote-author">— ${q.author}</div>
+          </div>
+        </div>`;
+      }
+      default: return buildSpecialBox({ special: type });
+    }
+  }
+
   function buildSpecialBox(sub) {
     const type = sub.special;
+    if (type === 'war-map') return buildWarMapWidget();
+    if (type === 'traffic-fine') return `<div class="cat-special-box">
+      <h3>🚗 Tra cứu phạt nguội</h3>
+      <div class="search-row">
+        <input type="text" placeholder="Nhập biển số xe (VD: 30A-12345)">
+        <button class="search-btn">Tra cứu</button>
+      </div></div>`;
     let html = `<div class="cat-special-box">`;
     switch(type) {
       case 'stock-search':
@@ -1914,6 +2439,7 @@ ul, ol { list-style: none; }
   }
 
   document.addEventListener('click', e => {
+    if (e.target.id === 'artSummaryClose') { $('#artSummaryPopup').classList.remove('open'); return; }
     const aiBtn = e.target.closest('.art-ai-btn');
     if (aiBtn) {
       e.stopPropagation();
@@ -1929,7 +2455,6 @@ ul, ol { list-style: none; }
       $('#artSummaryPopup').classList.remove('open');
     }
   });
-  $('#artSummaryClose').addEventListener('click', () => $('#artSummaryPopup').classList.remove('open'));
 })();
 </script>
 

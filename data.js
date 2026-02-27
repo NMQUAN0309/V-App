@@ -18,7 +18,7 @@ const CATEGORIES = [
     id: "the-gioi", name: "Thế giới",
     subs: [
       { id: "phan-tich", name: "Phân tích" },
-      { id: "quan-su", name: "Quân sự" },
+      { id: "quan-su", name: "Quân sự", special: "war-map" },
       { id: "kham-pha", name: "Khám phá" }
     ]
   },
@@ -71,7 +71,7 @@ const CATEGORIES = [
     id: "the-thao", name: "Thể thao",
     subs: [
       { id: "bong-da", name: "Bóng đá" },
-      { id: "lich-thi-dau", name: "Lịch thi đấu" },
+      { id: "lich-thi-dau", name: "Lịch thi đấu", comingSoon: true },
       { id: "tennis", name: "Tennis" },
       { id: "pickleball", name: "Pickleball" },
       { id: "golf", name: "Golf" },
@@ -109,7 +109,7 @@ const CATEGORIES = [
     subs: [
       { id: "thi-truong-xe", name: "Thị trường" },
       { id: "xe-dien", name: "Xe điện" },
-      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe" },
+      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
       { id: "cham-xe", name: "Chăm xe" }
     ]
   },
@@ -457,6 +457,30 @@ const MOBILE_VIDEO_ARTICLES = generateArticles("video", 5);
 const VIDEO_HOME_ARTICLES = generateArticles("video", 5);
 
 // ============================================================
+// --- LỊCH THI ĐẤU ---
+const MATCH_SCHEDULE = [
+  { time: '19:00 1/3', home: 'Hà Nội FC', away: 'Hải Phòng' },
+  { time: '21:00 1/3', home: 'Man Utd', away: 'Crystal Palace' },
+  { time: '23:00 1/3', home: 'Arsenal', away: 'Chelsea' },
+  { time: '23:30 1/3', home: 'Fulham', away: 'Tottenham' },
+  { time: '02:00 2/3', home: 'Barcelona', away: 'Real Madrid' },
+  { time: '19:30 2/3', home: 'HAGL', away: 'Bình Dương' },
+  { time: '21:00 2/3', home: 'Liverpool', away: 'Man City' },
+  { time: '23:00 2/3', home: 'Atl. Madrid', away: 'Valencia' },
+  { time: '00:30 3/3', home: 'PSG', away: 'Marseille' },
+  { time: '19:00 3/3', home: 'SL Benfica', away: 'Porto' },
+];
+
+// --- CÂU NÓI VĨ NHÂN ---
+const FAMOUS_QUOTES = [
+  { quote: 'Học hỏi mà không suy nghĩ là vô ích. Suy nghĩ mà không học hỏi là nguy hiểm.', author: 'Khổng Tử', initials: 'KT', color: '#795548' },
+  { quote: 'Thành công là khả năng đi từ thất bại này sang thất bại khác mà không mất đi nhiệt huyết.', author: 'Winston Churchill', initials: 'WC', color: '#1565C0' },
+  { quote: 'Hãy là sự thay đổi mà bạn muốn thấy trên thế giới.', author: 'Mahatma Gandhi', initials: 'MG', color: '#2E7D32' },
+  { quote: 'Cơ hội thường không đến với những người chờ đợi.', author: 'Thomas Edison', initials: 'TE', color: '#E65100' },
+  { quote: 'Trí tưởng tượng quan trọng hơn kiến thức. Kiến thức có giới hạn, còn trí tưởng tượng thì bao la.', author: 'Albert Einstein', initials: 'AE', color: '#4527A0' },
+  { quote: 'Hành trình vạn dặm bắt đầu từ một bước chân.', author: 'Lão Tử', initials: 'LT', color: '#00695C' },
+];
+
 // EXPORT (global)
 // ============================================================
 window.VAPP = {
@@ -492,5 +516,7 @@ window.VAPP = {
   createArticle,
   getRandomQuestions,
   getRandomQuote,
-  randomPick
+  randomPick,
+  MATCH_SCHEDULE,
+  FAMOUS_QUOTES
 };

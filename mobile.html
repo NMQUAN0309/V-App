@@ -288,7 +288,7 @@ input, select { font-family: inherit; }
   font-size: .85rem; color: var(--ink-secondary); line-height: 1.45;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.m-card-time { font-size: .72rem; color: var(--ink-faint); margin-top: 4px; }
+
 
 .m-card-compact {
   background: var(--white); padding: 12px 16px;
@@ -447,6 +447,95 @@ input, select { font-family: inherit; }
 .m-cat-special .filter-row {
   display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
 }
+/* Mobile war map */
+.m-war-map { display: flex; flex-direction: column; gap: 8px; }
+.m-conflict-card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+  background: var(--white); cursor: pointer;
+}
+.m-cf-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.m-cf-tag {
+  flex: 1; text-align: center; padding: 3px 6px; border-radius: 4px;
+  font-size: .75rem; font-weight: 600; color: #fff;
+}
+.m-cf-vs { font-size: .9rem; flex-shrink: 0; }
+.m-cf-desc { font-size: .74rem; color: var(--ink-tertiary); }
+.m-conflict-arts { display: none; margin-top: 8px; border-top: 1px solid var(--border-light); padding-top: 8px; }
+.m-conflict-arts.open { display: block; }
+.m-cfa-item { padding: 5px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.m-cfa-item:last-child { border-bottom: none; }
+.m-cfa-title { font-size: .82rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.m-cfa-time { font-size: .72rem; color: var(--ink-tertiary); margin-top: 2px; }
+
+/* Mini war map (shared with web) */
+.wm-mini-wrap {
+  position: relative; background: #b8d4e8;
+  border-radius: 6px; overflow: hidden; margin-bottom: 10px; cursor: pointer;
+}
+.wm-mini-wrap svg { width: 100%; display: block; }
+.wm-loading {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 24px 16px; min-height: 80px; color: #6b8fa8; font-size: .8rem;
+}
+.wm-loading-spinner {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(107,143,168,.3); border-top-color: #6b8fa8;
+  animation: wmSpin .8s linear infinite; flex-shrink: 0;
+}
+@keyframes wmSpin { to { transform: rotate(360deg); } }
+.wm-mini-legend { display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
+.wm-mini-conflict { display: flex; align-items: center; gap: 7px; font-size: .74rem; color: var(--ink-secondary); }
+.wm-mini-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.wm-mini-conflict { cursor: pointer; transition: opacity .15s; }
+.wm-mini-conflict:active { opacity: .7; }
+/* Mobile war map articles panel */
+.m-wm-articles { margin-top: 10px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.m-wm-art-header { font-size: .82rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border-light); }
+.m-wm-art-item { padding: 7px 0; border-bottom: 1px solid var(--border-light); }
+.m-wm-art-item:last-child { border-bottom: none; }
+.m-wm-art-text { font-size: .82rem; font-weight: 600; color: var(--ink); line-height: 1.4; }
+.m-wm-art-time { font-size: .72rem; color: var(--ink-tertiary); margin-top: 2px; }
+
+/* Mobile match schedule box */
+.m-match-box {
+  margin: 0 16px 4px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; overflow: hidden;
+}
+.m-match-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.m-match-title { font-size: .78rem; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: .03em; }
+.m-match-more { font-size: .73rem; color: var(--red); text-decoration: none; }
+.m-match-ticker-wrap { overflow: hidden; height: 22px; }
+.m-match-ticker-inner {
+  display: flex; align-items: center; white-space: nowrap;
+  animation: mMatchTicker 28s linear infinite;
+}
+.m-match-ticker-wrap:active .m-match-ticker-inner { animation-play-state: paused; }
+@keyframes mMatchTicker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.m-match-item {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .72rem; color: var(--ink-secondary);
+  padding: 0 12px; border-right: 1px solid var(--border);
+}
+.m-match-item:last-child { border-right: none; }
+.m-match-time { color: var(--red); font-weight: 600; font-size: .68rem; }
+.m-match-vs { color: var(--ink-tertiary); }
+
+/* Mobile coming soon page */
+.m-coming-soon {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 360px; padding: 48px 24px;
+  text-align: center;
+}
+.m-coming-soon-icon { font-size: 2.8rem; margin-bottom: 14px; }
+.m-coming-soon-title { font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.m-coming-soon-sub { font-size: .85rem; color: var(--ink-secondary); max-width: 280px; line-height: 1.6; }
 
 /* ============================================================
    ARTICLE DETAIL — MOBILE
@@ -1027,7 +1116,6 @@ input, select { font-family: inherit; }
       <div class="m-card-body">
         <div class="m-card-title">${a.title}</div>
         <div class="m-card-sapo">${a.sapo}</div>
-        <div class="m-card-time">${a.time}</div>
       </div>
       ${quickIconsHTML(a)}`;
     card.querySelector('.m-card-ava')?.addEventListener('click', () => goArticle(a));
@@ -1123,6 +1211,20 @@ input, select { font-family: inherit; }
     const ttArts = D.MOBILE_CATEGORY_ARTICLES['the-thao'];
     appendSectionHead(stream, 'the-thao', ttCat.name);
     appendCatArticles(stream, ttArts);
+
+    // === LỊCH THI ĐẤU BOX ===
+    const matchBox = el('div', 'm-match-box');
+    const matchDoubled = [...D.MATCH_SCHEDULE, ...D.MATCH_SCHEDULE];
+    const matchItems = matchDoubled.map(m =>
+      `<span class="m-match-item"><span class="m-match-time">${m.time}</span> ${m.home} <span class="m-match-vs">vs</span> ${m.away}</span>`
+    ).join('');
+    matchBox.innerHTML = `
+      <div class="m-match-header">
+        <a href="#category/the-thao/lich-thi-dau" class="m-match-title">⚽ Lịch thi đấu</a>
+        <a href="#category/the-thao/lich-thi-dau" class="m-match-more">Xem thêm →</a>
+      </div>
+      <div class="m-match-ticker-wrap"><div class="m-match-ticker-inner">${matchItems}</div></div>`;
+    stream.appendChild(matchBox);
 
     // 5 bài mix top #2 (thay thế box Quote)
     D.MOBILE_MIX_2.forEach(a => stream.appendChild(midCard(a)));
@@ -1336,6 +1438,32 @@ input, select { font-family: inherit; }
     const cat = D.CATEGORIES.find(c => c.id === catId);
     if (!cat) return;
 
+    // Check comingSoon on sub
+    if (subId) {
+      const sub = cat.subs.find(s => s.id === subId);
+      if (sub && sub.comingSoon) {
+        // Video: special dark feed
+        $('#mVideoFeedPage').classList.remove('active');
+        $('#mCatNormal').style.display = '';
+        $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === catId));
+        const subs = $('#mCatSubs');
+        subs.innerHTML = '';
+        cat.subs.forEach(s => {
+          const item = el('a', 'm-cat-sub-item' + (s.id === subId ? ' active' : ''));
+          item.href = `#category/${catId}/${s.id}`;
+          item.textContent = s.name;
+          subs.appendChild(item);
+        });
+        $('#mCatSpecial').innerHTML = '';
+        $('#mCatStream').innerHTML = `<div class="m-coming-soon">
+          <div class="m-coming-soon-icon">🚧</div>
+          <div class="m-coming-soon-title">Đang phát triển</div>
+          <div class="m-coming-soon-sub">Tính năng này đang được xây dựng. Vui lòng quay lại sau!</div>
+        </div>`;
+        return;
+      }
+    }
+
     // Video: special dark feed
     if (catId === 'video') { renderMobileVideoFeed(); return; }
 
@@ -1363,6 +1491,7 @@ input, select { font-family: inherit; }
       const sub = cat.subs.find(s => s.id === subId);
       if (sub && sub.special) {
         specialContainer.innerHTML = buildMobileSpecial(sub);
+        if (sub.special === 'war-map') initMobileWarMap();
       }
     }
 
@@ -1371,6 +1500,94 @@ input, select { font-family: inherit; }
     stream.innerHTML = '';
     const articles = D.CATEGORY_ARTICLES[catId] || D.generateArticles(catId, 15);
     articles.forEach(a => stream.appendChild(fullCard(a)));
+  }
+
+  // ============================================================
+  // WAR MAP — SHARED DATA & HELPERS
+  // ============================================================
+  let _wmCache = null;
+  async function loadWorldAtlas() {
+    if (_wmCache) return _wmCache;
+    if (!window.topojson) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
+    _wmCache = window.topojson.feature(world, world.objects.countries);
+    return _wmCache;
+  }
+
+  const WAR_COUNTRY_MAP = {
+    '804': { conflictKey: 'ukraine-russia',   color: '#FF7043', name: 'Ukraine' },
+    '643': { conflictKey: 'ukraine-russia',   color: '#FF8A65', name: 'Nga' },
+    '376': { conflictKey: 'israel-palestine', color: '#29B6F6', name: 'Israel' },
+    '275': { conflictKey: 'israel-palestine', color: '#4FC3F7', name: 'Palestine' },
+    '840': { conflictKey: 'usa-iran',         color: '#AB47BC', name: 'Mỹ' },
+    '364': { conflictKey: 'usa-iran',         color: '#CE93D8', name: 'Iran' },
+  };
+
+  function wmProject(lon, lat, W, H) {
+    const x = (lon + 180) / 360 * W;
+    const y = (73 - Math.max(-55, Math.min(73, lat))) / 128 * H;
+    return [x, y];
+  }
+  function wmRingPath(ring, W, H) {
+    if (ring.length < 2) return '';
+    let d = '';
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y] = wmProject(ring[i][0], ring[i][1], W, H);
+      if (i === 0) {
+        d += 'M' + x.toFixed(1) + ',' + y.toFixed(1);
+      } else {
+        const dLon = Math.abs(ring[i][0] - ring[i-1][0]);
+        d += (dLon > 180 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+      }
+    }
+    return d + 'Z';
+  }
+  function wmFeaturePath(feature, W, H) {
+    const g = feature.geometry;
+    if (!g) return '';
+    const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+    return polys.map(poly => poly.map(ring => wmRingPath(ring, W, H)).join('')).join('');
+  }
+  function buildConflictMapSVG(countries, W, H) {
+    const sorted = [...countries.features].sort((a, b) =>
+      (WAR_COUNTRY_MAP[String(a.id)] ? 1 : 0) - (WAR_COUNTRY_MAP[String(b.id)] ? 1 : 0)
+    );
+    let paths = '';
+    sorted.forEach(f => {
+      const id = String(f.id);
+      const conf = WAR_COUNTRY_MAP[id];
+      const d = wmFeaturePath(f, W, H);
+      if (!d) return;
+      if (conf) {
+        paths += `<path d="${d}" fill="${conf.color}" fill-opacity="0.82" stroke="#fff" stroke-width="0.8"/>`;
+      } else {
+        paths += `<path d="${d}" fill="#ddd8c2" stroke="#bfbba8" stroke-width="0.3"/>`;
+      }
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${W}" height="${H}" fill="#b8d4e8"/>
+      <g>${paths}</g>
+    </svg>`;
+  }
+
+  async function initWarMapMini(wrapperId) {
+    const wrap = document.getElementById(wrapperId);
+    if (!wrap) return;
+    try {
+      const countries = await loadWorldAtlas();
+      wrap.innerHTML = buildConflictMapSVG(countries, 400, 200);
+      wrap.style.cursor = 'pointer';
+      wrap.addEventListener('click', () => { location.hash = '#category/the-gioi/quan-su'; });
+    } catch(e) {
+      wrap.innerHTML = `<div style="padding:16px;color:#999;font-size:.8rem;text-align:center">⚠ Lỗi tải bản đồ</div>`;
+    }
   }
 
   function buildMobileSpecial(sub) {
@@ -1431,9 +1648,95 @@ input, select { font-family: inherit; }
           <input type="text" placeholder="Quận/huyện...">
           <button class="m-cat-search-btn">Tra cứu</button>`;
         break;
+      case 'traffic-fine':
+        html += `<h3>🚗 Tra cứu phạt nguội</h3>
+          <input type="text" placeholder="Nhập biển số xe (VD: 30A-12345)">
+          <button class="m-cat-search-btn">Tra cứu</button>`;
+        break;
+      case 'war-map':
+        html += `<h3>🌍 Bản đồ Chiến sự</h3>
+          <div class="wm-mini-wrap" id="mWmSvgWrap">
+            <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
+          </div>
+          <div class="wm-mini-legend" id="mWmLegend">
+            <div class="wm-mini-conflict" data-conflict="ukraine-russia"><span class="wm-mini-dot" style="background:#FF7043"></span>Chiến tranh Ukraine — Nga</div>
+            <div class="wm-mini-conflict" data-conflict="israel-palestine"><span class="wm-mini-dot" style="background:#29B6F6"></span>Xung đột Israel — Gaza</div>
+            <div class="wm-mini-conflict" data-conflict="usa-iran"><span class="wm-mini-dot" style="background:#AB47BC"></span>Căng thẳng Mỹ — Iran</div>
+          </div>
+          <div class="m-wm-articles" id="mWmArticles" style="display:none">
+            <div class="m-wm-art-header" id="mWmArtTitle"></div>
+            <div id="mWmArtList"></div>
+          </div>`;
+        break;
     }
     html += `</div>`;
     return html;
+  }
+
+  async function initMobileWarMap() {
+    const wrap = document.getElementById('mWmSvgWrap');
+    if (!wrap) return;
+    const artPanel = document.getElementById('mWmArticles');
+    const artTitle = document.getElementById('mWmArtTitle');
+    const artList  = document.getElementById('mWmArtList');
+
+    const WAR_LABELS = {
+      'ukraine-russia':   'Chiến tranh Ukraine — Nga',
+      'israel-palestine': 'Xung đột Israel — Gaza',
+      'usa-iran':         'Căng thẳng Mỹ — Iran',
+    };
+
+    function showConflictArts(conflictKey) {
+      const label = WAR_LABELS[conflictKey];
+      if (!label || !artPanel) return;
+      const arts = D.generateArticles('the-gioi', 5);
+      if (artTitle) artTitle.textContent = label;
+      if (artList) artList.innerHTML = arts.map(a =>
+        `<div class="m-wm-art-item" onclick="location.hash='#article/${a.id}'">
+          <div class="m-wm-art-text">${a.title}</div>
+          <div class="m-wm-art-time">${a.time}</div>
+        </div>`
+      ).join('');
+      const same = artPanel.dataset.current === conflictKey;
+      artPanel.style.display = (artPanel.style.display !== 'none' && same) ? 'none' : 'block';
+      artPanel.dataset.current = conflictKey;
+    }
+
+    // Render interactive map
+    try {
+      const countries = await loadWorldAtlas();
+      const W = 400, H = 200;
+      const sorted = [...countries.features].sort((a, b) =>
+        (WAR_COUNTRY_MAP[String(a.id)] ? 1 : 0) - (WAR_COUNTRY_MAP[String(b.id)] ? 1 : 0)
+      );
+      let paths = '';
+      sorted.forEach(f => {
+        const id = String(f.id);
+        const conf = WAR_COUNTRY_MAP[id];
+        const d = wmFeaturePath(f, W, H);
+        if (!d) return;
+        if (conf) {
+          paths += `<path d="${d}" fill="${conf.color}" fill-opacity="0.82" stroke="#fff" stroke-width="0.8" class="m-wm-conflict-path" data-conflict="${conf.conflictKey}"/>`;
+        } else {
+          paths += `<path d="${d}" fill="#ddd8c2" stroke="#bfbba8" stroke-width="0.3"/>`;
+        }
+      });
+      wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${W}" height="${H}" fill="#b8d4e8"/>
+        <g>${paths}</g>
+      </svg>`;
+      wrap.querySelectorAll('.m-wm-conflict-path').forEach(p => {
+        p.style.cursor = 'pointer';
+        p.addEventListener('click', e => { e.stopPropagation(); showConflictArts(p.dataset.conflict); });
+      });
+    } catch(e) {
+      wrap.innerHTML = `<div style="padding:16px;color:#999;font-size:.8rem;text-align:center">⚠ Lỗi tải bản đồ</div>`;
+    }
+
+    // Legend item clicks
+    document.querySelectorAll('#mWmLegend .wm-mini-conflict').forEach(item => {
+      item.addEventListener('click', () => showConflictArts(item.dataset.conflict));
+    });
   }
 
   // ============================================================
@@ -1642,6 +1945,7 @@ input, select { font-family: inherit; }
   }
 
   document.addEventListener('click', e => {
+    if (e.target.id === 'mArtSummaryClose') { $('#mArtSummaryPopup').classList.remove('open'); return; }
     const aiBtn = e.target.closest('.art-ai-btn');
     if (aiBtn) {
       e.stopPropagation();
@@ -1657,7 +1961,6 @@ input, select { font-family: inherit; }
       $('#mArtSummaryPopup').classList.remove('open');
     }
   });
-  $('#mArtSummaryClose').addEventListener('click', () => $('#mArtSummaryPopup').classList.remove('open'));
 
 })();
 </script>

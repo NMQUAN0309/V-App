@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>V-App Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Noto+Serif:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   V-APP MOBILE — DESIGN SYSTEM
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --red: #D32F2F;
+  --red-dark: #B71C1C;
+  --red-light: #FFEBEE;
+  --red-accent: #FF5252;
+  --ink: #1A1A1A;
+  --ink-secondary: #555;
+  --ink-tertiary: #888;
+  --ink-faint: #AAA;
+  --surface: #FAFAFA;
+  --surface-warm: #F7F5F3;
+  --border: #E8E4E0;
+  --border-light: #F0EDEA;
+  --white: #FFFFFF;
+  --font-body: 'Noto Sans', sans-serif;
+  --font-headline: 'Noto Serif', 'Noto Sans', serif;
+  --radius: 6px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow-md: 0 2px 12px rgba(0,0,0,.08);
+  --transition: .2s ease;
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-body); color: var(--ink); background: var(--surface);
+  line-height: 1.55; max-width: 430px; margin: 0 auto;
+  position: relative; min-height: 100vh;
+  box-shadow: 0 0 40px rgba(0,0,0,.08);
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; height: auto; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+ul, ol { list-style: none; }
+input, select { font-family: inherit; }
+
+::-webkit-scrollbar { width: 0; height: 0; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   HEADER — Dòng 1: ☰ Logo 🔔
+   ============================================================ */
+.m-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--red);
+}
+.m-header-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+}
+.m-hamburger {
+  width: 36px; height: 36px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  border-radius: 8px;
+}
+.m-hamburger span { display: block; width: 20px; height: 2px; background: var(--ink); border-radius: 1px; }
+.m-logo { display: flex; align-items: center; gap: 8px; }
+.m-logo img { height: 32px; width: 32px; border-radius: 6px; }
+.m-logo-text { font-family: var(--font-headline); font-size: 1.3rem; font-weight: 700; color: var(--red); }
+.m-bell {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; border-radius: 8px; position: relative;
+}
+.m-bell-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px; background: var(--red); border-radius: 50%;
+  border: 2px solid var(--white);
+}
+
+/* ============================================================
+   SEARCH — Dòng 2
+   ============================================================ */
+.m-search {
+  padding: 0 16px 10px; background: var(--white);
+}
+.m-search-input {
+  width: 100%; padding: 10px 16px; border: 1px solid var(--border);
+  border-radius: 24px; font-size: .9rem; background: var(--surface);
+  transition: border-color var(--transition);
+}
+.m-search-input:focus { outline: none; border-color: var(--red); background: var(--white); }
+
+/* ============================================================
+   CATEGORY TABS — Dòng 3
+   ============================================================ */
+.m-tabs {
+  display: flex; align-items: center; background: var(--white);
+  border-bottom: 1px solid var(--border); overflow: hidden;
+  position: sticky; top: 56px; z-index: 90;
+}
+.m-tab-home {
+  padding: 10px 14px; font-size: 1rem; color: var(--red);
+  border-right: 1px solid var(--border); flex-shrink: 0;
+}
+.m-tabs-scroll {
+  display: flex; overflow-x: auto; flex: 1;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.m-tabs-scroll::-webkit-scrollbar { display: none; }
+.m-tab-item {
+  padding: 10px 14px; font-size: .85rem; font-weight: 500;
+  white-space: nowrap; color: var(--ink-secondary);
+  transition: color var(--transition); flex-shrink: 0;
+  position: relative;
+}
+.m-tab-item:hover, .m-tab-item.active { color: var(--red); }
+.m-tab-item.active::after {
+  content: ''; position: absolute; bottom: 0; left: 14px; right: 14px;
+  height: 2px; background: var(--red);
+}
+.m-tab-special {
+  color: var(--red); font-weight: 600;
+}
+
+/* ============================================================
+   TICKER — Dòng 4
+   ============================================================ */
+.m-ticker {
+  background: var(--ink); color: var(--white); overflow: hidden;
+  font-size: .75rem; height: 28px; line-height: 28px;
+}
+.m-ticker-track {
+  display: flex; gap: 32px; white-space: nowrap;
+  animation: mTickerScroll 25s linear infinite;
+}
+.m-ticker-track span { display: inline-flex; align-items: center; gap: 5px; }
+.m-ticker-track .dot { display: inline-block; width: 3px; height: 3px; border-radius: 50%; background: var(--red-accent); }
+@keyframes mTickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   HAMBURGER MENU
+   ============================================================ */
+.m-menu-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none; opacity: 0; transition: opacity .3s;
+}
+.m-menu-overlay.open { pointer-events: all; opacity: 1; }
+.m-menu-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.4); }
+.m-menu-panel {
+  position: absolute; top: 0; left: 0; bottom: 0; width: 85%;
+  max-width: 340px; background: var(--white);
+  transform: translateX(-100%);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+  overflow-y: auto;
+}
+.m-menu-overlay.open .m-menu-panel { transform: translateX(0); }
+.m-menu-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 2px solid var(--red);
+}
+.m-menu-panel-header .m-logo-text { font-size: 1.1rem; }
+.m-menu-close {
+  width: 32px; height: 32px; font-size: 1.3rem;
+  display: flex; align-items: center; justify-content: center; border-radius: 50%;
+}
+.m-menu-list { padding: 4px 0; }
+.m-menu-cat { border-bottom: 1px solid var(--border-light); }
+.m-menu-cat-main {
+  display: block; padding: 11px 16px; font-weight: 700; font-size: .9rem;
+}
+.m-menu-cat-main:hover { color: var(--red); }
+.m-menu-subs { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 0 16px 10px 28px; }
+.m-menu-sub-link { font-size: .78rem; color: var(--ink-secondary); }
+.m-menu-sub-link:hover { color: var(--red); }
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.m-card {
+  background: var(--white); margin-bottom: 8px; cursor: pointer;
+  transition: opacity var(--transition);
+}
+.m-card:hover { opacity: .9; }
+.m-card-ava { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--border); }
+.m-card-ava-half { width: 55%; aspect-ratio: 4/3; object-fit: cover; float: left; margin-right: 12px; margin-bottom: 4px; border-radius: var(--radius); background: var(--border); }
+.m-card-body { padding: 12px 16px; }
+.m-card-title {
+  font-family: var(--font-headline); font-weight: 700; font-size: 1.05rem;
+  line-height: 1.35; margin-bottom: 4px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-card-title:hover { color: var(--red); }
+.m-card-sapo {
+  font-size: .85rem; color: var(--ink-secondary); line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-card-time { font-size: .72rem; color: var(--ink-faint); margin-top: 4px; }
+
+.m-card-compact {
+  background: var(--white); padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light); cursor: pointer;
+}
+.m-card-compact .m-card-title { font-family: var(--font-body); font-size: .92rem; font-weight: 600; }
+.m-card-compact .m-card-sapo { margin-top: 2px; }
+
+/* ============================================================
+   SECTION DIVIDER
+   ============================================================ */
+.m-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 10px; background: var(--white);
+  border-bottom: 2px solid var(--red); margin-top: 8px;
+}
+.m-sec-title {
+  font-family: var(--font-headline); font-weight: 700; font-size: 1.05rem;
+  color: var(--red);
+}
+.m-sec-more { font-size: .8rem; color: var(--ink-tertiary); }
+
+/* ============================================================
+   SPECIAL BOXES (Mobile stream)
+   ============================================================ */
+.m-box {
+  background: var(--white); margin: 8px 0; overflow: hidden;
+}
+.m-box-inner { padding: 20px 16px; }
+.m-box-label {
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--red); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.m-box-label::before {
+  content: ''; display: inline-block; width: 3px; height: 14px;
+  background: var(--red); border-radius: 2px;
+}
+
+/* Box 1: VN-Index */
+.m-vnindex-chart {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 10px; padding: 20px; color: #fff; margin-bottom: 12px;
+}
+.m-vnindex-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
+.m-vnindex-label { font-size: .85rem; font-weight: 600; opacity: .7; }
+.m-vnindex-value { font-size: 1.6rem; font-weight: 700; }
+.m-vnindex-change { font-size: .85rem; color: #4caf50; font-weight: 600; }
+.m-vnindex-bars {
+  display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-bottom: 12px;
+}
+.m-vnindex-bar {
+  flex: 1; border-radius: 2px 2px 0 0;
+  transition: height .3s;
+}
+.m-vnindex-input {
+  width: 100%; padding: 8px 12px; border: 1px solid rgba(255,255,255,.2);
+  border-radius: 8px; background: rgba(255,255,255,.08); color: #fff;
+  font-size: .85rem;
+}
+.m-vnindex-input::placeholder { color: rgba(255,255,255,.4); }
+.m-vnindex-input:focus { outline: none; border-color: var(--red-accent); }
+
+/* Box 2: Project Search */
+.m-project-search input {
+  width: 100%; padding: 10px 16px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: .9rem; background: var(--surface);
+}
+.m-project-search input:focus { outline: none; border-color: var(--red); }
+.m-project-search .m-search-btn {
+  display: block; width: 100%; padding: 10px; margin-top: 8px;
+  background: var(--red); color: var(--white); border-radius: 8px;
+  font-weight: 600; font-size: .9rem; text-align: center;
+}
+
+/* Box 3: Quote */
+.m-quote-box {
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  border-radius: 10px; padding: 24px 20px; color: var(--white);
+  position: relative;
+}
+.m-quote-mark {
+  font-family: Georgia, serif; font-size: 4rem; line-height: 1;
+  opacity: .2; position: absolute; top: 8px; left: 12px;
+}
+.m-quote-text {
+  font-family: var(--font-headline); font-size: 1.05rem; font-style: italic;
+  line-height: 1.5; margin-bottom: 12px; position: relative;
+}
+.m-quote-author { font-size: .85rem; font-weight: 600; opacity: .85; text-align: right; }
+
+/* Box 4: Traffic Violation */
+.m-traffic-search { display: flex; flex-direction: column; gap: 8px; }
+.m-traffic-search input {
+  width: 100%; padding: 10px 16px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: .9rem; background: var(--surface);
+}
+.m-traffic-search input:focus { outline: none; border-color: var(--red); }
+.m-traffic-search .m-search-btn {
+  padding: 10px; background: var(--red); color: var(--white);
+  border-radius: 8px; font-weight: 600; font-size: .9rem; text-align: center;
+}
+
+/* Box 5: Weather */
+.m-weather-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+}
+.m-weather-day {
+  text-align: center; padding: 10px 4px;
+  background: var(--surface); border-radius: 8px;
+}
+.m-weather-day-name { font-size: .72rem; font-weight: 600; color: var(--ink-secondary); }
+.m-weather-day-icon { font-size: 1.3rem; margin: 4px 0; }
+.m-weather-day-temp { font-size: .78rem; font-weight: 600; color: var(--ink); }
+.m-weather-day-date { font-size: .65rem; color: var(--ink-faint); }
+
+/* ============================================================
+   CATEGORY PAGE — MOBILE
+   ============================================================ */
+.m-cat-subs {
+  display: flex; gap: 0; overflow-x: auto;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.m-cat-subs::-webkit-scrollbar { display: none; }
+.m-cat-sub-item {
+  padding: 10px 14px; font-size: .82rem; font-weight: 500;
+  white-space: nowrap; color: var(--ink-secondary);
+  transition: color var(--transition); flex-shrink: 0;
+}
+.m-cat-sub-item:hover, .m-cat-sub-item.active { color: var(--red); }
+.m-cat-sub-item.has-special::after {
+  content: '⚡'; margin-left: 4px; font-size: .7rem;
+}
+
+.m-cat-special {
+  background: var(--white); padding: 16px; margin-bottom: 8px;
+}
+.m-cat-special h3 { font-size: .9rem; font-weight: 600; margin-bottom: 10px; }
+.m-cat-special input, .m-cat-special select {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: .87rem; margin-bottom: 8px;
+  background: var(--surface); font-family: var(--font-body);
+}
+.m-cat-special input:focus, .m-cat-special select:focus { outline: none; border-color: var(--red); }
+.m-cat-special .m-cat-search-btn {
+  display: block; width: 100%; padding: 10px; background: var(--red);
+  color: var(--white); border-radius: 8px; font-weight: 600; font-size: .9rem;
+  text-align: center;
+}
+.m-cat-special .filter-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+
+/* ============================================================
+   ARTICLE DETAIL — MOBILE
+   ============================================================ */
+.m-article-detail { padding-bottom: 70px; }
+
+.m-article-cat-nav {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+.m-cat-nav-main {
+  font-weight: 700; font-size: .9rem; color: var(--red);
+}
+.m-cat-nav-sep { color: var(--ink-faint); font-size: .8rem; }
+.m-cat-nav-sub { font-size: .85rem; color: var(--ink-secondary); }
+.m-cat-nav-dropdown {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; color: var(--ink-tertiary);
+  border: 1px solid var(--border); margin-left: auto;
+  position: relative;
+}
+.m-dropdown-menu {
+  display: none; position: absolute; top: 100%; right: 0;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-md);
+  z-index: 50; min-width: 180px; max-height: 300px; overflow-y: auto;
+}
+.m-dropdown-menu.show { display: block; }
+.m-dropdown-menu a {
+  display: block; padding: 8px 14px; font-size: .82rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.m-dropdown-menu a:hover { background: var(--surface); color: var(--red); }
+.m-dropdown-menu .dd-cat { font-weight: 700; color: var(--red); }
+
+.m-article-meta {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; background: var(--white);
+  font-size: .78rem; color: var(--ink-tertiary);
+}
+.m-audio-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--red); font-weight: 600; font-size: .78rem;
+  padding: 3px 10px; border: 1px solid var(--red); border-radius: 16px;
+}
+
+.m-article-content {
+  background: var(--white); padding: 16px; margin-bottom: 8px;
+}
+.m-art-title {
+  font-family: var(--font-headline); font-size: 1.4rem; font-weight: 700;
+  line-height: 1.3; margin-bottom: 10px;
+}
+.m-art-sapo {
+  font-size: .95rem; font-weight: 600; line-height: 1.5;
+  margin-bottom: 16px; padding-left: 12px;
+  border-left: 3px solid var(--red);
+}
+.m-art-body {
+  font-size: .92rem; line-height: 1.7; color: var(--ink-secondary);
+  margin-bottom: 20px;
+}
+.m-art-author, .m-art-source {
+  text-align: right; font-size: .82rem; color: var(--ink-tertiary);
+}
+.m-art-author { font-weight: 600; margin-bottom: 2px; }
+
+/* AI Q&A */
+.m-ai-section {
+  background: var(--white); padding: 16px; margin-bottom: 8px;
+}
+.m-ai-title {
+  font-size: .88rem; font-weight: 700; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.m-ai-badge {
+  font-size: .65rem; background: var(--red); color: var(--white);
+  padding: 2px 7px; border-radius: 8px; font-weight: 600;
+}
+.m-ai-q {
+  border: 1px solid var(--border); border-radius: 8px;
+  margin-bottom: 6px; overflow: hidden;
+}
+.m-ai-q:hover { border-color: var(--red); }
+.m-ai-q-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; font-size: .85rem; font-weight: 500;
+  width: 100%; text-align: left;
+}
+.m-ai-q-trigger .arrow { font-size: .65rem; color: var(--ink-faint); transition: transform .3s; }
+.m-ai-q.open .m-ai-q-trigger .arrow { transform: rotate(180deg); }
+.m-ai-q-answer {
+  max-height: 0; overflow: hidden; transition: max-height .4s ease;
+}
+.m-ai-q.open .m-ai-q-answer { max-height: 200px; }
+.m-ai-q-answer p {
+  padding: 0 14px 12px; font-size: .82rem; line-height: 1.5;
+  color: var(--ink-secondary); border-top: 1px solid var(--border-light);
+  padding-top: 8px;
+}
+
+/* Utilities */
+.m-utilities {
+  background: var(--white); padding: 16px; margin-bottom: 8px;
+}
+.m-utilities h3 { font-size: .88rem; font-weight: 700; margin-bottom: 10px; }
+.m-utilities-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.m-utility-card {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 4px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: .7rem; text-align: center; color: var(--ink-secondary);
+}
+.m-utility-card:hover { border-color: var(--red); background: var(--red-light); }
+.m-utility-icon { font-size: 1.2rem; }
+
+/* Related sections */
+.m-related {
+  background: var(--white); padding: 16px; margin-bottom: 8px;
+}
+.m-related-head {
+  font-family: var(--font-headline); font-weight: 700; font-size: .95rem;
+  color: var(--red); padding-bottom: 8px; margin-bottom: 10px;
+  border-bottom: 2px solid var(--red);
+}
+.m-related-item {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid var(--border-light); cursor: pointer;
+}
+.m-related-item:last-child { border-bottom: none; }
+.m-related-thumb {
+  width: 90px; min-width: 90px; height: 60px;
+  object-fit: cover; border-radius: 4px; background: var(--surface);
+}
+.m-related-info { flex: 1; }
+.m-related-info .title {
+  font-weight: 600; font-size: .85rem; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-related-info .title:hover { color: var(--red); }
+.m-related-info .sapo {
+  font-size: .75rem; color: var(--ink-tertiary); margin-top: 2px;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-btn-more {
+  display: block; width: 100%; text-align: center;
+  padding: 10px; margin-top: 8px; border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: .82rem; color: var(--ink-secondary);
+}
+.m-btn-more:hover { border-color: var(--red); color: var(--red); }
+
+/* Most read */
+.m-most-read { counter-reset: rank; }
+.m-mr-item {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+}
+.m-mr-item:last-child { border-bottom: none; }
+.m-mr-item::before {
+  counter-increment: rank; content: counter(rank);
+  font-family: var(--font-headline); font-size: 1.3rem; font-weight: 700;
+  color: var(--red); min-width: 24px;
+}
+.m-mr-title { font-weight: 600; font-size: .85rem; line-height: 1.35; }
+.m-mr-item:hover .m-mr-title { color: var(--red); }
+
+/* Sticky bottom */
+.m-sticky {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: var(--white); border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 12px rgba(0,0,0,.06);
+  z-index: 80; display: none;
+}
+.m-sticky.visible { display: block; }
+.m-sticky-inner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+}
+.m-sticky-input {
+  flex: 1; padding: 9px 14px; border: 1px solid var(--border);
+  border-radius: 20px; font-size: .82rem; background: var(--surface);
+}
+.m-sticky-input:focus { outline: none; border-color: var(--red); background: var(--white); }
+.m-sticky-icons { display: flex; gap: 2px; }
+.m-sticky-icon {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem;
+}
+.m-sticky-icon:hover { background: var(--surface); }
+.m-sticky-icon.liked { color: var(--red); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.m-footer {
+  background: var(--ink); color: var(--white); padding: 24px 16px;
+  text-align: center;
+}
+.m-footer .f-logo { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.m-footer p { font-size: .75rem; color: var(--ink-faint); }
+
+/* ============================================================
+   ANIMATION
+   ============================================================ */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn .4s ease both; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="m-header">
+  <div class="m-header-row">
+    <button class="m-hamburger" id="mHamburger"><span></span><span></span><span></span></button>
+    <a href="#home" class="m-logo">
+      <img src="v-app logo.png" alt="V-App">
+      <span class="m-logo-text">V-App</span>
+    </a>
+    <button class="m-bell" id="mBell">🔔<span class="m-bell-dot"></span></button>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div class="m-search" id="mSearchBar">
+  <input type="text" class="m-search-input" placeholder="Tìm tin, chủ đề, từ khóa">
+</div>
+
+<!-- TABS -->
+<div class="m-tabs" id="mTabs">
+  <a href="#home" class="m-tab-home">🏠</a>
+  <div class="m-tabs-scroll" id="mTabsScroll"></div>
+</div>
+
+<!-- TICKER -->
+<div class="m-ticker">
+  <div class="m-ticker-track" id="mTickerTrack"></div>
+</div>
+
+<!-- HAMBURGER MENU -->
+<div class="m-menu-overlay" id="mMenuOverlay">
+  <div class="m-menu-backdrop" id="mMenuBackdrop"></div>
+  <div class="m-menu-panel">
+    <div class="m-menu-panel-header">
+      <span class="m-logo-text" style="color:var(--red)">V-App</span>
+      <button class="m-menu-close" id="mMenuClose">&times;</button>
+    </div>
+    <div class="m-menu-list" id="mMenuList"></div>
+  </div>
+</div>
+
+<!-- PAGE: HOME -->
+<div id="m-page-home" class="page">
+  <div id="mHomeStream"></div>
+</div>
+
+<!-- PAGE: CATEGORY -->
+<div id="m-page-category" class="page">
+  <div id="mCatSubs" class="m-cat-subs"></div>
+  <div id="mCatSpecial"></div>
+  <div id="mCatStream"></div>
+</div>
+
+<!-- PAGE: ARTICLE -->
+<div id="m-page-article" class="page">
+  <div class="m-article-detail" id="mArticleDetail"></div>
+</div>
+
+<!-- STICKY BOTTOM -->
+<div class="m-sticky" id="mSticky">
+  <div class="m-sticky-inner">
+    <input type="text" class="m-sticky-input" placeholder="Hỏi tiếp về tin này...">
+    <div class="m-sticky-icons">
+      <button class="m-sticky-icon" id="mBtnLike">❤</button>
+      <button class="m-sticky-icon" id="mBtnSave">🔖</button>
+      <button class="m-sticky-icon" id="mBtnShare">🔗</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="m-footer">
+  <div class="f-logo">V-App</div>
+  <p>Trang thông tin điện tử V-App &copy; 2026. Prototype.</p>
+</footer>
+
+<script src="data.js"></script>
+<script>
+(function() {
+  'use strict';
+  const D = window.VAPP;
+
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+  function el(tag, cls, html) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function goArticle(a) { location.hash = `#article/${a.id}`; }
+
+  function findArticleById(id) {
+    const num = parseInt(id);
+    const sources = [
+      D.HOME_TOP_ARTICLES, D.HOME_LEFT_ARTICLES, D.MOST_READ_48H,
+      D.MOBILE_TOP_5,
+      ...Object.values(D.HOME_FEATURED), ...Object.values(D.HOME_REMAINING),
+      ...Object.values(D.CATEGORY_ARTICLES),
+      ...Object.values(D.MOBILE_CATEGORY_ARTICLES), ...Object.values(D.MOBILE_REMAINING)
+    ];
+    for (const arr of sources) {
+      const found = arr.find(a => a.id === num);
+      if (found) return found;
+    }
+    return D.HOME_TOP_ARTICLES[0];
+  }
+
+  // ============================================================
+  // TICKER
+  // ============================================================
+  function buildTicker() {
+    const t = D.TICKER_DATA;
+    const items = [t.weather, t.date, t.lunarDate, t.gold, t.stock];
+    let html = '';
+    for (let i = 0; i < 3; i++) {
+      items.forEach(item => { html += `<span><span class="dot"></span> ${item}</span>`; });
+    }
+    $('#mTickerTrack').innerHTML = html;
+  }
+
+  // ============================================================
+  // TABS
+  // ============================================================
+  function buildTabs() {
+    const scroll = $('#mTabsScroll');
+    let html = `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabLatest">Tin mới nhất</a>`;
+    html += `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabLocal">Địa phương</a>`;
+    D.CATEGORIES.forEach(cat => {
+      html += `<a href="#category/${cat.id}" class="m-tab-item" data-cat="${cat.id}">${cat.name}</a>`;
+    });
+    scroll.innerHTML = html;
+  }
+
+  // ============================================================
+  // MENU
+  // ============================================================
+  function buildMenu() {
+    const list = $('#mMenuList');
+    let html = '';
+    D.CATEGORIES.forEach(cat => {
+      html += `<div class="m-menu-cat">
+        <a href="#category/${cat.id}" class="m-menu-cat-main">${cat.name}</a>
+        <div class="m-menu-subs">`;
+      cat.subs.forEach(sub => {
+        html += `<a href="#category/${cat.id}/${sub.id}" class="m-menu-sub-link">${sub.name}</a>`;
+      });
+      html += `</div></div>`;
+    });
+    list.innerHTML = html;
+    list.addEventListener('click', e => { if (e.target.tagName === 'A') closeMenu(); });
+  }
+
+  function openMenu() { $('#mMenuOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeMenu() { $('#mMenuOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  $('#mHamburger').addEventListener('click', openMenu);
+  $('#mMenuClose').addEventListener('click', closeMenu);
+  $('#mMenuBackdrop').addEventListener('click', closeMenu);
+
+  // ============================================================
+  // RENDER ARTICLE CARD
+  // ============================================================
+  function fullCard(a) {
+    const card = el('div', 'm-card fade-in');
+    card.innerHTML = `<img class="m-card-ava" src="${a.avaUrl}" alt="" loading="lazy">
+      <div class="m-card-body">
+        <div class="m-card-title">${a.title}</div>
+        <div class="m-card-sapo">${a.sapo}</div>
+        <div class="m-card-time">${a.time}</div>
+      </div>`;
+    card.addEventListener('click', () => goArticle(a));
+    return card;
+  }
+
+  function halfCard(a) {
+    const card = el('div', 'm-card fade-in');
+    card.innerHTML = `<div class="m-card-body" style="overflow:hidden">
+        <img class="m-card-ava-half" src="${a.avaUrl}" alt="" loading="lazy">
+        <div class="m-card-title">${a.title}</div>
+        <div class="m-card-sapo">${a.sapo}</div>
+        <div style="clear:both"></div>
+      </div>`;
+    card.addEventListener('click', () => goArticle(a));
+    return card;
+  }
+
+  function compactCard(a) {
+    const card = el('div', 'm-card-compact');
+    card.innerHTML = `<div class="m-card-title">${a.title}</div>
+      <div class="m-card-sapo">${a.sapo}</div>`;
+    card.addEventListener('click', () => goArticle(a));
+    return card;
+  }
+
+  // ============================================================
+  // RENDER HOME
+  // ============================================================
+  function renderHome() {
+    const stream = $('#mHomeStream');
+    stream.innerHTML = '';
+
+    // 5 bài top (all full-width ava)
+    D.MOBILE_TOP_5.forEach(a => stream.appendChild(fullCard(a)));
+
+    // 5 category streams + boxes
+    const boxRenderers = [renderBoxVNIndex, renderBoxProject, renderBoxQuote, renderBoxTraffic, renderBoxWeather];
+    D.MOBILE_STREAM_CATEGORIES.forEach((catId, idx) => {
+      const cat = D.CATEGORIES.find(c => c.id === catId);
+      const articles = D.MOBILE_CATEGORY_ARTICLES[catId];
+
+      // Section head
+      const head = el('div', 'm-section-head');
+      head.innerHTML = `<a href="#category/${catId}" class="m-sec-title">${cat.name}</a>
+        <a href="#category/${catId}" class="m-sec-more">Xem tất cả ›</a>`;
+      stream.appendChild(head);
+
+      // 5 articles: 1 full, 1 half, 3 compact
+      if (articles[0]) stream.appendChild(fullCard(articles[0]));
+      if (articles[1]) stream.appendChild(halfCard(articles[1]));
+      articles.slice(2, 5).forEach(a => stream.appendChild(compactCard(a)));
+
+      // Special box
+      if (boxRenderers[idx]) stream.appendChild(boxRenderers[idx]());
+    });
+
+    // Remaining categories
+    const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id));
+    remCats.forEach(cat => {
+      const articles = D.MOBILE_REMAINING[cat.id];
+      if (!articles) return;
+
+      const head = el('div', 'm-section-head');
+      head.innerHTML = `<a href="#category/${cat.id}" class="m-sec-title">${cat.name}</a>
+        <a href="#category/${cat.id}" class="m-sec-more">Xem tất cả ›</a>`;
+      stream.appendChild(head);
+
+      if (articles[0]) stream.appendChild(fullCard(articles[0]));
+      if (articles[1]) stream.appendChild(halfCard(articles[1]));
+      articles.slice(2, 5).forEach(a => stream.appendChild(compactCard(a)));
+    });
+  }
+
+  // ============================================================
+  // SPECIAL BOXES
+  // ============================================================
+  function renderBoxVNIndex() {
+    const box = el('div', 'm-box');
+    const bars = Array.from({length: 20}, () => {
+      const h = 15 + Math.random() * 45;
+      const green = Math.random() > .4;
+      return `<div class="m-vnindex-bar" style="height:${h}px;background:${green ? '#4caf50' : '#f44336'}"></div>`;
+    }).join('');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Chứng khoán</div>
+      <div class="m-vnindex-chart">
+        <div class="m-vnindex-header">
+          <span class="m-vnindex-label">VNINDEX</span>
+          <span class="m-vnindex-value">1.284,35</span>
+          <span class="m-vnindex-change">+15,20 (+1,20%)</span>
+        </div>
+        <div class="m-vnindex-bars">${bars}</div>
+        <input type="text" class="m-vnindex-input" placeholder="Nhập mã CK (VD: VIC, FPT...)">
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxProject() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Bất động sản</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Tìm dự án bất động sản...">
+        <button class="m-search-btn">Tìm kiếm dự án</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxQuote() {
+    const q = D.getRandomQuote();
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Trích dẫn hay</div>
+      <div class="m-quote-box">
+        <span class="m-quote-mark">"</span>
+        <div class="m-quote-text">${q.text}</div>
+        <div class="m-quote-author">— ${q.author}</div>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxTraffic() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Tra cứu phạt nguội</div>
+      <div class="m-traffic-search">
+        <input type="text" placeholder="Nhập biển số xe (VD: 29A-12345)">
+        <input type="text" placeholder="Nhập số đăng ký xe">
+        <button class="m-search-btn">Tra cứu</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxWeather() {
+    const w = D.WEATHER_DATA;
+    const days = w.weekly.map(d => `<div class="m-weather-day">
+      <div class="m-weather-day-name">${d.day}</div>
+      <div class="m-weather-day-icon">${d.icon}</div>
+      <div class="m-weather-day-temp">${d.temp}</div>
+      <div class="m-weather-day-date">${d.date}</div>
+    </div>`).join('');
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Thời tiết 7 ngày tới</div>
+      <div class="m-weather-grid">${days}</div>
+    </div>`;
+    return box;
+  }
+
+  // ============================================================
+  // RENDER CATEGORY
+  // ============================================================
+  function renderCategory(catId, subId) {
+    const cat = D.CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+
+    // Tab highlight
+    $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === catId));
+
+    // Subcategory tabs
+    const subs = $('#mCatSubs');
+    subs.innerHTML = '';
+    cat.subs.forEach(sub => {
+      const item = el('a', 'm-cat-sub-item' + (sub.id === subId ? ' active' : '') + (sub.special ? ' has-special' : ''));
+      item.href = `#category/${catId}/${sub.id}`;
+      item.textContent = sub.name;
+      subs.appendChild(item);
+    });
+
+    // Special section
+    const specialContainer = $('#mCatSpecial');
+    specialContainer.innerHTML = '';
+    if (subId) {
+      const sub = cat.subs.find(s => s.id === subId);
+      if (sub && sub.special) {
+        specialContainer.innerHTML = buildMobileSpecial(sub);
+      }
+    }
+
+    // Article stream
+    const stream = $('#mCatStream');
+    stream.innerHTML = '';
+    const articles = D.CATEGORY_ARTICLES[catId] || D.generateArticles(catId, 15);
+    articles.forEach(a => stream.appendChild(fullCard(a)));
+  }
+
+  function buildMobileSpecial(sub) {
+    let html = `<div class="m-cat-special">`;
+    switch(sub.special) {
+      case 'stock-search':
+        html += `<h3>Tra cứu mã chứng khoán</h3>
+          <input type="text" placeholder="Nhập mã CK (VD: VIC, VNM, FPT...)">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'ebank-search':
+        html += `<h3>Tra cứu lãi suất ngân hàng</h3>
+          <div class="filter-row">
+            <select><option>Gửi tiền</option><option>Vay tiền</option></select>
+            <select><option value="">Kỳ hạn</option>${D.LOAN_TERMS.map(t => `<option>${t}</option>`).join('')}</select>
+          </div>
+          <select style="margin-top:0"><option value="">Chọn ngân hàng</option>${D.BANKS.map(b => `<option>${b}</option>`).join('')}</select>
+          <button class="m-cat-search-btn">Tra cứu</button>`;
+        break;
+      case 'project-search':
+        html += `<h3>Tìm kiếm dự án</h3>
+          <input type="text" placeholder="Nhập tên dự án, khu vực...">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'disease-search':
+        html += `<h3>Tra cứu thông tin bệnh</h3>
+          <input type="text" placeholder="Nhập tên bệnh, triệu chứng...">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'law-search':
+        html += `<h3>Thư viện văn bản pháp luật</h3>
+          <input type="text" placeholder="Nhập số hiệu, tên văn bản...">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'exam-search':
+        html += `<h3>Tra cứu đề thi & đáp án</h3>
+          <input type="text" placeholder="Nhập từ khóa...">
+          <div class="filter-row">
+            <select><option value="">Năm</option><option>2026</option><option>2025</option><option>2024</option></select>
+            <select><option value="">Cấp</option><option>Trường</option><option>Tỉnh</option><option>Quốc gia</option></select>
+          </div>
+          <select><option value="">Môn học</option><option>Toán</option><option>Văn</option><option>Anh</option><option>Lý</option><option>Hóa</option></select>
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'destination-search':
+        html += `<h3>Khám phá điểm đến</h3>
+          <input type="text" placeholder="Nhập tên địa danh, thành phố...">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+    }
+    html += `</div>`;
+    return html;
+  }
+
+  // ============================================================
+  // RENDER ARTICLE DETAIL
+  // ============================================================
+  function renderArticle(articleId) {
+    const a = findArticleById(articleId);
+    const cat = D.CATEGORIES.find(c => c.id === a.categoryId);
+    const sub = cat ? cat.subs.find(s => s.id === a.subId) : null;
+    const detail = $('#mArticleDetail');
+
+    // Category nav with dropdown
+    let dropdownHtml = '';
+    D.CATEGORIES.forEach(c => {
+      dropdownHtml += `<a href="#category/${c.id}" class="dd-cat">${c.name}</a>`;
+      c.subs.forEach(s => {
+        dropdownHtml += `<a href="#category/${c.id}/${s.id}">&nbsp;&nbsp;${s.name}</a>`;
+      });
+    });
+
+    let html = `<div class="m-article-cat-nav">
+      <a href="#category/${a.categoryId}" class="m-cat-nav-main">${a.categoryName || (cat ? cat.name : '')}</a>
+      <span class="m-cat-nav-sep">›</span>
+      <a href="#category/${a.categoryId}/${a.subId}" class="m-cat-nav-sub">${a.subName || (sub ? sub.name : '')}</a>
+      <div class="m-cat-nav-dropdown" id="mDropdownToggle">▼
+        <div class="m-dropdown-menu" id="mDropdownMenu">${dropdownHtml}</div>
+      </div>
+    </div>`;
+
+    // Meta
+    html += `<div class="m-article-meta">
+      <span>${a.time}</span>
+      <button class="m-audio-btn">🔊 Nghe</button>
+    </div>`;
+
+    // Content
+    html += `<div class="m-article-content">
+      <h1 class="m-art-title">${a.title}</h1>
+      <p class="m-art-sapo">${a.sapo}</p>
+      <div class="m-art-body">${a.content}</div>
+      <div class="m-art-author">${a.author}</div>
+      <div class="m-art-source">${a.source}</div>
+    </div>`;
+
+    // AI Q&A
+    const questions = D.getRandomQuestions();
+    html += `<div class="m-ai-section">
+      <div class="m-ai-title"><span class="m-ai-badge">AI</span> Câu hỏi liên quan</div>`;
+    questions.forEach((q, i) => {
+      html += `<div class="m-ai-q" data-idx="${i}">
+        <button class="m-ai-q-trigger"><span>${q.q}</span><span class="arrow">▼</span></button>
+        <div class="m-ai-q-answer"><p>${q.a}</p></div>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // Utilities
+    html += `<div class="m-utilities">
+      <h3>Tiện ích liên quan</h3>
+      <div class="m-utilities-grid">`;
+    D.UTILITIES.forEach(u => {
+      html += `<div class="m-utility-card"><span class="m-utility-icon">${u.icon}</span><span>${u.name}</span></div>`;
+    });
+    html += `</div></div>`;
+
+    // Toàn cảnh
+    html += buildMobileRelated('Toàn cảnh', D.generateArticles(a.categoryId, 5));
+
+    // Tin cùng chuyên mục
+    html += buildMobileRelated('Tin cùng chuyên mục', D.generateArticles(a.categoryId, 5));
+
+    // Đọc nhiều nhất 48h
+    html += `<div class="m-related">
+      <div class="m-related-head">Đọc nhiều nhất 48h</div>
+      <div class="m-most-read">`;
+    D.MOST_READ_48H.forEach(mr => {
+      html += `<div class="m-mr-item" data-id="${mr.id}"><span class="m-mr-title">${mr.title}</span></div>`;
+    });
+    html += `</div></div>`;
+
+    detail.innerHTML = html;
+
+    // Bind AI Q&A
+    $$('.m-ai-q', detail).forEach(card => {
+      card.querySelector('.m-ai-q-trigger').addEventListener('click', () => card.classList.toggle('open'));
+    });
+
+    // Dropdown toggle
+    const ddToggle = $('#mDropdownToggle');
+    const ddMenu = $('#mDropdownMenu');
+    ddToggle.addEventListener('click', e => {
+      e.stopPropagation();
+      ddMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', () => ddMenu && ddMenu.classList.remove('show'));
+    ddMenu.addEventListener('click', e => {
+      if (e.target.tagName === 'A') ddMenu.classList.remove('show');
+    });
+
+    // Most read clicks
+    $$('.m-mr-item', detail).forEach(item => {
+      item.addEventListener('click', () => location.hash = `#article/${item.dataset.id}`);
+    });
+
+    // Show sticky
+    $('#mSticky').classList.add('visible');
+    $('#mBtnLike').onclick = function() { this.classList.toggle('liked'); };
+
+    window.scrollTo(0, 0);
+  }
+
+  function buildMobileRelated(title, articles) {
+    let html = `<div class="m-related">
+      <div class="m-related-head">${title}</div>`;
+    articles.forEach(a => {
+      html += `<div class="m-related-item" onclick="location.hash='#article/${a.id}'">
+        <img class="m-related-thumb" src="${a.avaUrl}" alt="" loading="lazy">
+        <div class="m-related-info">
+          <div class="title">${a.title}</div>
+          <div class="sapo">${a.sapo}</div>
+        </div>
+      </div>`;
+    });
+    html += `<button class="m-btn-more">Xem thêm ›</button></div>`;
+    return html;
+  }
+
+  // ============================================================
+  // ROUTER
+  // ============================================================
+  function handleRoute() {
+    const hash = location.hash || '#home';
+    const parts = hash.replace('#', '').split('/');
+
+    $$('.page').forEach(p => p.classList.remove('active'));
+    $('#mSticky').classList.remove('visible');
+    $$('.m-tab-item').forEach(t => t.classList.remove('active'));
+
+    if (parts[0] === 'category' && parts[1]) {
+      $('#m-page-category').classList.add('active');
+      renderCategory(parts[1], parts[2] || null);
+      window.scrollTo(0, 0);
+    } else if (parts[0] === 'article' && parts[1]) {
+      $('#m-page-article').classList.add('active');
+      renderArticle(parts[1]);
+    } else {
+      $('#m-page-home').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  buildTicker();
+  buildTabs();
+  buildMenu();
+  renderHome();
+  handleRoute();
+  window.addEventListener('hashchange', handleRoute);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+Đây là các yêu cầu về viết thiết kế giao diện của trang thông tin điện tử V-App. Trước tiên, tạo các bài viết sample để làm data tham chiếu cho các bài viết. Sample cần Title, sapo, nội dung, ava (chỉ dùng url ngẫu nhiên), thời gian, tác giả, nguồn. Trong đó, nội dung bài viết chỉ cần viết dạng: "đây là bài sample phục vụ tham khảo thiết kế"
+generate sẵn một số nguồn, mọt số tác giả, một số đường link tượng trưng, một số tiện ích liên quan để các bài viết sample sử dụng. Tạo 10 quote của 10 vĩ nhân nổi tiếng
+Không tạo các file không cần thiết (như file SVG, file ảnh...)
+
+YÊU CẦU CHUNG CHO CẢ WEB VÀ MOBILE:
+ava: file v-app logo.png
+có hamburger button để show full các mục
+Cấu trúc:
+Thời sự
+- Chính trị
+- Dân sinh
+- Việc làm
+- Giao thông
+Thế giới
+- Phân tích
+- Tư liệu
+- Quân sự
+- Cuộc sống đó đây
+- Người Việt 5 châu
+- Bắc Mỹ
+Kinh doanh
+- Quốc tế
+- Doanh nghiệp
+- Chứng khoán (mục có phần đặc biệt). Khi vào mục này, phía trên cùng là 1 ô tìm kiếm các mã chứng khoán (ví dụ VIC). Bên dưới là các bài viết như bình thường
+- Ebank (mục có phần đặc biệt). Khi vào mục này, phía trên cùng là 1 ô tìm kiếm lãi suất. có bộ lọc theo muốn vay hay gửi tiền, có thể chọn ngân hàng, kỳ hạn để lọc chi tiết hơn.
+- Vĩ mô
+- Hàng hóa
+- Kinh tế vùng
+Khoa học và Công nghệ
+- AI
+- Vũ trụ
+- Thế giới tự nhiên
+- Thiết bị
+Bất động sản
+- Chính sách
+- Thị trường
+- Dự án (mục có phần đặc biệt). Khi vào mục này, phía trên cùng sẽ là 1 ô tìm kiếm các dự án, bên dưới là các bài viết như bình thường
+- Không gian sống
+Sức khỏe
+- Tin tức
+- Các bệnh (mục có phần đặc biệt). Khi vào mục này, phía trên cùng sẽ là 1 ô tìm kiếm các loại bệnh. Bên dưới là các bài viết như bình thường
+- Sống khỏe
+- Vaccine
+Giải trí
+- Giới sapo
+- Sách 
+- Video 
+- Phim 
+- Nhạc 
+- Thời trang 
+- Làm đẹp 
+- Sân khấu - Mỹ thuật
+Thể thao
+- Bóng đá 
+- Lịch thi đấu 
+- Tennis 
+- Golf
+- Các môn khác 
+- Hậu trường 
+- Ảnh 
+- Video 
+- Esport
+Pháp luật
+- Hồ sơ vụ án
+- Thư viện pháp luật (mục có phần đặc biệt). Khi vào mục này, trên cùng sẽ là ô tìm kiếm các văn bản pháp luật. Bên dưới là các bài viết như bình thường.
+- Video
+Giáo dục
+- Tin tức 
+- Tuyển sinh 
+- Chân dung 
+- Du học 
+- Đề thi & Đáp án (mục có phần đặc biệt). Khi vào mục này, trên cùng sẽ là ô tìm kiếm các đề thi, có bộ lọc theo năm, theo cấp (trường hoặc tỉnh hoặc quốc gia hoặc thế giới), theo môn học. phía dưới là các bài viết như bình thường
+Đời sống
+- Nhịp sống 
+- Tổ ấm 
+- Bài học sống 
+- Cooking 
+- Tiêu dùng 
+Xe
+- Thị trường
+- Xe điện 
+- Kinh nghiệm lái xe 
+- Chăm xe
+Du lịch
+- Điểm đến (mục có phần đặc biệt). Khi vào mục này, trên cùng là ô tìm kiếm các địa danh du lịch nổi tiếng cả trong nước và thế giới. phía dưới là các bài viết như bình thường
+- Ẩm thực 
+- Khám phá
+
+YÊU CẦU THIẾT KẾ BẢN WEB:
+
+1. trang chủ
+Trên cùng: 1 dòng chạy ngang: thời tiết, ngày tháng, ngày âm, giá vàng, chứng khoán
+xuống dưới: Đầu tiên là 2 nút Tin mới nhất + tin địa phương. Tin mới nhất khi click vào sẽ hiện ra full list bài trên trang, sắp xếp theo thời gian từ mới nhất ở trên cùng, xuống dưới là cũ hơn. Tin địa phương khi click vào sẽ chọn được Hà Nội, TPHCM, Đà Nẵng, Hải Phòng, Cần Thơ, Huế. Click vào thì hiện ra các bài liên quanlist các mục. Bên cạnh 2 nút Tin mới nhất và tin địa phương là list các mục như yêu cầu chung
+cụm top: 1 bài top nổi bật + 3 bài bên dưới. Hiển thị: Title + sapo + ava
+dưới cụm top chia 2 cột: Cột trái (khoảng 1/3 diện tích) gồm 15 bài, mỗi bài hiển thị Ava -> title -> sapo.
+Cột phải: 5 CỤM là 5 mục Kinh doanh - Bất động sản - Thể thao - Giải trí - Sức khỏe.
+Mỗi cụm sẽ bao gồm 3 dòng: Dòng 1 là Mục chính và các mục con
+Dòng 2 gồm 2 bài, trong đó bài bên trái hiển thị đủ Ava, title, sapo. Bài bên phải chỉ hiển thị Title và sapo.
+Dòng 3 gồm 3 bài, chỉ hiển thị title và sapo
+
+Sau khi qua 15 bài và 5 mục, bên dưới là các mục còn lại. Design: phân bổ đều các mục vào 2 cột. Mỗi mục sẽ hiển thị 4 dòng:
+Dòng 1: Mục chính và các mục phụ
+Dòng 2: Bài nổi bật của mục, hiển thị ava -> title -> Sapo
+Dòng 3: Bài 2, hiển thị title -> Sapo
+Dòng 4: Bài 3, hiển thị title -> sapo  
+
+2. Giao diện mục:
+Tất cả các mục giao diện giống nhau:
+- Cụm top 4 bài: 1 bài nổi bật + 3 bài nhỏ hơn bên dưới. tất cả đều hiển thị ava, title, sapo (bài nổi bật ava to hơn)
+- Bên dưới chia 2 cột (tương tự trang chủ), gồm cột bên trái là 10 bài viết hiển thị đủ ava, title, sapo. Cột bên phải là các mục con của mục to tương ứng. Trong cụm của mục con, hiển thị thành 2 cột. Cột bên trái là 1 bài hiển thị đủ ava, title, sapo. Cột bên phải hiển thị 2 bài gồm title và sapo.
+- Bên dưới là stream tất cả bài còn lại trong mục.
+
+3. Giao diện trang 1 bài chi tiết
+- Thứ tự hiển thị là trên cùng là mục to, mục con, thời gian xuất bản, icon nghe audio. Bên dưới: title -> sapo -> bài viết -> tác giả (tác giả căn lề phải) -> nguồn (nguồn căn lề phải)
+- Bên dưới bài viết sẽ hiển thị 4 câu hỏi liên quan đến bài viết (tạm thời generate random, thực tế các câu hỏi này sẽ ro AI sinh ra). Khi click vào 1 câu hỏi sẽ show ra ngay lập tức câu trả lời tương ứng với câu hỏi đó, push các câu hổi khác và các phần khác xuống bên dưới, nhường chỗ cho câu trả lời vừa xuất hiện 
+- Bên dưới 4 câu hỏi là cụm "tiện ích liên quan"
+- Bên dưới cụm tiện ích liên quan là 5 bài viết chuyên sâu liên quan đến bài vừa đọc (đặt tên cụm này là toàn cảnh), có nút xem thêm đến độc giả xem thêm nếu muốn
+- Bên dưới cụm chuyên sâu là cụm 5 bài cùng chuyên mục (đặt tên là tin cùng chuyên mục), có nút xem thêm đến độc giả xem thêm nếu muốn
+- Bên dưới cụm cùng chuyên mục là 5 bài đọc nhiều nhất 48h
+- Dưới cùng là box để hỏi đáp với AI, text trong ô trống là "Hỏi tiếp về tin này". Bên cạnh box là 3 icon: Thả tim (yêu thích), lưu bài (để đọc sau) và chia sẻ. (box hỏi đáp AI và 3 icon này sticky bottom)
+
+YÊU CẦU THIẾT KẾ BẢN MOBILE:
+Từ trên xuống: 
+Dòng 1: hamburger + logo + icon cái chuông để báo tin mới
+Dòng 2: box search, chữ ghi sẵn trong box: Tìm tin, chủ đề, từ khóa
+Dòng 3: Icon đầu tiên là Home. Bên cạnh là Tin mới nhất và tin địa phương. tiếp theo là list các chuyên mục. Icon home cố định, còn list các chuyên mục kéo ngang được
+Dòng 4: 1 dòng chạy ngang: thời tiết, ngày tháng, ngày âm, giá vàng, chứng khoán.
+
+Bên dưới bắt đầu chuyển sang các bài viết dạng stream. Tất cả hiển thị dạng Ava -> title -> sapo. Cứ sau 5 bài sẽ đến một "box đặc biệt". Các box:
+- Box 1: biểu đồ VN-Index, có text VNINDEX. Nếu gõ các mã chứng khoán vào, biểu đồ sẽ thay đổi theo (phần này chỉ làm demo thôi, không làm biểu đồ thật)
+- Box 2: box tìm dự án
+- Box 3: Quote của 1 vĩ nhân nổi tiếng
+- Box 4: Tra cứu phạt nguội
+- Box 5: Thời tiết 1 tuần tới
+Cấu trúc: Đầu tiên là 5 bài do user setup. Tất cả đều ava full width
+Sau đó sẽ là lần lượt 5 mục. Mỗi mục show 5 bài. Trong đó, bài số 1 ava full width, bài 2 ava 50% width. bài 3 4 5 chỉ có title và sapo
+Như vậy thứ tự:
+- Cụm 5 bài nổi bật top
+- 5 bài Kinh doanh 
+- box 1
+- 5 bài Bất động sản 
+- Box 2
+- 5 bài Thể thao
+- Box 3
+- 5 bài Giải trí 
+- Box 4
+- 5 bài Sức khỏe.
+- Box 5
+Dưới cùng là các mục còn lại, cũng mỗi mục show 5 bài
+
+2. Giao diện mục:
+Tất cả các mục giao diện giống nhau:
+Hiển thị list mục con ở trên cùng
+bên dưới là list bài dạng stream, hiển thị ava -> title -> sapo
+
+3. Giao diện trang 1 bài chi tiết
+- Thứ tự hiển thị là trên cùng là mục to, mục con (bên cạnh mục có 1 icon dropdown, click vào có thể chọn mục to khác hoặc mục con khác),
+- Bên dưới là thời gian xuất bản, icon nghe audio.
+
+- Vào nội dung chính: title -> sapo -> bài viết -> tác giả (tác giả căn lề phải) -> nguồn (nguồn căn lề phải)
+- Bên dưới bài viết sẽ hiển thị 4 câu hỏi liên quan đến bài viết (tạm thời generate random, thực tế các câu hỏi này sẽ ro AI sinh ra). Khi click vào 1 câu hỏi sẽ show ra ngay lập tức câu trả lời tương ứng với câu hỏi đó, push các câu hổi khác và các phần khác xuống bên dưới, nhường chỗ cho câu trả lời vừa xuất hiện 
+- Bên dưới 4 câu hỏi là cụm "tiện ích liên quan"
+- Bên dưới cụm tiện ích liên quan là 5 bài viết chuyên sâu liên quan đến bài vừa đọc (đặt tên cụm này là toàn cảnh), có nút xem thêm đến độc giả xem thêm nếu muốn
+- Bên dưới cụm chuyên sâu là cụm 5 bài cùng chuyên mục (đặt tên là tin cùng chuyên mục), có nút xem thêm đến độc giả xem thêm nếu muốn
+- Bên dưới cụm cùng chuyên mục là 5 bài đọc nhiều nhất 48h
+- Dưới cùng là box để hỏi đáp với AI, text trong ô trống là "Hỏi tiếp về tin này". Bên cạnh box là 3 icon: Thả tim (yêu thích), lưu bài (để đọc sau) và chia sẻ. (box hỏi đáp AI và 3 icon này sticky bottom)

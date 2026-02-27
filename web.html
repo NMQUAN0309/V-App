@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-App - Trang thông tin điện tử</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Noto+Serif:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   V-APP WEB — DESIGN SYSTEM
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --red: #D32F2F;
+  --red-dark: #B71C1C;
+  --red-light: #FFEBEE;
+  --red-accent: #FF5252;
+  --ink: #1A1A1A;
+  --ink-secondary: #555;
+  --ink-tertiary: #888;
+  --ink-faint: #AAA;
+  --surface: #FAFAFA;
+  --surface-warm: #F7F5F3;
+  --border: #E8E4E0;
+  --border-light: #F0EDEA;
+  --white: #FFFFFF;
+  --font-body: 'Noto Sans', sans-serif;
+  --font-headline: 'Noto Serif', 'Noto Sans', serif;
+  --max-w: 1200px;
+  --gutter: 24px;
+  --radius: 4px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow-md: 0 2px 12px rgba(0,0,0,.08);
+  --transition: .2s ease;
+}
+
+html { font-size: 15px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-body); color: var(--ink); background: var(--white); line-height: 1.6; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; height: auto; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+ul, ol { list-style: none; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter); }
+.page { display: none; }
+.page.active { display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 3px solid var(--red);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px var(--gutter);
+  max-width: var(--max-w); margin: 0 auto;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo img { height: 40px; width: 40px; border-radius: 8px; }
+.logo-text { font-family: var(--font-headline); font-size: 1.6rem; font-weight: 700; color: var(--red); letter-spacing: -.02em; }
+.hamburger-btn {
+  width: 40px; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  border-radius: 8px; transition: background var(--transition);
+}
+.hamburger-btn:hover { background: var(--surface); }
+.hamburger-btn span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 1px; transition: var(--transition); }
+
+/* ============================================================
+   TICKER BAR
+   ============================================================ */
+.ticker-bar {
+  background: var(--ink); color: var(--white); overflow: hidden;
+  font-size: .8rem; letter-spacing: .02em; height: 32px; line-height: 32px;
+}
+.ticker-track {
+  display: flex; gap: 48px; white-space: nowrap;
+  animation: tickerScroll 30s linear infinite;
+}
+.ticker-track span { display: inline-flex; align-items: center; gap: 6px; }
+.ticker-track .dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--red-accent); }
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.main-nav {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: sticky; top: 59px; z-index: 90;
+}
+.nav-inner {
+  display: flex; align-items: center; gap: 0;
+  max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter);
+  overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+
+.nav-special-btn {
+  padding: 10px 16px; font-size: .85rem; font-weight: 600;
+  white-space: nowrap; border-right: 1px solid var(--border);
+  color: var(--red); transition: background var(--transition);
+  position: relative;
+}
+.nav-special-btn:hover { background: var(--red-light); }
+
+.nav-local-wrapper { position: relative; }
+.local-dropdown {
+  display: none; position: absolute; top: 100%; left: 0;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-md); z-index: 50; min-width: 160px;
+}
+.local-dropdown.show { display: block; }
+.local-dropdown a {
+  display: block; padding: 8px 16px; font-size: .85rem;
+  transition: background var(--transition);
+}
+.local-dropdown a:hover { background: var(--surface); color: var(--red); }
+
+.nav-cat-link {
+  padding: 10px 14px; font-size: .85rem; font-weight: 500;
+  white-space: nowrap; transition: color var(--transition); position: relative;
+}
+.nav-cat-link:hover, .nav-cat-link.active { color: var(--red); }
+.nav-cat-link.active::after {
+  content: ''; position: absolute; bottom: 0; left: 14px; right: 14px;
+  height: 2px; background: var(--red);
+}
+
+/* ============================================================
+   HAMBURGER MENU OVERLAY
+   ============================================================ */
+.menu-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none; opacity: 0; transition: opacity .3s;
+}
+.menu-overlay.open { pointer-events: all; opacity: 1; }
+.menu-backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.4);
+}
+.menu-panel {
+  position: absolute; top: 0; left: 0; bottom: 0; width: 360px;
+  background: var(--white); transform: translateX(-100%);
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+  overflow-y: auto; box-shadow: 4px 0 24px rgba(0,0,0,.15);
+}
+.menu-overlay.open .menu-panel { transform: translateX(0); }
+
+.menu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-bottom: 2px solid var(--red);
+}
+.menu-header .logo-text { font-size: 1.3rem; }
+.menu-close {
+  width: 36px; height: 36px; font-size: 1.4rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.menu-close:hover { background: var(--surface); }
+
+.menu-list { padding: 8px 0; }
+.menu-cat {
+  border-bottom: 1px solid var(--border-light);
+}
+.menu-cat-main {
+  display: block; padding: 12px 24px;
+  font-weight: 700; font-size: .95rem; color: var(--ink);
+  transition: color var(--transition);
+}
+.menu-cat-main:hover { color: var(--red); }
+.menu-subs {
+  display: flex; flex-wrap: wrap; gap: 4px 12px;
+  padding: 0 24px 12px 36px;
+}
+.menu-sub-link {
+  font-size: .82rem; color: var(--ink-secondary);
+  transition: color var(--transition);
+}
+.menu-sub-link:hover { color: var(--red); }
+
+/* ============================================================
+   ARTICLE CARDS
+   ============================================================ */
+.article-card { cursor: pointer; transition: opacity var(--transition); }
+.article-card:hover { opacity: .85; }
+.article-card .ava {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover;
+  border-radius: var(--radius); background: var(--surface);
+}
+.article-card .ava-sm {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  border-radius: var(--radius); background: var(--surface);
+}
+.article-card .title {
+  font-family: var(--font-headline); font-weight: 700;
+  line-height: 1.35; margin-top: 8px; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.article-card .title:hover { color: var(--red); }
+.article-card .sapo {
+  font-size: .87rem; color: var(--ink-secondary); margin-top: 4px; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.article-card .meta-time {
+  font-size: .75rem; color: var(--ink-faint); margin-top: 4px;
+}
+
+.article-row {
+  display: flex; gap: 16px; padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer; transition: background var(--transition);
+}
+.article-row:hover { background: var(--surface-warm); }
+.article-row .ava-thumb {
+  width: 120px; min-width: 120px; height: 80px; object-fit: cover;
+  border-radius: var(--radius); background: var(--surface);
+}
+.article-row .info { flex: 1; }
+.article-row .title {
+  font-weight: 600; font-size: .92rem; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.article-row .title:hover { color: var(--red); }
+.article-row .sapo {
+  font-size: .8rem; color: var(--ink-secondary); margin-top: 3px; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.title-only-card { padding: 8px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.title-only-card .title {
+  font-weight: 600; font-size: .9rem; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.title-only-card .title:hover { color: var(--red); }
+.title-only-card .sapo {
+  font-size: .8rem; color: var(--ink-tertiary); margin-top: 2px; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-head {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  padding-bottom: 10px; margin-bottom: 16px;
+  border-bottom: 2px solid var(--red);
+}
+.section-head .sec-title {
+  font-family: var(--font-headline); font-weight: 700; font-size: 1.15rem;
+  color: var(--red); cursor: pointer;
+}
+.section-head .sec-title:hover { color: var(--red-dark); }
+.section-head .sec-subs { display: flex; gap: 12px; flex-wrap: wrap; }
+.section-head .sec-sub {
+  font-size: .82rem; color: var(--ink-secondary);
+  transition: color var(--transition);
+}
+.section-head .sec-sub:hover { color: var(--red); }
+
+/* ============================================================
+   HOMEPAGE — TOP CLUSTER
+   ============================================================ */
+.top-cluster { margin: var(--gutter) 0; }
+.top-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--gutter);
+}
+.top-featured { grid-column: 1 / -1; }
+.top-featured .title { font-size: 1.6rem; }
+.top-featured .sapo { font-size: .95rem; -webkit-line-clamp: 3; }
+.top-small-grid {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter);
+}
+.top-small-grid .title { font-size: 1rem; }
+
+/* ============================================================
+   HOMEPAGE — MAIN 2-COL
+   ============================================================ */
+.home-main {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 32px; margin-bottom: 48px;
+}
+
+.home-left { border-right: 1px solid var(--border-light); padding-right: 32px; }
+.home-left .article-row:first-child { padding-top: 0; }
+
+/* right featured clusters */
+.featured-cluster { margin-bottom: 32px; }
+.featured-cluster:last-child { margin-bottom: 0; }
+.fc-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
+.fc-row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+/* ============================================================
+   HOMEPAGE — REMAINING CATEGORIES
+   ============================================================ */
+.remaining-cats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; margin-bottom: 48px;
+}
+.remaining-cat .rem-featured { margin-bottom: 8px; }
+.remaining-cat .rem-featured .title { font-size: 1rem; }
+
+/* ============================================================
+   CATEGORY PAGE
+   ============================================================ */
+.cat-special-box {
+  background: var(--surface-warm); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px 24px; margin-bottom: 24px;
+}
+.cat-special-box h3 {
+  font-size: .95rem; font-weight: 600; margin-bottom: 12px; color: var(--ink);
+}
+.cat-special-box .search-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.cat-special-box input, .cat-special-box select {
+  padding: 8px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: .87rem; font-family: var(--font-body);
+  background: var(--white); flex: 1; min-width: 140px;
+}
+.cat-special-box input:focus, .cat-special-box select:focus {
+  outline: none; border-color: var(--red);
+}
+.cat-special-box .search-btn {
+  padding: 8px 20px; background: var(--red); color: var(--white);
+  border-radius: var(--radius); font-weight: 600; font-size: .87rem;
+  transition: background var(--transition);
+}
+.cat-special-box .search-btn:hover { background: var(--red-dark); }
+
+.cat-top-cluster {
+  display: grid; grid-template-columns: 1fr; gap: var(--gutter); margin-bottom: 32px;
+}
+.cat-top-featured .title { font-size: 1.5rem; }
+.cat-top-small {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter);
+}
+.cat-top-small .title { font-size: .95rem; }
+
+.cat-main-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;
+}
+.cat-left { border-right: 1px solid var(--border-light); padding-right: 32px; }
+.cat-right .sub-cluster { margin-bottom: 24px; }
+.sub-cluster-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.cat-stream { margin-bottom: 48px; }
+.cat-stream .section-head { border-bottom-color: var(--border); }
+
+/* ============================================================
+   ARTICLE DETAIL PAGE
+   ============================================================ */
+.article-detail { max-width: 780px; margin: 0 auto; padding: 0 var(--gutter); padding-bottom: 80px; }
+.article-breadcrumb {
+  display: flex; gap: 8px; font-size: .82rem; color: var(--ink-tertiary);
+  margin-top: 20px; margin-bottom: 8px;
+}
+.article-breadcrumb a { color: var(--red); }
+.article-breadcrumb a:hover { text-decoration: underline; }
+.article-breadcrumb .sep { color: var(--ink-faint); }
+
+.article-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-size: .82rem; color: var(--ink-tertiary); margin-bottom: 16px;
+}
+.audio-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--red); font-weight: 600; font-size: .82rem;
+  padding: 4px 10px; border: 1px solid var(--red); border-radius: 20px;
+  transition: background var(--transition);
+}
+.audio-btn:hover { background: var(--red-light); }
+
+.article-title {
+  font-family: var(--font-headline); font-size: 2rem; font-weight: 700;
+  line-height: 1.3; margin-bottom: 12px; color: var(--ink);
+}
+.article-sapo {
+  font-size: 1.05rem; font-weight: 600; line-height: 1.6;
+  color: var(--ink); margin-bottom: 20px;
+  padding-left: 16px; border-left: 3px solid var(--red);
+}
+.article-body {
+  font-size: 1rem; line-height: 1.8; color: var(--ink-secondary);
+  margin-bottom: 24px;
+}
+.article-author, .article-source {
+  text-align: right; font-size: .87rem; color: var(--ink-tertiary);
+}
+.article-author { font-weight: 600; margin-bottom: 2px; }
+.article-source { margin-bottom: 32px; }
+
+/* AI Q&A */
+.ai-questions { margin-bottom: 32px; }
+.ai-questions h3 {
+  font-size: .95rem; font-weight: 700; color: var(--ink);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.ai-questions h3 .ai-badge {
+  font-size: .7rem; background: var(--red); color: var(--white);
+  padding: 2px 8px; border-radius: 10px; font-weight: 600; letter-spacing: .03em;
+}
+.ai-q-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  margin-bottom: 8px; overflow: hidden;
+  transition: border-color var(--transition);
+}
+.ai-q-card:hover { border-color: var(--red); }
+.ai-q-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; font-size: .9rem; font-weight: 500;
+  cursor: pointer; width: 100%; text-align: left;
+  transition: background var(--transition);
+}
+.ai-q-trigger:hover { background: var(--surface); }
+.ai-q-trigger .arrow {
+  font-size: .7rem; transition: transform .3s; color: var(--ink-tertiary);
+}
+.ai-q-card.open .ai-q-trigger .arrow { transform: rotate(180deg); }
+.ai-q-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease, padding .3s;
+}
+.ai-q-card.open .ai-q-answer {
+  max-height: 200px; padding: 0 16px 14px;
+}
+.ai-q-answer p {
+  font-size: .87rem; line-height: 1.6; color: var(--ink-secondary);
+  padding-top: 8px; border-top: 1px solid var(--border-light);
+}
+
+/* Utilities */
+.utilities-section { margin-bottom: 32px; }
+.utilities-section h3 { font-size: .95rem; font-weight: 700; margin-bottom: 12px; }
+.utilities-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.utility-card {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 8px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: .78rem; text-align: center; color: var(--ink-secondary);
+  transition: border-color var(--transition), background var(--transition);
+}
+.utility-card:hover { border-color: var(--red); background: var(--red-light); }
+.utility-icon { font-size: 1.5rem; }
+
+/* Related sections */
+.related-section { margin-bottom: 32px; }
+.related-section .section-head { margin-bottom: 12px; }
+.related-list .article-row:last-child { border-bottom: none; }
+.btn-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 20px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: .85rem; color: var(--ink-secondary); margin-top: 12px;
+  transition: all var(--transition);
+}
+.btn-more:hover { border-color: var(--red); color: var(--red); }
+
+/* Most read */
+.most-read-list { counter-reset: rank; }
+.most-read-item {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+}
+.most-read-item:hover .mr-title { color: var(--red); }
+.most-read-item::before {
+  counter-increment: rank; content: counter(rank);
+  font-family: var(--font-headline); font-size: 1.5rem; font-weight: 700;
+  color: var(--red); min-width: 28px;
+}
+.mr-title { font-weight: 600; font-size: .9rem; line-height: 1.4; }
+
+/* Sticky bottom */
+.sticky-bottom {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--white); border-top: 1px solid var(--border);
+  box-shadow: 0 -2px 12px rgba(0,0,0,.06);
+  z-index: 80; display: none;
+}
+.sticky-bottom.visible { display: block; }
+.sticky-inner {
+  max-width: 780px; margin: 0 auto;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px var(--gutter);
+}
+.sticky-input {
+  flex: 1; padding: 10px 16px;
+  border: 1px solid var(--border); border-radius: 24px;
+  font-size: .87rem; font-family: var(--font-body);
+  transition: border-color var(--transition);
+}
+.sticky-input:focus { outline: none; border-color: var(--red); }
+.sticky-icons { display: flex; gap: 4px; }
+.sticky-icon-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; transition: background var(--transition);
+}
+.sticky-icon-btn:hover { background: var(--surface); }
+.sticky-icon-btn.liked { color: var(--red); }
+
+/* Latest news overlay */
+.latest-overlay {
+  display: none; position: fixed; inset: 0; z-index: 150;
+  background: rgba(0,0,0,.4);
+}
+.latest-overlay.show { display: flex; justify-content: center; padding-top: 60px; }
+.latest-panel {
+  background: var(--white); width: 700px; max-height: 80vh;
+  border-radius: 12px; overflow-y: auto; box-shadow: var(--shadow-md);
+}
+.latest-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-bottom: 2px solid var(--red);
+  position: sticky; top: 0; background: var(--white); z-index: 1;
+}
+.latest-panel-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--red); }
+.latest-panel-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; transition: background var(--transition);
+}
+.latest-panel-close:hover { background: var(--surface); }
+.latest-panel-body { padding: 0 24px 24px; }
+
+/* Local news overlay */
+.local-overlay {
+  display: none; position: fixed; inset: 0; z-index: 150;
+  background: rgba(0,0,0,.4);
+}
+.local-overlay.show { display: flex; justify-content: center; padding-top: 60px; }
+.local-panel {
+  background: var(--white); width: 700px; max-height: 80vh;
+  border-radius: 12px; overflow-y: auto; box-shadow: var(--shadow-md);
+}
+.local-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-bottom: 2px solid var(--red);
+  position: sticky; top: 0; background: var(--white); z-index: 1;
+}
+.local-panel-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--red); }
+.local-panel-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; transition: background var(--transition);
+}
+.local-panel-close:hover { background: var(--surface); }
+.local-cities-bar {
+  display: flex; gap: 8px; padding: 12px 24px; border-bottom: 1px solid var(--border);
+}
+.local-city-btn {
+  padding: 6px 16px; border: 1px solid var(--border); border-radius: 20px;
+  font-size: .82rem; font-weight: 500; transition: all var(--transition);
+}
+.local-city-btn:hover, .local-city-btn.active {
+  background: var(--red); color: var(--white); border-color: var(--red);
+}
+.local-panel-body { padding: 0 24px 24px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  background: var(--ink); color: var(--white); padding: 32px 0;
+  margin-top: 48px;
+}
+.footer-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter);
+  text-align: center; font-size: .82rem; color: var(--ink-faint);
+}
+.footer-inner .f-logo { font-family: var(--font-headline); font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .5s ease both; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#home" class="logo">
+      <img src="v-app logo.png" alt="V-App">
+      <span class="logo-text">V-App</span>
+    </a>
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     TICKER
+     ============================================================ -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="main-nav">
+  <div class="nav-inner" id="navInner"></div>
+</nav>
+
+<!-- ============================================================
+     HAMBURGER OVERLAY
+     ============================================================ -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <div class="menu-panel">
+    <div class="menu-header">
+      <span class="logo-text" style="color:var(--red)">V-App</span>
+      <button class="menu-close" id="menuClose">&times;</button>
+    </div>
+    <div class="menu-list" id="menuList"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     LATEST NEWS OVERLAY
+     ============================================================ -->
+<div class="latest-overlay" id="latestOverlay">
+  <div class="latest-panel">
+    <div class="latest-panel-header">
+      <h2>Tin mới nhất</h2>
+      <button class="latest-panel-close" id="latestClose">&times;</button>
+    </div>
+    <div class="latest-panel-body" id="latestBody"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     LOCAL NEWS OVERLAY
+     ============================================================ -->
+<div class="local-overlay" id="localOverlay">
+  <div class="local-panel">
+    <div class="local-panel-header">
+      <h2>Tin địa phương</h2>
+      <button class="local-panel-close" id="localClose">&times;</button>
+    </div>
+    <div class="local-cities-bar" id="localCities"></div>
+    <div class="local-panel-body" id="localBody"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE: HOME
+     ============================================================ -->
+<div id="page-home" class="page">
+  <div class="container">
+    <div class="top-cluster" id="topCluster"></div>
+    <div class="home-main">
+      <div class="home-left" id="homeLeft"></div>
+      <div class="home-right" id="homeRight"></div>
+    </div>
+    <div class="remaining-cats" id="remainingCats"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE: CATEGORY
+     ============================================================ -->
+<div id="page-category" class="page">
+  <div class="container">
+    <div id="catSpecial"></div>
+    <div class="cat-top-cluster" id="catTopCluster"></div>
+    <div class="cat-main-grid" id="catMainGrid">
+      <div class="cat-left" id="catLeft"></div>
+      <div class="cat-right" id="catRight"></div>
+    </div>
+    <div class="cat-stream" id="catStream"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE: ARTICLE
+     ============================================================ -->
+<div id="page-article" class="page">
+  <div class="article-detail" id="articleDetail"></div>
+</div>
+
+<!-- STICKY BOTTOM (article page only) -->
+<div class="sticky-bottom" id="stickyBottom">
+  <div class="sticky-inner">
+    <input type="text" class="sticky-input" placeholder="Hỏi tiếp về tin này...">
+    <div class="sticky-icons">
+      <button class="sticky-icon-btn" id="btnLike" title="Yêu thích">&#10084;</button>
+      <button class="sticky-icon-btn" id="btnSave" title="Lưu bài">&#128278;</button>
+      <button class="sticky-icon-btn" id="btnShare" title="Chia sẻ">&#128279;</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="f-logo">V-App</div>
+    <p>Trang thông tin điện tử V-App &copy; 2026. Prototype Demo.</p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     DATA + APP JS
+     ============================================================ -->
+<script src="data.js"></script>
+<script>
+(function() {
+  'use strict';
+  const D = window.VAPP;
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+  function el(tag, cls, html) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  function articleCardHTML(a, opts = {}) {
+    const showAva = opts.ava !== false;
+    const avaClass = opts.avaClass || 'ava';
+    const titleSize = opts.titleSize || '';
+    const showSapo = opts.sapo !== false;
+    const showTime = opts.time === true;
+    let h = '';
+    if (showAva) h += `<img class="${avaClass}" src="${a.avaUrl}" alt="" loading="lazy">`;
+    h += `<div class="title" style="${titleSize ? 'font-size:'+titleSize : ''}">${a.title}</div>`;
+    if (showSapo) h += `<div class="sapo">${a.sapo}</div>`;
+    if (showTime) h += `<div class="meta-time">${a.time}</div>`;
+    return h;
+  }
+
+  function articleRowHTML(a) {
+    return `<img class="ava-thumb" src="${a.avaUrl}" alt="" loading="lazy">
+      <div class="info">
+        <div class="title">${a.title}</div>
+        <div class="sapo">${a.sapo}</div>
+      </div>`;
+  }
+
+  function titleOnlyHTML(a) {
+    return `<div class="title">${a.title}</div><div class="sapo">${a.sapo}</div>`;
+  }
+
+  function goArticle(a) { location.hash = `#article/${a.id}`; }
+  function goCategory(catId, subId) {
+    location.hash = subId ? `#category/${catId}/${subId}` : `#category/${catId}`;
+  }
+
+  function makeClickable(elem, a) {
+    elem.addEventListener('click', () => goArticle(a));
+  }
+
+  function findArticleById(id) {
+    const num = parseInt(id);
+    // search all pre-gen data
+    const sources = [
+      D.HOME_TOP_ARTICLES, D.HOME_LEFT_ARTICLES, D.MOST_READ_48H,
+      D.MOBILE_TOP_5,
+      ...Object.values(D.HOME_FEATURED),
+      ...Object.values(D.HOME_REMAINING),
+      ...Object.values(D.CATEGORY_ARTICLES),
+      ...Object.values(D.MOBILE_CATEGORY_ARTICLES),
+      ...Object.values(D.MOBILE_REMAINING)
+    ];
+    for (const arr of sources) {
+      const found = arr.find(a => a.id === num);
+      if (found) return found;
+    }
+    return D.HOME_TOP_ARTICLES[0];
+  }
+
+  // ============================================================
+  // BUILD TICKER
+  // ============================================================
+  function buildTicker() {
+    const t = D.TICKER_DATA;
+    const items = [t.weather, t.date, t.lunarDate, t.gold, t.stock];
+    let html = '';
+    for (let i = 0; i < 3; i++) {
+      items.forEach(item => {
+        html += `<span><span class="dot"></span> ${item}</span>`;
+      });
+    }
+    $('#tickerTrack').innerHTML = html;
+  }
+
+  // ============================================================
+  // BUILD NAV
+  // ============================================================
+  function buildNav() {
+    const nav = $('#navInner');
+    let html = '';
+    html += `<a href="javascript:void(0)" class="nav-special-btn" id="navLatest">Tin mới nhất</a>`;
+    html += `<a href="javascript:void(0)" class="nav-special-btn" id="navLocal">Tin địa phương ▾</a>`;
+    D.CATEGORIES.forEach(cat => {
+      html += `<a href="#category/${cat.id}" class="nav-cat-link" data-cat="${cat.id}">${cat.name}</a>`;
+    });
+    nav.innerHTML = html;
+
+    // latest
+    $('#navLatest').addEventListener('click', () => {
+      showLatestNews();
+    });
+    // local
+    $('#navLocal').addEventListener('click', () => {
+      showLocalNews();
+    });
+  }
+
+  // ============================================================
+  // LATEST NEWS
+  // ============================================================
+  function showLatestNews() {
+    const overlay = $('#latestOverlay');
+    const body = $('#latestBody');
+    // gather all articles, sort by time
+    let all = [];
+    Object.values(D.CATEGORY_ARTICLES).forEach(arr => { all = all.concat(arr); });
+    all.sort((a, b) => {
+      // parse dd/mm/yyyy hh:mm
+      const pa = a.time.split(/[\/\s:]/); const pb = b.time.split(/[\/\s:]/);
+      const da = new Date(2026, pa[1]-1, pa[0], pa[3], pa[4]);
+      const db = new Date(2026, pb[1]-1, pb[0], pb[3], pb[4]);
+      return db - da;
+    });
+    body.innerHTML = '';
+    all.slice(0, 30).forEach(a => {
+      const row = el('div', 'article-row');
+      row.innerHTML = articleRowHTML(a);
+      makeClickable(row, a);
+      body.appendChild(row);
+    });
+    overlay.classList.add('show');
+  }
+
+  $('#latestClose').addEventListener('click', () => $('#latestOverlay').classList.remove('show'));
+  $('#latestOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+  });
+
+  // ============================================================
+  // LOCAL NEWS
+  // ============================================================
+  function showLocalNews() {
+    const overlay = $('#localOverlay');
+    const citiesBar = $('#localCities');
+    const body = $('#localBody');
+    citiesBar.innerHTML = '';
+    D.LOCAL_CITIES.forEach((city, i) => {
+      const btn = el('button', 'local-city-btn' + (i === 0 ? ' active' : ''), city);
+      btn.addEventListener('click', () => {
+        $$('.local-city-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderLocalArticles(body, city);
+      });
+      citiesBar.appendChild(btn);
+    });
+    renderLocalArticles(body, D.LOCAL_CITIES[0]);
+    overlay.classList.add('show');
+  }
+
+  function renderLocalArticles(container, city) {
+    container.innerHTML = '';
+    const arts = D.generateArticles('thoi-su', 10);
+    arts.forEach(a => {
+      a.title = city + ': ' + a.title;
+      const row = el('div', 'article-row');
+      row.innerHTML = articleRowHTML(a);
+      makeClickable(row, a);
+      container.appendChild(row);
+    });
+  }
+
+  $('#localClose').addEventListener('click', () => $('#localOverlay').classList.remove('show'));
+  $('#localOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+  });
+
+  // ============================================================
+  // BUILD HAMBURGER MENU
+  // ============================================================
+  function buildMenu() {
+    const list = $('#menuList');
+    let html = '';
+    D.CATEGORIES.forEach(cat => {
+      html += `<div class="menu-cat">
+        <a href="#category/${cat.id}" class="menu-cat-main">${cat.name}</a>
+        <div class="menu-subs">`;
+      cat.subs.forEach(sub => {
+        html += `<a href="#category/${cat.id}/${sub.id}" class="menu-sub-link">${sub.name}</a>`;
+      });
+      html += `</div></div>`;
+    });
+    list.innerHTML = html;
+
+    // close on link click
+    list.addEventListener('click', e => {
+      if (e.target.tagName === 'A') closeMenu();
+    });
+  }
+
+  function openMenu() { $('#menuOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeMenu() { $('#menuOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  $('#hamburgerBtn').addEventListener('click', openMenu);
+  $('#menuClose').addEventListener('click', closeMenu);
+  $('#menuBackdrop').addEventListener('click', closeMenu);
+
+  // ============================================================
+  // RENDER HOME
+  // ============================================================
+  function renderHome() {
+    // Top cluster
+    const tc = $('#topCluster');
+    tc.innerHTML = '';
+    const topGrid = el('div', 'top-grid');
+
+    // Featured
+    const feat = D.HOME_TOP_ARTICLES[0];
+    const featDiv = el('div', 'article-card top-featured fade-up');
+    featDiv.innerHTML = articleCardHTML(feat, { titleSize: '1.6rem' });
+    makeClickable(featDiv, feat);
+    topGrid.appendChild(featDiv);
+
+    // 3 small
+    const smallGrid = el('div', 'top-small-grid');
+    D.HOME_TOP_ARTICLES.slice(1, 4).forEach((a, i) => {
+      const card = el('div', 'article-card fade-up');
+      card.style.animationDelay = (i * .1 + .1) + 's';
+      card.innerHTML = articleCardHTML(a, { titleSize: '1rem' });
+      makeClickable(card, a);
+      smallGrid.appendChild(card);
+    });
+    topGrid.appendChild(smallGrid);
+    tc.appendChild(topGrid);
+
+    // Left column — 15 articles
+    const hl = $('#homeLeft');
+    hl.innerHTML = '';
+    D.HOME_LEFT_ARTICLES.slice(0, 15).forEach(a => {
+      const row = el('div', 'article-row');
+      row.innerHTML = articleRowHTML(a);
+      makeClickable(row, a);
+      hl.appendChild(row);
+    });
+
+    // Right column — 5 featured clusters
+    const hr = $('#homeRight');
+    hr.innerHTML = '';
+    D.FEATURED_CATEGORIES.forEach(catId => {
+      const cat = D.CATEGORIES.find(c => c.id === catId);
+      const articles = D.HOME_FEATURED[catId];
+      const cluster = el('div', 'featured-cluster');
+
+      // Section head
+      const head = el('div', 'section-head');
+      head.innerHTML = `<a href="#category/${cat.id}" class="sec-title">${cat.name}</a>
+        <div class="sec-subs">${cat.subs.map(s =>
+          `<a href="#category/${cat.id}/${s.id}" class="sec-sub">${s.name}</a>`
+        ).join('')}</div>`;
+      cluster.appendChild(head);
+
+      // Row 2: 2 articles
+      const row2 = el('div', 'fc-row2');
+      const a1 = articles[0], a2 = articles[1];
+      const card1 = el('div', 'article-card');
+      card1.innerHTML = articleCardHTML(a1, { avaClass: 'ava-sm', titleSize: '.95rem' });
+      makeClickable(card1, a1);
+      const card2 = el('div', 'title-only-card');
+      card2.innerHTML = titleOnlyHTML(a2);
+      makeClickable(card2, a2);
+      row2.appendChild(card1);
+      row2.appendChild(card2);
+      cluster.appendChild(row2);
+
+      // Row 3: 3 articles
+      const row3 = el('div', 'fc-row3');
+      articles.slice(2, 5).forEach(a => {
+        const tc = el('div', 'title-only-card');
+        tc.innerHTML = titleOnlyHTML(a);
+        makeClickable(tc, a);
+        row3.appendChild(tc);
+      });
+      cluster.appendChild(row3);
+
+      hr.appendChild(cluster);
+    });
+
+    // Remaining categories
+    const rc = $('#remainingCats');
+    rc.innerHTML = '';
+    const remCats = D.CATEGORIES.filter(c => !D.FEATURED_CATEGORIES.includes(c.id));
+    remCats.forEach(cat => {
+      const articles = D.HOME_REMAINING[cat.id];
+      if (!articles) return;
+      const div = el('div', 'remaining-cat');
+
+      const head = el('div', 'section-head');
+      head.innerHTML = `<a href="#category/${cat.id}" class="sec-title">${cat.name}</a>
+        <div class="sec-subs">${cat.subs.map(s =>
+          `<a href="#category/${cat.id}/${s.id}" class="sec-sub">${s.name}</a>`
+        ).join('')}</div>`;
+      div.appendChild(head);
+
+      // Featured article
+      const featCard = el('div', 'article-card rem-featured');
+      featCard.innerHTML = articleCardHTML(articles[0], { avaClass: 'ava-sm', titleSize: '1rem' });
+      makeClickable(featCard, articles[0]);
+      div.appendChild(featCard);
+
+      // 2 title-only
+      articles.slice(1, 3).forEach(a => {
+        const tc2 = el('div', 'title-only-card');
+        tc2.innerHTML = titleOnlyHTML(a);
+        makeClickable(tc2, a);
+        div.appendChild(tc2);
+      });
+
+      rc.appendChild(div);
+    });
+  }
+
+  // ============================================================
+  // RENDER CATEGORY PAGE
+  // ============================================================
+  function renderCategory(catId, subId) {
+    const cat = D.CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+
+    // highlight nav
+    $$('.nav-cat-link').forEach(l => l.classList.toggle('active', l.dataset.cat === catId));
+
+    // Special box
+    const specialContainer = $('#catSpecial');
+    specialContainer.innerHTML = '';
+    const specialSubs = cat.subs.filter(s => s.special);
+    if (subId) {
+      const sub = cat.subs.find(s => s.id === subId);
+      if (sub && sub.special) {
+        specialContainer.innerHTML = buildSpecialBox(sub);
+      }
+    } else if (specialSubs.length > 0) {
+      // show first special sub
+    }
+
+    // Top cluster
+    const articles = D.CATEGORY_ARTICLES[catId] || D.generateArticles(catId, 20);
+    const topC = $('#catTopCluster');
+    topC.innerHTML = '';
+
+    const featDiv = el('div', 'article-card cat-top-featured fade-up');
+    featDiv.innerHTML = articleCardHTML(articles[0], { titleSize: '1.5rem' });
+    makeClickable(featDiv, articles[0]);
+    topC.appendChild(featDiv);
+
+    const smallGrid = el('div', 'cat-top-small');
+    articles.slice(1, 4).forEach((a, i) => {
+      const card = el('div', 'article-card fade-up');
+      card.style.animationDelay = (i * .08 + .1) + 's';
+      card.innerHTML = articleCardHTML(a, { titleSize: '.95rem' });
+      makeClickable(card, a);
+      smallGrid.appendChild(card);
+    });
+    topC.appendChild(smallGrid);
+
+    // Left: 10 articles
+    const catLeft = $('#catLeft');
+    catLeft.innerHTML = '';
+    articles.slice(4, 14).forEach(a => {
+      const row = el('div', 'article-row');
+      row.innerHTML = articleRowHTML(a);
+      makeClickable(row, a);
+      catLeft.appendChild(row);
+    });
+
+    // Right: sub-category clusters
+    const catRight = $('#catRight');
+    catRight.innerHTML = '';
+    cat.subs.forEach(sub => {
+      const subArts = D.generateArticles(catId, 3, sub.id);
+      const cluster = el('div', 'sub-cluster');
+
+      const head = el('div', 'section-head');
+      head.innerHTML = `<a href="#category/${catId}/${sub.id}" class="sec-title">${sub.name}</a>`;
+      if (sub.special) {
+        head.innerHTML += `<span style="font-size:.7rem;background:var(--red);color:#fff;padding:2px 8px;border-radius:10px;">Đặc biệt</span>`;
+      }
+      cluster.appendChild(head);
+
+      const grid = el('div', 'sub-cluster-grid');
+      // left: 1 article full
+      const c1 = el('div', 'article-card');
+      c1.innerHTML = articleCardHTML(subArts[0], { avaClass: 'ava-sm', titleSize: '.9rem' });
+      makeClickable(c1, subArts[0]);
+      grid.appendChild(c1);
+
+      // right: 2 title-only
+      const rightCol = el('div');
+      subArts.slice(1, 3).forEach(a => {
+        const tc3 = el('div', 'title-only-card');
+        tc3.innerHTML = titleOnlyHTML(a);
+        makeClickable(tc3, a);
+        rightCol.appendChild(tc3);
+      });
+      grid.appendChild(rightCol);
+      cluster.appendChild(grid);
+      catRight.appendChild(cluster);
+    });
+
+    // Stream remaining
+    const stream = $('#catStream');
+    stream.innerHTML = '';
+    const streamHead = el('div', 'section-head');
+    streamHead.innerHTML = `<span class="sec-title" style="cursor:default">Bài viết khác</span>`;
+    stream.appendChild(streamHead);
+    articles.slice(14).forEach(a => {
+      const row = el('div', 'article-row');
+      row.innerHTML = articleRowHTML(a);
+      makeClickable(row, a);
+      stream.appendChild(row);
+    });
+  }
+
+  function buildSpecialBox(sub) {
+    const type = sub.special;
+    let html = `<div class="cat-special-box">`;
+    switch(type) {
+      case 'stock-search':
+        html += `<h3>Tra cứu mã chứng khoán</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập mã CK (VD: VIC, VNM, FPT...)">
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+      case 'ebank-search':
+        html += `<h3>Tra cứu lãi suất ngân hàng</h3>
+          <div class="search-row">
+            <select><option>Gửi tiền</option><option>Vay tiền</option></select>
+            <select><option value="">Chọn ngân hàng</option>${D.BANKS.map(b => `<option>${b}</option>`).join('')}</select>
+            <select><option value="">Kỳ hạn</option>${D.LOAN_TERMS.map(t => `<option>${t}</option>`).join('')}</select>
+            <button class="search-btn">Tra cứu</button>
+          </div>`;
+        break;
+      case 'project-search':
+        html += `<h3>Tìm kiếm dự án bất động sản</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập tên dự án, khu vực...">
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+      case 'disease-search':
+        html += `<h3>Tra cứu thông tin bệnh</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập tên bệnh, triệu chứng...">
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+      case 'law-search':
+        html += `<h3>Thư viện văn bản pháp luật</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập số hiệu, tên văn bản...">
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+      case 'exam-search':
+        html += `<h3>Tra cứu đề thi & đáp án</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập từ khóa...">
+            <select><option value="">Năm</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select>
+            <select><option value="">Cấp</option><option>Trường</option><option>Tỉnh</option><option>Quốc gia</option><option>Thế giới</option></select>
+            <select><option value="">Môn học</option><option>Toán</option><option>Văn</option><option>Anh</option><option>Lý</option><option>Hóa</option><option>Sinh</option></select>
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+      case 'destination-search':
+        html += `<h3>Khám phá điểm đến du lịch</h3>
+          <div class="search-row">
+            <input type="text" placeholder="Nhập tên địa danh, thành phố...">
+            <button class="search-btn">Tìm kiếm</button>
+          </div>`;
+        break;
+    }
+    html += `</div>`;
+    return html;
+  }
+
+  // ============================================================
+  // RENDER ARTICLE DETAIL
+  // ============================================================
+  function renderArticle(articleId) {
+    const a = findArticleById(articleId);
+    const cat = D.CATEGORIES.find(c => c.id === a.categoryId);
+    const sub = cat ? cat.subs.find(s => s.id === a.subId) : null;
+    const detail = $('#articleDetail');
+
+    // breadcrumb
+    let html = `<div class="article-breadcrumb fade-up">
+      <a href="#category/${a.categoryId}">${a.categoryName || (cat ? cat.name : '')}</a>
+      <span class="sep">›</span>
+      <a href="#category/${a.categoryId}/${a.subId}">${a.subName || (sub ? sub.name : '')}</a>
+    </div>`;
+
+    // meta
+    html += `<div class="article-meta fade-up">
+      <span>${a.time}</span>
+      <button class="audio-btn">&#128266; Nghe bài viết</button>
+    </div>`;
+
+    // title
+    html += `<h1 class="article-title fade-up">${a.title}</h1>`;
+
+    // sapo
+    html += `<p class="article-sapo fade-up">${a.sapo}</p>`;
+
+    // body
+    html += `<div class="article-body fade-up">${a.content}</div>`;
+
+    // author + source
+    html += `<div class="article-author fade-up">${a.author}</div>`;
+    html += `<div class="article-source fade-up">${a.source}</div>`;
+
+    // AI Questions
+    const questions = D.getRandomQuestions();
+    html += `<div class="ai-questions fade-up">
+      <h3><span class="ai-badge">AI</span> Câu hỏi liên quan</h3>`;
+    questions.forEach((q, i) => {
+      html += `<div class="ai-q-card" data-idx="${i}">
+        <button class="ai-q-trigger">
+          <span>${q.q}</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="ai-q-answer"><p>${q.a}</p></div>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // Utilities
+    html += `<div class="utilities-section fade-up">
+      <h3>Tiện ích liên quan</h3>
+      <div class="utilities-grid">`;
+    D.UTILITIES.forEach(u => {
+      html += `<div class="utility-card">
+        <span class="utility-icon">${u.icon}</span>
+        <span>${u.name}</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+
+    // Toàn cảnh
+    const relatedArts = D.generateArticles(a.categoryId, 5);
+    html += buildRelatedSection('Toàn cảnh', relatedArts);
+
+    // Tin cùng chuyên mục
+    const sameArts = D.generateArticles(a.categoryId, 5);
+    html += buildRelatedSection('Tin cùng chuyên mục', sameArts);
+
+    // Đọc nhiều nhất 48h
+    html += `<div class="related-section fade-up">
+      <div class="section-head"><span class="sec-title" style="cursor:default">Đọc nhiều nhất 48h</span></div>
+      <div class="most-read-list">`;
+    D.MOST_READ_48H.forEach(mr => {
+      html += `<div class="most-read-item" data-id="${mr.id}"><span class="mr-title">${mr.title}</span></div>`;
+    });
+    html += `</div></div>`;
+
+    detail.innerHTML = html;
+
+    // Bind AI Q&A
+    $$('.ai-q-card', detail).forEach(card => {
+      const trigger = card.querySelector('.ai-q-trigger');
+      trigger.addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+    });
+
+    // Bind most-read clicks
+    $$('.most-read-item', detail).forEach(item => {
+      item.addEventListener('click', () => {
+        location.hash = `#article/${item.dataset.id}`;
+      });
+    });
+
+    // Show sticky bottom
+    $('#stickyBottom').classList.add('visible');
+
+    // Like toggle
+    $('#btnLike').onclick = function() { this.classList.toggle('liked'); };
+
+    window.scrollTo(0, 0);
+  }
+
+  function buildRelatedSection(title, articles) {
+    let html = `<div class="related-section fade-up">
+      <div class="section-head"><span class="sec-title" style="cursor:default">${title}</span></div>
+      <div class="related-list">`;
+    articles.forEach(a => {
+      html += `<div class="article-row" data-id="${a.id}" onclick="location.hash='#article/${a.id}'">
+        ${articleRowHTML(a)}
+      </div>`;
+    });
+    html += `</div>
+      <button class="btn-more">Xem thêm ›</button>
+    </div>`;
+    return html;
+  }
+
+  // ============================================================
+  // ROUTER
+  // ============================================================
+  function handleRoute() {
+    const hash = location.hash || '#home';
+    const parts = hash.replace('#', '').split('/');
+
+    // Hide all pages
+    $$('.page').forEach(p => p.classList.remove('active'));
+    $('#stickyBottom').classList.remove('visible');
+    $$('.nav-cat-link').forEach(l => l.classList.remove('active'));
+
+    if (parts[0] === 'category' && parts[1]) {
+      $('#page-category').classList.add('active');
+      renderCategory(parts[1], parts[2] || null);
+      window.scrollTo(0, 0);
+    } else if (parts[0] === 'article' && parts[1]) {
+      $('#page-article').classList.add('active');
+      renderArticle(parts[1]);
+    } else {
+      $('#page-home').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  buildTicker();
+  buildNav();
+  buildMenu();
+  renderHome();
+  handleRoute();
+
+  window.addEventListener('hashchange', handleRoute);
+})();
+</script>
+</body>
+</html>

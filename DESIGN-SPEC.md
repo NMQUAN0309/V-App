@@ -71,64 +71,67 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 ## Cấu trúc chuyên mục
 
 ### 1. Thời sự
-- Chính trị | Dân sinh | Việc làm | Giao thông
+- Chính trị | Dân sinh | Quốc tế | Giao thông
 
 ### 2. Thế giới
-- Phân tích | Tư liệu | Quân sự | Cuộc sống đó đây | Người Việt 5 châu | Bắc Mỹ
+- Phân tích | Quân sự | Khám phá
 
 ### 3. Kinh doanh
-- Quốc tế | Doanh nghiệp | Chứng khoán | Ebank | Vĩ mô | Hàng hóa | Kinh tế vùng
+- Đầu tư | Doanh nghiệp | Chứng khoán ⚙ | Bank ⚙ | Vĩ mô
 
-### 4. Công nghệ (Khoa học và Công nghệ)
-- AI | Vũ trụ | Thế giới tự nhiên | Thiết bị
+### 4. Công nghệ
+- AI | Khoa học | Thiết bị ⚙
 
 ### 5. BĐS (Bất động sản)
-- Chính sách | Thị trường | Dự án | Quy hoạch | Không gian sống
+- Chính sách | Thị trường | Dự án ⚙ | Quy hoạch ⚙ | Không gian sống
 
 ### 6. Sức khỏe
-- Tin tức | Các bệnh | Sống khỏe | Vaccine
+- Các bệnh ⚙ | Sống khỏe
 
 ### 7. Giải trí
-- Giới sapo | Sách | Video | Phim | Nhạc | Thời trang | Làm đẹp | Sân khấu - Mỹ thuật
+- Sách | Phim | Nhạc | Thời trang | Làm đẹp
 
 ### 8. Thể thao
-- Bóng đá | Lịch thi đấu | Tennis | Golf | Các môn khác | Hậu trường | Ảnh | Video | Esport
+- Bóng đá | Lịch thi đấu | Tennis | Pickleball | Golf | Esport | Các môn khác | Hậu trường
 
 ### 9. Pháp luật
-- Hồ sơ vụ án | Thư viện pháp luật | Video
+- Pháp đình | Thư viện pháp luật ⚙
 
 ### 10. Giáo dục
-- Tin tức | Tuyển sinh | Chân dung | Du học | Đề thi & Đáp án
+- Tuyển sinh | Du học | Đề thi & Đáp án ⚙
 
 ### 11. Đời sống
-- Nhịp sống | Tổ ấm | Bài học sống | Cooking
+- Nhịp sống | Bài học cuộc sống | Phong cách | Việc làm
 
 ### 12. Xe
 - Thị trường | Xe điện | Kinh nghiệm lái xe | Chăm xe
 
 ### 13. Du lịch
-- Điểm đến | Ẩm thực | Khám phá
+- Điểm đến ⚙ | Ẩm thực | Khám phá
 
-### 14. Tiêu dùng *(mới)*
-- (chưa có mục con)
+### 14. Tiêu dùng
+- Hàng hóa | Mua bán
 
-### 15. Video *(mới)*
-- (chưa có mục con)
+### 15. Video
+- (không có mục con)
+
+> **Ghi chú ⚙**: Mục con có search box tra cứu hiện ở đầu trang khi vào mục đó. Không đánh dấu icon đặc biệt trong navigation.
 
 ---
 
 ## Mục con có search box tra cứu
 
-> Các mục con này hiển thị một search box ở đầu trang mục con.
+> Khi người dùng vào trang mục con tương ứng, phía trên cùng hiển thị search box. Các bài viết hiển thị bình thường phía dưới.
 > **Không** đánh dấu icon hay label đặc biệt trong navigation.
 
 | Mục con | Search box |
 |---------|------------|
 | Chứng khoán (Kinh doanh) | Ô tìm mã CK (VD: VIC, VNM) |
-| Ebank (Kinh doanh) | Ô tìm lãi suất + bộ lọc: Vay/Gửi, Ngân hàng, Kỳ hạn |
+| Bank (Kinh doanh) | Ô tìm lãi suất + bộ lọc: Gửi/Vay, Ngân hàng, Kỳ hạn |
+| Thiết bị (Công nghệ) | Ô tìm sản phẩm công nghệ (điện thoại, tivi, tủ lạnh...) |
 | Dự án (BĐS) | Ô tìm dự án bất động sản |
-| Quy hoạch (BĐS) | Ô tìm quy hoạch (tỉnh/thành phố, quận/huyện) |
-| Các bệnh (Sức khỏe) | Ô tìm loại bệnh |
+| Quy hoạch (BĐS) | Ô tìm quy hoạch theo tỉnh/thành phố, quận/huyện |
+| Các bệnh (Sức khỏe) | Ô tìm loại bệnh, triệu chứng |
 | Thư viện pháp luật (Pháp luật) | Ô tìm văn bản pháp luật |
 | Đề thi & Đáp án (Giáo dục) | Ô tìm + bộ lọc: Năm, Cấp (trường/tỉnh/QG/TG), Môn học |
 | Điểm đến (Du lịch) | Ô tìm địa danh du lịch trong nước & thế giới |

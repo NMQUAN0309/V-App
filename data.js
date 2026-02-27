@@ -10,7 +10,7 @@ const CATEGORIES = [
     subs: [
       { id: "chinh-tri", name: "Chính trị" },
       { id: "dan-sinh", name: "Dân sinh" },
-      { id: "viec-lam", name: "Việc làm" },
+      { id: "quoc-te", name: "Quốc tế" },
       { id: "giao-thong", name: "Giao thông" }
     ]
   },
@@ -18,32 +18,26 @@ const CATEGORIES = [
     id: "the-gioi", name: "Thế giới",
     subs: [
       { id: "phan-tich", name: "Phân tích" },
-      { id: "tu-lieu", name: "Tư liệu" },
       { id: "quan-su", name: "Quân sự" },
-      { id: "cuoc-song-do-day", name: "Cuộc sống đó đây" },
-      { id: "nguoi-viet-5-chau", name: "Người Việt 5 châu" },
-      { id: "bac-my", name: "Bắc Mỹ" }
+      { id: "kham-pha", name: "Khám phá" }
     ]
   },
   {
     id: "kinh-doanh", name: "Kinh doanh",
     subs: [
-      { id: "quoc-te", name: "Quốc tế" },
+      { id: "dau-tu", name: "Đầu tư" },
       { id: "doanh-nghiep", name: "Doanh nghiệp" },
       { id: "chung-khoan", name: "Chứng khoán", special: "stock-search" },
-      { id: "ebank", name: "Ebank", special: "ebank-search" },
-      { id: "vi-mo", name: "Vĩ mô" },
-      { id: "hang-hoa", name: "Hàng hóa" },
-      { id: "kinh-te-vung", name: "Kinh tế vùng" }
+      { id: "bank", name: "Bank", special: "ebank-search" },
+      { id: "vi-mo", name: "Vĩ mô" }
     ]
   },
   {
     id: "cong-nghe", name: "Công nghệ",
     subs: [
       { id: "ai", name: "AI" },
-      { id: "vu-tru", name: "Vũ trụ" },
-      { id: "the-gioi-tu-nhien", name: "Thế giới tự nhiên" },
-      { id: "thiet-bi", name: "Thiết bị" }
+      { id: "khoa-hoc", name: "Khoa học" },
+      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
     ]
   },
   {
@@ -59,23 +53,18 @@ const CATEGORIES = [
   {
     id: "suc-khoe", name: "Sức khỏe",
     subs: [
-      { id: "tin-tuc", name: "Tin tức" },
       { id: "cac-benh", name: "Các bệnh", special: "disease-search" },
-      { id: "song-khoe", name: "Sống khỏe" },
-      { id: "vaccine", name: "Vaccine" }
+      { id: "song-khoe", name: "Sống khỏe" }
     ]
   },
   {
     id: "giai-tri", name: "Giải trí",
     subs: [
-      { id: "gioi-sapo", name: "Giới sapo" },
       { id: "sach", name: "Sách" },
-      { id: "video", name: "Video" },
       { id: "phim", name: "Phim" },
       { id: "nhac", name: "Nhạc" },
       { id: "thoi-trang", name: "Thời trang" },
-      { id: "lam-dep", name: "Làm đẹp" },
-      { id: "san-khau-my-thuat", name: "Sân khấu - Mỹ thuật" }
+      { id: "lam-dep", name: "Làm đẹp" }
     ]
   },
   {
@@ -84,28 +73,24 @@ const CATEGORIES = [
       { id: "bong-da", name: "Bóng đá" },
       { id: "lich-thi-dau", name: "Lịch thi đấu" },
       { id: "tennis", name: "Tennis" },
+      { id: "pickleball", name: "Pickleball" },
       { id: "golf", name: "Golf" },
+      { id: "esport", name: "Esport" },
       { id: "cac-mon-khac", name: "Các môn khác" },
-      { id: "hau-truong", name: "Hậu trường" },
-      { id: "anh", name: "Ảnh" },
-      { id: "video-tt", name: "Video" },
-      { id: "esport", name: "Esport" }
+      { id: "hau-truong", name: "Hậu trường" }
     ]
   },
   {
     id: "phap-luat", name: "Pháp luật",
     subs: [
-      { id: "ho-so-vu-an", name: "Hồ sơ vụ án" },
-      { id: "thu-vien-phap-luat", name: "Thư viện pháp luật", special: "law-search" },
-      { id: "video-pl", name: "Video" }
+      { id: "phap-dinh", name: "Pháp đình" },
+      { id: "thu-vien-phap-luat", name: "Thư viện pháp luật", special: "law-search" }
     ]
   },
   {
     id: "giao-duc", name: "Giáo dục",
     subs: [
-      { id: "tin-tuc-gd", name: "Tin tức" },
       { id: "tuyen-sinh", name: "Tuyển sinh" },
-      { id: "chan-dung", name: "Chân dung" },
       { id: "du-hoc", name: "Du học" },
       { id: "de-thi-dap-an", name: "Đề thi & Đáp án", special: "exam-search" }
     ]
@@ -114,9 +99,9 @@ const CATEGORIES = [
     id: "doi-song", name: "Đời sống",
     subs: [
       { id: "nhip-song", name: "Nhịp sống" },
-      { id: "to-am", name: "Tổ ấm" },
-      { id: "bai-hoc-song", name: "Bài học sống" },
-      { id: "cooking", name: "Cooking" }
+      { id: "bai-hoc-cuoc-song", name: "Bài học cuộc sống" },
+      { id: "phong-cach", name: "Phong cách" },
+      { id: "viec-lam", name: "Việc làm" }
     ]
   },
   {
@@ -133,12 +118,15 @@ const CATEGORIES = [
     subs: [
       { id: "diem-den", name: "Điểm đến", special: "destination-search" },
       { id: "am-thuc", name: "Ẩm thực" },
-      { id: "kham-pha", name: "Khám phá" }
+      { id: "kham-pha-dl", name: "Khám phá" }
     ]
   },
   {
     id: "tieu-dung", name: "Tiêu dùng",
-    subs: []
+    subs: [
+      { id: "hang-hoa", name: "Hàng hóa" },
+      { id: "mua-ban", name: "Mua bán" }
+    ]
   },
   {
     id: "video", name: "Video",
@@ -444,6 +432,30 @@ const MOBILE_MIX_2 = [
   createArticle("thoi-su")
 ];
 
+// 5 bài mix top (sau Giải trí, trước Remaining trong mobile)
+const MOBILE_MIX_3 = [
+  createArticle("kinh-doanh"),
+  createArticle("the-thao"),
+  createArticle("bat-dong-san"),
+  createArticle("giao-duc"),
+  createArticle("cong-nghe")
+];
+
+// 5 bài mix top (sau BĐS box, trước Thể thao trong mobile)
+const MOBILE_MIX_4 = [
+  createArticle("thoi-su"),
+  createArticle("the-gioi"),
+  createArticle("phap-luat"),
+  createArticle("du-lich"),
+  createArticle("doi-song")
+];
+
+// 5 video cho cụm Video mobile (swipe ngang)
+const MOBILE_VIDEO_ARTICLES = generateArticles("video", 5);
+
+// 5 video cho cụm Video web (dải ngang trang chủ)
+const VIDEO_HOME_ARTICLES = generateArticles("video", 5);
+
 // ============================================================
 // EXPORT (global)
 // ============================================================
@@ -472,6 +484,10 @@ window.VAPP = {
   MOBILE_REMAINING,
   MOBILE_MIX_1,
   MOBILE_MIX_2,
+  MOBILE_MIX_3,
+  MOBILE_MIX_4,
+  MOBILE_VIDEO_ARTICLES,
+  VIDEO_HOME_ARTICLES,
   generateArticles,
   createArticle,
   getRandomQuestions,

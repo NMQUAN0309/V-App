@@ -133,7 +133,8 @@ input, select { font-family: inherit; }
    TICKER — Dòng 4
    ============================================================ */
 .m-ticker {
-  background: var(--ink); color: var(--white); overflow: hidden;
+  background: linear-gradient(90deg, #B71C1C 0%, #E53935 30%, #FF6D00 70%, #FFA000 100%);
+  color: #fff; overflow: hidden; font-weight: 500;
   font-size: .75rem; height: 28px; line-height: 28px;
 }
 .m-ticker-track {
@@ -141,11 +142,93 @@ input, select { font-family: inherit; }
   animation: mTickerScroll 25s linear infinite;
 }
 .m-ticker-track span { display: inline-flex; align-items: center; gap: 5px; }
-.m-ticker-track .dot { display: inline-block; width: 3px; height: 3px; border-radius: 50%; background: var(--red-accent); }
+.m-ticker-track .dot { display: inline-block; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.5); }
 @keyframes mTickerScroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* ============================================================
+   MOBILE VIDEO FEED PAGE
+   ============================================================ */
+#mVideoFeedPage {
+  display: none;
+  background: var(--white);
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  height: calc(100dvh - 96px);
+}
+#mVideoFeedPage.active { display: block; }
+.m-vf-item {
+  height: calc(100dvh - 96px); scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; padding: 12px 16px; box-sizing: border-box;
+  cursor: pointer; position: relative; border-bottom: 1px solid var(--border);
+}
+.m-vf-item:hover .m-vf-play { background: var(--red); }
+.m-vf-thumb-wrap {
+  position: relative; width: 100%;
+  aspect-ratio: 9/16; max-height: 70vh;
+  overflow: hidden; border-radius: 14px; background: #111;
+}
+.m-vf-thumb { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .85; }
+.m-vf-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 60px; height: 60px; background: rgba(0,0,0,.7); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 24px; padding-left: 5px; pointer-events: none;
+  transition: background .2s;
+}
+.m-vf-duration {
+  position: absolute; bottom: 8px; right: 10px;
+  background: rgba(0,0,0,.8); color: #fff;
+  font-size: .68rem; padding: 1px 6px; border-radius: 3px; font-weight: 600;
+}
+.m-vf-info { width: 100%; margin-top: 10px; }
+.m-vf-title { color: var(--ink); font-size: .9rem; font-weight: 600; line-height: 1.4; margin-bottom: 3px; }
+.m-vf-meta { color: var(--ink-tertiary); font-size: .75rem; }
+.m-vf-swipe-hint {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  color: var(--ink-tertiary); font-size: .72rem; letter-spacing: .05em;
+}
+
+/* Mobile Video Lightbox */
+.m-video-lightbox {
+  position: fixed; inset: 0; background: rgba(0,0,0,.95);
+  z-index: 2000; display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.m-video-lightbox.open { display: flex; }
+.m-vlb-close {
+  position: absolute; top: 16px; right: 20px;
+  color: #ccc; font-size: 1.8rem; cursor: pointer; background: none; border: none;
+  z-index: 10;
+}
+/* Carousel */
+.m-vlb-carousel {
+  display: flex; overflow-x: scroll; scroll-snap-type: x mandatory;
+  width: 100%; scrollbar-width: none; -ms-overflow-style: none;
+}
+.m-vlb-carousel::-webkit-scrollbar { display: none; }
+.m-vlb-slide {
+  flex: 0 0 100%; scroll-snap-align: start;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 20px; box-sizing: border-box;
+}
+.m-vlb-thumb-wrap {
+  position: relative; width: 100%;
+  aspect-ratio: 9/16; max-height: 70vh;
+  overflow: hidden; border-radius: 12px; background: #111;
+}
+.m-vlb-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-vlb-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 70px; height: 70px; background: rgba(229,57,53,.88); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 30px; padding-left: 6px; pointer-events: none;
+}
+.m-vlb-title { color: #f0f0f0; font-size: .95rem; font-weight: 600; margin-top: 14px; text-align: center; line-height: 1.4; padding: 0 4px; }
+.m-vlb-note { color: #555; font-size: .75rem; margin-top: 10px; }
 
 /* ============================================================
    HAMBURGER MENU
@@ -411,6 +494,65 @@ input, select { font-family: inherit; }
   color: var(--red); font-weight: 600; font-size: .78rem;
   padding: 3px 10px; border: 1px solid var(--red); border-radius: 16px;
 }
+.m-summary-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--red); font-weight: 600; font-size: .78rem;
+  padding: 3px 10px; border: 1px solid var(--red); border-radius: 16px;
+}
+.m-more-wrap { position: relative; margin-left: auto; }
+.m-more-btn {
+  width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .9rem; color: var(--ink-tertiary); cursor: pointer; letter-spacing: 1px;
+}
+.m-more-dropdown {
+  position: absolute; right: 0; top: calc(100% + 4px); min-width: 170px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.12); z-index: 300;
+  display: none; flex-direction: column; overflow: hidden;
+}
+.m-more-dropdown.show { display: flex; }
+.m-more-dropdown button {
+  padding: 11px 14px; font-size: .85rem; text-align: left; cursor: pointer;
+  color: var(--ink); transition: background .15s;
+}
+.m-more-dropdown button:hover { background: var(--surface); }
+
+.m-art-hero-img {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover;
+  display: block; margin: 0 0 16px;
+}
+
+/* Mobile Video swipe */
+.m-video-section { background: var(--white); padding: 0 0 8px; margin-bottom: 8px; }
+.m-video-strip {
+  display: flex; gap: 12px; overflow-x: auto; padding: 0 16px 8px;
+  scrollbar-width: none;
+}
+.m-video-strip::-webkit-scrollbar { display: none; }
+.m-video-item { flex: 0 0 160px; cursor: pointer; }
+.m-video-item:hover .m-v-play { background: var(--red); }
+.m-v-thumb-wrap {
+  position: relative; width: 100%; aspect-ratio: 9/16; overflow: hidden;
+  border-radius: 8px; background: #222;
+}
+.m-v-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-v-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 40px; height: 40px; background: rgba(0,0,0,.65); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 16px; pointer-events: none; transition: background .2s;
+}
+.m-v-duration {
+  position: absolute; bottom: 6px; right: 6px;
+  background: rgba(0,0,0,.7); color: #fff;
+  font-size: .65rem; padding: 1px 5px; border-radius: 3px; font-weight: 600;
+}
+.m-v-title {
+  font-size: .78rem; font-weight: 600; color: var(--ink);
+  margin-top: 6px; line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 .m-article-content {
   background: var(--white); padding: 16px; margin-bottom: 8px;
@@ -627,9 +769,20 @@ input, select { font-family: inherit; }
 
 <!-- PAGE: CATEGORY -->
 <div id="m-page-category" class="page">
-  <div id="mCatSubs" class="m-cat-subs"></div>
-  <div id="mCatSpecial"></div>
-  <div id="mCatStream"></div>
+  <div id="mCatNormal">
+    <div id="mCatSubs" class="m-cat-subs"></div>
+    <div id="mCatSpecial"></div>
+    <div id="mCatStream"></div>
+  </div>
+  <!-- VIDEO FEED (inside category page, replaces mCatNormal) -->
+  <div id="mVideoFeedPage"></div>
+</div>
+
+<!-- MOBILE VIDEO LIGHTBOX -->
+<div class="m-video-lightbox" id="mVideoLightbox">
+  <button class="m-vlb-close" id="mVlbClose">✕</button>
+  <div class="m-vlb-carousel" id="mVlbCarousel"></div>
+  <div class="m-vlb-note">← Kéo sang để xem tiếp · Video sẽ phát khi tích hợp nguồn thật</div>
 </div>
 
 <!-- PAGE: ARTICLE -->
@@ -675,7 +828,7 @@ input, select { font-family: inherit; }
     const num = parseInt(id);
     const sources = [
       D.HOME_TOP_ARTICLES, D.HOME_LEFT_ARTICLES, D.MOST_READ_48H,
-      D.MOBILE_TOP_5, D.MOBILE_MIX_1, D.MOBILE_MIX_2,
+      D.MOBILE_TOP_5, D.MOBILE_MIX_1, D.MOBILE_MIX_2, D.MOBILE_MIX_3, D.MOBILE_MIX_4, D.MOBILE_VIDEO_ARTICLES,
       ...Object.values(D.HOME_FEATURED), ...Object.values(D.HOME_REMAINING),
       ...Object.values(D.CATEGORY_ARTICLES),
       ...Object.values(D.MOBILE_CATEGORY_ARTICLES), ...Object.values(D.MOBILE_REMAINING)
@@ -917,6 +1070,9 @@ input, select { font-family: inherit; }
     appendCatArticles(stream, bdsArts);
     stream.appendChild(renderBoxProject());
 
+    // 5 bài mix #4 (sau BĐS box, trước Thể thao)
+    D.MOBILE_MIX_4.forEach(a => stream.appendChild(midCard(a)));
+
     // === THỂ THAO ===
     const ttCat = D.CATEGORIES.find(c => c.id === 'the-thao');
     const ttArts = D.MOBILE_CATEGORY_ARTICLES['the-thao'];
@@ -931,6 +1087,31 @@ input, select { font-family: inherit; }
     const gtArts = D.MOBILE_CATEGORY_ARTICLES['giai-tri'];
     appendSectionHead(stream, 'giai-tri', gtCat.name);
     appendCatArticles(stream, gtArts);
+
+    // === VIDEO SWIPE CLUSTER (sau Giải trí) ===
+    const videoSection = el('div', 'm-video-section');
+    const videoHead = el('div', 'm-section-head');
+    videoHead.innerHTML = `<a href="#category/video" class="m-sec-title">Video</a>
+      <a href="#category/video" class="m-sec-more">Xem tất cả ›</a>`;
+    videoSection.appendChild(videoHead);
+    const mVideoStrip = el('div', 'm-video-strip');
+    const mDurations = ['2:34','4:12','1:58','3:07','5:20'];
+    D.MOBILE_VIDEO_ARTICLES.forEach((a, i) => {
+      const vItem = el('div', 'm-video-item');
+      vItem.innerHTML = `<div class="m-v-thumb-wrap">
+        <img class="m-v-thumb" src="${a.avaUrl}" alt="" loading="lazy">
+        <div class="m-v-play">&#9654;</div>
+        <span class="m-v-duration">${mDurations[i]}</span>
+      </div>
+      <div class="m-v-title">${a.title}</div>`;
+      vItem.addEventListener('click', () => location.hash = `#article/${a.id}`);
+      mVideoStrip.appendChild(vItem);
+    });
+    videoSection.appendChild(mVideoStrip);
+    stream.appendChild(videoSection);
+
+    // 5 bài mix top #3 (sau Video, trước Remaining)
+    D.MOBILE_MIX_3.forEach(a => stream.appendChild(midCard(a)));
 
     // === SỨC KHỎE ===
     const skCat = D.CATEGORIES.find(c => c.id === 'suc-khoe');
@@ -1048,11 +1229,74 @@ input, select { font-family: inherit; }
   }
 
   // ============================================================
+  // MOBILE VIDEO FEED
+  // ============================================================
+  function renderMobileVideoFeed() {
+    $$('.page').forEach(p => p.classList.remove('active'));
+    $('#m-page-category').classList.add('active');
+    $('#mCatNormal').style.display = 'none';
+    const vfp = $('#mVideoFeedPage');
+    vfp.classList.add('active');
+    vfp.innerHTML = '';
+
+    const articles = D.CATEGORY_ARTICLES['video'] || D.generateArticles('video', 8);
+    const durations = ['2:34','4:12','1:58','3:07','5:20','6:45','3:15','2:50'];
+
+    articles.forEach((a, i) => {
+      const item = el('div', 'm-vf-item');
+      item.innerHTML = `
+        <div class="m-vf-thumb-wrap">
+          <img class="m-vf-thumb" src="${a.avaUrl}" alt="" loading="lazy">
+          <div class="m-vf-play">&#9654;</div>
+          <span class="m-vf-duration">${durations[i % durations.length]}</span>
+        </div>
+        <div class="m-vf-info">
+          <div class="m-vf-title">${a.title}</div>
+          <div class="m-vf-meta">${a.time} · V-App Video</div>
+        </div>
+        ${i === 0 ? '<div class="m-vf-swipe-hint">↑↓ Vuốt để xem tiếp</div>' : ''}`;
+      item.addEventListener('click', () => openMobileVideoLightbox(articles, i));
+      vfp.appendChild(item);
+    });
+
+    // Lightbox close
+    $('#mVlbClose').onclick = () => $('#mVideoLightbox').classList.remove('open');
+    $('#mVideoLightbox').addEventListener('click', e => {
+      if (e.target === $('#mVideoLightbox')) $('#mVideoLightbox').classList.remove('open');
+    });
+  }
+
+  function openMobileVideoLightbox(articles, clickedIdx) {
+    const carousel = $('#mVlbCarousel');
+    carousel.innerHTML = '';
+    articles.forEach(a => {
+      const slide = el('div', 'm-vlb-slide');
+      slide.innerHTML = `<div class="m-vlb-thumb-wrap">
+        <img class="m-vlb-thumb" src="${a.avaUrl}" alt="" loading="lazy">
+        <div class="m-vlb-play">&#9654;</div>
+      </div>
+      <div class="m-vlb-title">${a.title}</div>`;
+      carousel.appendChild(slide);
+    });
+    $('#mVideoLightbox').classList.add('open');
+    requestAnimationFrame(() => {
+      carousel.scrollLeft = clickedIdx * carousel.clientWidth;
+    });
+  }
+
+  // ============================================================
   // RENDER CATEGORY
   // ============================================================
   function renderCategory(catId, subId) {
     const cat = D.CATEGORIES.find(c => c.id === catId);
     if (!cat) return;
+
+    // Video: special dark feed
+    if (catId === 'video') { renderMobileVideoFeed(); return; }
+
+    // Hide video feed, show normal
+    $('#mVideoFeedPage').classList.remove('active');
+    $('#mCatNormal').style.display = '';
 
     // Tab highlight
     $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === catId));
@@ -1131,6 +1375,11 @@ input, select { font-family: inherit; }
           <input type="text" placeholder="Nhập tên địa danh, thành phố...">
           <button class="m-cat-search-btn">Tìm kiếm</button>`;
         break;
+      case 'thietbi-search':
+        html += `<h3>Tìm kiếm sản phẩm công nghệ</h3>
+          <input type="text" placeholder="Điện thoại, laptop, tivi, tủ lạnh...">
+          <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
       case 'quyhoach-search':
         html += `<h3>Tra cứu quy hoạch</h3>
           <input type="text" placeholder="Nhập tỉnh/thành phố...">
@@ -1173,11 +1422,20 @@ input, select { font-family: inherit; }
     html += `<div class="m-article-meta">
       <span>${a.time}</span>
       <button class="m-audio-btn">🔊 Nghe</button>
+      <button class="m-summary-btn">✦ Tóm tắt</button>
+      <div class="m-more-wrap">
+        <button class="m-more-btn" id="mMoreBtn">···</button>
+        <div class="m-more-dropdown" id="mMoreDropdown">
+          <button>Aa &nbsp;Điều chỉnh cỡ chữ</button>
+          <button>&#9873; &nbsp;Báo cáo</button>
+        </div>
+      </div>
     </div>`;
 
     // Content
     html += `<div class="m-article-content">
       <h1 class="m-art-title">${a.title}</h1>
+      <img class="m-art-hero-img" src="${a.avaUrl}" alt="" loading="lazy">
       <p class="m-art-sapo">${a.sapo}</p>
       <div class="m-art-body">${a.content}</div>
       <div class="m-art-author">${a.author}</div>
@@ -1187,7 +1445,7 @@ input, select { font-family: inherit; }
     // AI Q&A
     const questions = D.getRandomQuestions();
     html += `<div class="m-ai-section">
-      <div class="m-ai-title"><span class="m-ai-badge">AI</span> Câu hỏi liên quan</div>`;
+      <div class="m-ai-title">Tìm hiểu sâu</div>`;
     questions.forEach((q, i) => {
       html += `<div class="m-ai-q" data-idx="${i}">
         <button class="m-ai-q-trigger"><span>${q.q}</span><span class="arrow">▼</span></button>
@@ -1226,6 +1484,17 @@ input, select { font-family: inherit; }
     $$('.m-ai-q', detail).forEach(card => {
       card.querySelector('.m-ai-q-trigger').addEventListener('click', () => card.classList.toggle('open'));
     });
+
+    // Bind 3-dot more menu
+    const mMoreBtn = $('#mMoreBtn');
+    const mMoreDrop = $('#mMoreDropdown');
+    if (mMoreBtn && mMoreDrop) {
+      mMoreBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        mMoreDrop.classList.toggle('show');
+      });
+      document.addEventListener('click', () => mMoreDrop.classList.remove('show'));
+    }
 
     // Dropdown toggle
     const ddToggle = $('#mDropdownToggle');

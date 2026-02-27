@@ -38,7 +38,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "khoa-hoc-cong-nghe", name: "Khoa học và Công nghệ",
+    id: "cong-nghe", name: "Công nghệ",
     subs: [
       { id: "ai", name: "AI" },
       { id: "vu-tru", name: "Vũ trụ" },
@@ -47,11 +47,12 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "bat-dong-san", name: "Bất động sản",
+    id: "bat-dong-san", name: "BĐS",
     subs: [
       { id: "chinh-sach", name: "Chính sách" },
       { id: "thi-truong", name: "Thị trường" },
       { id: "du-an", name: "Dự án", special: "project-search" },
+      { id: "quy-hoach", name: "Quy hoạch", special: "quyhoach-search" },
       { id: "khong-gian-song", name: "Không gian sống" }
     ]
   },
@@ -115,8 +116,7 @@ const CATEGORIES = [
       { id: "nhip-song", name: "Nhịp sống" },
       { id: "to-am", name: "Tổ ấm" },
       { id: "bai-hoc-song", name: "Bài học sống" },
-      { id: "cooking", name: "Cooking" },
-      { id: "tieu-dung", name: "Tiêu dùng" }
+      { id: "cooking", name: "Cooking" }
     ]
   },
   {
@@ -135,6 +135,14 @@ const CATEGORIES = [
       { id: "am-thuc", name: "Ẩm thực" },
       { id: "kham-pha", name: "Khám phá" }
     ]
+  },
+  {
+    id: "tieu-dung", name: "Tiêu dùng",
+    subs: []
+  },
+  {
+    id: "video", name: "Video",
+    subs: []
   }
 ];
 
@@ -418,6 +426,24 @@ CATEGORIES.forEach(cat => {
   }
 });
 
+// 5 bài mix top thay thế box VN-Index (sau Kinh doanh trong mobile)
+const MOBILE_MIX_1 = [
+  createArticle("thoi-su"),
+  createArticle("the-gioi"),
+  createArticle("cong-nghe"),
+  createArticle("giao-duc"),
+  createArticle("phap-luat")
+];
+
+// 5 bài mix top thay thế box Quote (sau Thể thao trong mobile)
+const MOBILE_MIX_2 = [
+  createArticle("du-lich"),
+  createArticle("suc-khoe"),
+  createArticle("xe"),
+  createArticle("doi-song"),
+  createArticle("thoi-su")
+];
+
 // ============================================================
 // EXPORT (global)
 // ============================================================
@@ -444,6 +470,8 @@ window.VAPP = {
   MOBILE_TOP_5,
   MOBILE_CATEGORY_ARTICLES,
   MOBILE_REMAINING,
+  MOBILE_MIX_1,
+  MOBILE_MIX_2,
   generateArticles,
   createArticle,
   getRandomQuestions,

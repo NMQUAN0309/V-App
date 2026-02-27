@@ -193,6 +193,7 @@ input, select { font-family: inherit; }
 .m-card:hover { opacity: .9; }
 .m-card-ava { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--border); }
 .m-card-ava-half { width: 55%; aspect-ratio: 4/3; object-fit: cover; float: left; margin-right: 12px; margin-bottom: 4px; border-radius: var(--radius); background: var(--border); }
+.m-card-ava-mid { width: 120px; min-width: 120px; height: 80px; object-fit: cover; float: left; margin-right: 12px; margin-bottom: 4px; border-radius: var(--radius); background: var(--border); }
 .m-card-body { padding: 12px 16px; }
 .m-card-title {
   font-family: var(--font-headline); font-weight: 700; font-size: 1.05rem;
@@ -212,6 +213,14 @@ input, select { font-family: inherit; }
 }
 .m-card-compact .m-card-title { font-family: var(--font-body); font-size: .92rem; font-weight: 600; }
 .m-card-compact .m-card-sapo { margin-top: 2px; }
+
+/* Kinh doanh card frame */
+.m-kd-card {
+  background: #F9F6F3; border: 1px solid var(--border);
+  margin: 0 0 8px; border-radius: 8px; overflow: hidden;
+}
+.m-kd-card .m-card { border-bottom: 1px solid var(--border-light); margin-bottom: 0; }
+.m-kd-card .m-card:last-child { border-bottom: none; }
 
 /* ============================================================
    SECTION DIVIDER
@@ -336,9 +345,6 @@ input, select { font-family: inherit; }
   transition: color var(--transition); flex-shrink: 0;
 }
 .m-cat-sub-item:hover, .m-cat-sub-item.active { color: var(--red); }
-.m-cat-sub-item.has-special::after {
-  content: '⚡'; margin-left: 4px; font-size: .7rem;
-}
 
 .m-cat-special {
   background: var(--white); padding: 16px; margin-bottom: 8px;
@@ -669,7 +675,7 @@ input, select { font-family: inherit; }
     const num = parseInt(id);
     const sources = [
       D.HOME_TOP_ARTICLES, D.HOME_LEFT_ARTICLES, D.MOST_READ_48H,
-      D.MOBILE_TOP_5,
+      D.MOBILE_TOP_5, D.MOBILE_MIX_1, D.MOBILE_MIX_2,
       ...Object.values(D.HOME_FEATURED), ...Object.values(D.HOME_REMAINING),
       ...Object.values(D.CATEGORY_ARTICLES),
       ...Object.values(D.MOBILE_CATEGORY_ARTICLES), ...Object.values(D.MOBILE_REMAINING)
@@ -699,12 +705,101 @@ input, select { font-family: inherit; }
   // ============================================================
   function buildTabs() {
     const scroll = $('#mTabsScroll');
-    let html = `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabLatest">Tin mới nhất</a>`;
+    let html = `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabLatest">Mới nhất</a>`;
     html += `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabLocal">Địa phương</a>`;
+    html += `<a href="javascript:void(0)" class="m-tab-item m-tab-special" id="mTabQuantam">Quan tâm</a>`;
     D.CATEGORIES.forEach(cat => {
       html += `<a href="#category/${cat.id}" class="m-tab-item" data-cat="${cat.id}">${cat.name}</a>`;
     });
     scroll.innerHTML = html;
+
+    // Drag-to-scroll support for mouse
+    const el = scroll;
+    let isDragging = false, startX = 0, scrollLeft = 0;
+    el.addEventListener('mousedown', e => {
+      isDragging = true; startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft;
+      el.style.cursor = 'grabbing'; el.style.userSelect = 'none';
+    });
+    el.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX);
+    });
+    ['mouseup', 'mouseleave'].forEach(evt => el.addEventListener(evt, () => {
+      isDragging = false; el.style.cursor = ''; el.style.userSelect = '';
+    }));
+
+    // Tab actions
+    $('#mTabLatest').addEventListener('click', showMobileLatest);
+    $('#mTabLocal').addEventListener('click', showMobileLocal);
+    $('#mTabQuantam').addEventListener('click', showMobileQuantam);
+  }
+
+  function showMobileLatest() {
+    let all = [];
+    Object.values(D.CATEGORY_ARTICLES).forEach(arr => { all = all.concat(arr); });
+    all.sort((a, b) => {
+      const pa = a.time.split(/[\/\s:]/); const pb = b.time.split(/[\/\s:]/);
+      const da = new Date(2026, pa[1]-1, pa[0], pa[3], pa[4]);
+      const db = new Date(2026, pb[1]-1, pb[0], pb[3], pb[4]);
+      return db - da;
+    });
+    const stream = $('#mHomeStream');
+    stream.innerHTML = '';
+    const head = el('div', 'm-section-head');
+    head.innerHTML = `<span class="m-sec-title">Tin mới nhất</span>`;
+    stream.appendChild(head);
+    all.slice(0, 30).forEach(a => stream.appendChild(fullCard(a)));
+    $('#m-page-home').classList.add('active');
+  }
+
+  function showMobileLocal() {
+    const stream = $('#mHomeStream');
+    stream.innerHTML = '';
+    const head = el('div', 'm-section-head');
+    head.innerHTML = `<span class="m-sec-title">Tin địa phương — Hà Nội</span>`;
+    stream.appendChild(head);
+    const arts = D.generateArticles('thoi-su', 10);
+    arts.forEach(a => { a.title = 'Hà Nội: ' + a.title; stream.appendChild(fullCard(a)); });
+    $('#m-page-home').classList.add('active');
+  }
+
+  function showMobileQuantam() {
+    const stream = $('#mHomeStream');
+    stream.innerHTML = '';
+    const head = el('div', 'm-section-head');
+    head.innerHTML = `<span class="m-sec-title">Chủ đề quan tâm</span>`;
+    stream.appendChild(head);
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'background:#fff;padding:16px;';
+    wrapper.innerHTML = `<p style="font-size:.85rem;color:#666;margin-bottom:12px;">Chọn chủ đề bạn quan tâm:</p>
+      <div id="mQuantamBoxes" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;"></div>
+      <button id="mQuantamApply" style="width:100%;padding:10px;background:var(--red);color:#fff;border-radius:8px;font-weight:600;font-size:.9rem;">Xem tin đã chọn</button>`;
+    stream.appendChild(wrapper);
+
+    const boxes = wrapper.querySelector('#mQuantamBoxes');
+    D.CATEGORIES.forEach(cat => {
+      const label = document.createElement('label');
+      label.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;background:#f5f5f5;padding:8px;border-radius:6px;';
+      label.innerHTML = `<input type="checkbox" value="${cat.id}" style="accent-color:var(--red);"> ${cat.name}`;
+      boxes.appendChild(label);
+    });
+
+    wrapper.querySelector('#mQuantamApply').addEventListener('click', () => {
+      const checked = Array.from(boxes.querySelectorAll('input:checked')).map(i => i.value);
+      if (!checked.length) return;
+      stream.innerHTML = '';
+      const h = el('div', 'm-section-head');
+      h.innerHTML = `<span class="m-sec-title">Tin quan tâm</span>`;
+      stream.appendChild(h);
+      let arts = [];
+      checked.forEach(catId => { arts = arts.concat(D.generateArticles(catId, 5)); });
+      arts.forEach(a => stream.appendChild(fullCard(a)));
+    });
+
+    $('#m-page-home').classList.add('active');
   }
 
   // ============================================================
@@ -767,51 +862,96 @@ input, select { font-family: inherit; }
     return card;
   }
 
+  function midCard(a) {
+    const card = el('div', 'm-card fade-in');
+    card.innerHTML = `<div class="m-card-body" style="overflow:hidden">
+        <img class="m-card-ava-mid" src="${a.avaUrl}" alt="" loading="lazy">
+        <div class="m-card-title" style="font-size:.9rem">${a.title}</div>
+        <div class="m-card-sapo">${a.sapo}</div>
+        <div style="clear:both"></div>
+      </div>`;
+    card.addEventListener('click', () => goArticle(a));
+    return card;
+  }
+
   // ============================================================
   // RENDER HOME
   // ============================================================
+  function appendSectionHead(stream, catId, catName) {
+    const head = el('div', 'm-section-head');
+    head.innerHTML = `<a href="#category/${catId}" class="m-sec-title">${catName}</a>
+      <a href="#category/${catId}" class="m-sec-more">Xem tất cả ›</a>`;
+    stream.appendChild(head);
+  }
+
+  function appendCatArticles(stream, articles) {
+    if (articles[0]) stream.appendChild(fullCard(articles[0]));
+    if (articles[1]) stream.appendChild(halfCard(articles[1]));
+    articles.slice(2, 5).forEach(a => stream.appendChild(compactCard(a)));
+  }
+
   function renderHome() {
     const stream = $('#mHomeStream');
     stream.innerHTML = '';
 
-    // 5 bài top (all full-width ava)
+    // 5 bài top nổi bật (full width)
     D.MOBILE_TOP_5.forEach(a => stream.appendChild(fullCard(a)));
 
-    // 5 category streams + boxes
-    const boxRenderers = [renderBoxVNIndex, renderBoxProject, renderBoxQuote, renderBoxTraffic, renderBoxWeather];
-    D.MOBILE_STREAM_CATEGORIES.forEach((catId, idx) => {
-      const cat = D.CATEGORIES.find(c => c.id === catId);
-      const articles = D.MOBILE_CATEGORY_ARTICLES[catId];
+    // === KINH DOANH (in a visible card/frame) ===
+    const kdCat = D.CATEGORIES.find(c => c.id === 'kinh-doanh');
+    const kdArts = D.MOBILE_CATEGORY_ARTICLES['kinh-doanh'];
+    appendSectionHead(stream, 'kinh-doanh', kdCat.name);
+    const kdCard = el('div', 'm-kd-card');
+    if (kdArts[0]) kdCard.appendChild(fullCard(kdArts[0]));
+    if (kdArts[1]) kdCard.appendChild(halfCard(kdArts[1]));
+    kdArts.slice(2, 5).forEach(a => kdCard.appendChild(compactCard(a)));
+    stream.appendChild(kdCard);
 
-      // Section head
-      const head = el('div', 'm-section-head');
-      head.innerHTML = `<a href="#category/${catId}" class="m-sec-title">${cat.name}</a>
-        <a href="#category/${catId}" class="m-sec-more">Xem tất cả ›</a>`;
-      stream.appendChild(head);
+    // 5 bài mix top #1 (thay thế box VN-Index)
+    D.MOBILE_MIX_1.forEach(a => stream.appendChild(midCard(a)));
 
-      // 5 articles: 1 full, 1 half, 3 compact
-      if (articles[0]) stream.appendChild(fullCard(articles[0]));
-      if (articles[1]) stream.appendChild(halfCard(articles[1]));
-      articles.slice(2, 5).forEach(a => stream.appendChild(compactCard(a)));
+    // === BĐS ===
+    const bdsCat = D.CATEGORIES.find(c => c.id === 'bat-dong-san');
+    const bdsArts = D.MOBILE_CATEGORY_ARTICLES['bat-dong-san'];
+    appendSectionHead(stream, 'bat-dong-san', bdsCat.name);
+    appendCatArticles(stream, bdsArts);
+    stream.appendChild(renderBoxProject());
 
-      // Special box
-      if (boxRenderers[idx]) stream.appendChild(boxRenderers[idx]());
-    });
+    // === THỂ THAO ===
+    const ttCat = D.CATEGORIES.find(c => c.id === 'the-thao');
+    const ttArts = D.MOBILE_CATEGORY_ARTICLES['the-thao'];
+    appendSectionHead(stream, 'the-thao', ttCat.name);
+    appendCatArticles(stream, ttArts);
 
-    // Remaining categories
+    // 5 bài mix top #2 (thay thế box Quote)
+    D.MOBILE_MIX_2.forEach(a => stream.appendChild(midCard(a)));
+
+    // === GIẢI TRÍ ===
+    const gtCat = D.CATEGORIES.find(c => c.id === 'giai-tri');
+    const gtArts = D.MOBILE_CATEGORY_ARTICLES['giai-tri'];
+    appendSectionHead(stream, 'giai-tri', gtCat.name);
+    appendCatArticles(stream, gtArts);
+
+    // === SỨC KHỎE ===
+    const skCat = D.CATEGORIES.find(c => c.id === 'suc-khoe');
+    const skArts = D.MOBILE_CATEGORY_ARTICLES['suc-khoe'];
+    appendSectionHead(stream, 'suc-khoe', skCat.name);
+    appendCatArticles(stream, skArts);
+    stream.appendChild(renderBoxDisease());
+
+    // === REMAINING CATEGORIES ===
+    // Boxes that appear after specific categories
+    const boxAfter = {
+      'thoi-su': renderBoxWeather,
+      'xe': renderBoxTraffic
+    };
     const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id));
     remCats.forEach(cat => {
       const articles = D.MOBILE_REMAINING[cat.id];
-      if (!articles) return;
-
-      const head = el('div', 'm-section-head');
-      head.innerHTML = `<a href="#category/${cat.id}" class="m-sec-title">${cat.name}</a>
-        <a href="#category/${cat.id}" class="m-sec-more">Xem tất cả ›</a>`;
-      stream.appendChild(head);
-
-      if (articles[0]) stream.appendChild(fullCard(articles[0]));
-      if (articles[1]) stream.appendChild(halfCard(articles[1]));
-      articles.slice(2, 5).forEach(a => stream.appendChild(compactCard(a)));
+      if (!articles || !articles.length) return;
+      appendSectionHead(stream, cat.id, cat.name);
+      appendCatArticles(stream, articles);
+      if (boxAfter[cat.id]) stream.appendChild(boxAfter[cat.id]());
     });
   }
 
@@ -895,6 +1035,18 @@ input, select { font-family: inherit; }
     return box;
   }
 
+  function renderBoxDisease() {
+    const box = el('div', 'm-box');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">Tra cứu bệnh</div>
+      <div class="m-project-search">
+        <input type="text" placeholder="Nhập tên bệnh, triệu chứng...">
+        <button class="m-search-btn">Tra cứu</button>
+      </div>
+    </div>`;
+    return box;
+  }
+
   // ============================================================
   // RENDER CATEGORY
   // ============================================================
@@ -909,7 +1061,7 @@ input, select { font-family: inherit; }
     const subs = $('#mCatSubs');
     subs.innerHTML = '';
     cat.subs.forEach(sub => {
-      const item = el('a', 'm-cat-sub-item' + (sub.id === subId ? ' active' : '') + (sub.special ? ' has-special' : ''));
+      const item = el('a', 'm-cat-sub-item' + (sub.id === subId ? ' active' : ''));
       item.href = `#category/${catId}/${sub.id}`;
       item.textContent = sub.name;
       subs.appendChild(item);
@@ -978,6 +1130,12 @@ input, select { font-family: inherit; }
         html += `<h3>Khám phá điểm đến</h3>
           <input type="text" placeholder="Nhập tên địa danh, thành phố...">
           <button class="m-cat-search-btn">Tìm kiếm</button>`;
+        break;
+      case 'quyhoach-search':
+        html += `<h3>Tra cứu quy hoạch</h3>
+          <input type="text" placeholder="Nhập tỉnh/thành phố...">
+          <input type="text" placeholder="Quận/huyện...">
+          <button class="m-cat-search-btn">Tra cứu</button>`;
         break;
     }
     html += `</div>`;

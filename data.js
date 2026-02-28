@@ -358,16 +358,16 @@ function getRandomQuote() {
 // PRE-GENERATE DỮ LIỆU CHO TRANG CHỦ
 // ============================================================
 
-// Bài top trang chủ (4 bài)
-const HOME_TOP_ARTICLES = generateArticles("thoi-su", 4);
+// Bài top trang chủ (5 bài: 1 lớn + 1 trung bình + 3 nhỏ)
+const HOME_TOP_ARTICLES = generateArticles("thoi-su", 5);
 
-// 15 bài cột trái trang chủ
+// 20 bài cột trái trang chủ
 const HOME_LEFT_ARTICLES = [];
 CATEGORIES.forEach(cat => {
   HOME_LEFT_ARTICLES.push(createArticle(cat.id));
 });
-// Thêm bài nếu chưa đủ 15
-while (HOME_LEFT_ARTICLES.length < 15) {
+// Thêm bài nếu chưa đủ 20
+while (HOME_LEFT_ARTICLES.length < 20) {
   HOME_LEFT_ARTICLES.push(createArticle(randomPick(CATEGORIES).id));
 }
 

@@ -413,9 +413,17 @@ ul, ol { list-style: none; }
   display: grid; grid-template-columns: 1fr 1fr;
   gap: var(--gutter);
 }
-.top-featured { grid-column: 1 / -1; }
+.top-featured-row {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: 8fr 2.5fr; gap: var(--gutter); align-items: start;
+}
+.top-featured .h-ava { width: 62% !important; }
 .top-featured .title { font-size: 1.6rem; }
 .top-featured .sapo { font-size: .95rem; -webkit-line-clamp: 3; }
+.top-featured-secondary.card-h { flex-direction: column; }
+.top-featured-secondary .h-ava { width: 100% !important; aspect-ratio: 16/9; }
+.top-featured-secondary .title { font-size: 1rem; }
+.top-featured-secondary .sapo { font-size: .82rem; -webkit-line-clamp: 2; }
 .top-small-grid {
   grid-column: 1 / -1;
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -1515,10 +1523,16 @@ ul, ol { list-style: none; }
     tc.innerHTML = '';
     const topGrid = el('div', 'top-grid');
 
-    // Featured (horizontal: ava ~45% left + title/sapo right)
+    // Featured row: 1 large left + 1 medium right
+    const featRow = el('div', 'top-featured-row');
     const feat = D.HOME_TOP_ARTICLES[0];
     const featDiv = makeCardH(feat, { large: true, extraClass: 'top-featured fade-up', titleSize: '1.4rem' });
-    topGrid.appendChild(featDiv);
+    featRow.appendChild(featDiv);
+    const feat2 = D.HOME_TOP_ARTICLES[4];
+    const feat2Div = makeCardH(feat2, { medium: true, extraClass: 'top-featured-secondary fade-up', titleSize: '1.15rem' });
+    feat2Div.style.animationDelay = '.1s';
+    featRow.appendChild(feat2Div);
+    topGrid.appendChild(featRow);
 
     // 3 small (horizontal in 3 columns)
     const smallGrid = el('div', 'top-small-grid');
@@ -1530,10 +1544,10 @@ ul, ol { list-style: none; }
     topGrid.appendChild(smallGrid);
     tc.appendChild(topGrid);
 
-    // Left column — 15 articles
+    // Left column — 20 articles
     const hl = $('#homeLeft');
     hl.innerHTML = '';
-    D.HOME_LEFT_ARTICLES.slice(0, 16).forEach(a => {
+    D.HOME_LEFT_ARTICLES.slice(0, 20).forEach(a => {
       const row = el('div', 'article-row');
       row.innerHTML = articleRowHTML(a);
       makeClickable(row, a);

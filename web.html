@@ -1377,10 +1377,6 @@ ul, ol { list-style: none; }
         <div class="lib-title">📚 <span>Tri thức mở</span> V-App</div>
         <button class="lib-close" id="libClose">&times;</button>
       </div>
-      <div class="lib-search-row">
-        <input class="lib-search-input" id="libSearchInput" type="text" placeholder="Tìm chủ đề, từ khóa, câu hỏi...">
-        <button class="lib-search-btn" id="libSearchBtn">Tìm</button>
-      </div>
       <div class="lib-tabs-bar">
         <div class="lib-tab active" data-tab="topics">Chủ đề</div>
         <div class="lib-tab" data-tab="search">Tra cứu</div>
@@ -1782,9 +1778,6 @@ ul, ol { list-style: none; }
         else if (which === 'ai') renderLibAITab();
       };
     });
-    // Search button
-    $('#libSearchBtn').onclick = () => libDoSearch($('#libSearchInput').value.trim());
-    $('#libSearchInput').onkeydown = e => { if (e.key === 'Enter') libDoSearch($('#libSearchInput').value.trim()); };
     // Close
     $('#libClose').onclick = () => overlay.classList.remove('show');
     overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('show'); };
@@ -1806,11 +1799,11 @@ ul, ol { list-style: none; }
     const body = $('#libBody');
     // Trending chips
     const chips = LIB_TRENDING.map(t =>
-      `<span class="lib-chip" onclick="$('#libSearchInput').value='${t}';libDoSearch('${t}')">${t}</span>`
+      `<span class="lib-chip" onclick="libDoSearch('${t}')">${t}</span>`
     ).join('');
     // Topic grid
     const cards = LIB_TOPICS.map(tp =>
-      `<div class="lib-topic-card" style="--topic-color:${tp.color}" onclick="$('#libSearchInput').value='${tp.name}';libDoSearch('${tp.name}')">
+      `<div class="lib-topic-card" style="--topic-color:${tp.color}" onclick="libDoSearch('${tp.name}')">
         <div class="lib-topic-icon">${tp.icon}</div>
         <div class="lib-topic-name">${tp.name}</div>
       </div>`
@@ -1831,47 +1824,60 @@ ul, ol { list-style: none; }
   function renderLibSearchTab(q) {
     libSetActiveTab('search');
     const body = $('#libBody');
+
+    let resultsHTML = '';
     if (!q) {
-      body.innerHTML = `<div class="lib-no-results">Nhập từ khóa vào ô tìm kiếm bên trên để tra cứu.</div>`;
-      return;
-    }
-    // Search across all CATEGORY_ARTICLES
-    const ql = q.toLowerCase();
-    let matches = [];
-    Object.values(D.CATEGORY_ARTICLES).forEach(arr => {
-      arr.forEach(a => {
-        if ((a.title && a.title.toLowerCase().includes(ql)) || (a.sapo && a.sapo.toLowerCase().includes(ql))) {
-          matches.push(a);
-        }
+      resultsHTML = `<div class="lib-no-results">Nhập từ khóa để tra cứu.</div>`;
+    } else {
+      const ql = q.toLowerCase();
+      let matches = [];
+      Object.values(D.CATEGORY_ARTICLES).forEach(arr => {
+        arr.forEach(a => {
+          if ((a.title && a.title.toLowerCase().includes(ql)) || (a.sapo && a.sapo.toLowerCase().includes(ql))) {
+            matches.push(a);
+          }
+        });
       });
-    });
-    // Deduplicate by id
-    const seen = new Set();
-    matches = matches.filter(a => { if (seen.has(a.id)) return false; seen.add(a.id); return true; });
+      const seen = new Set();
+      matches = matches.filter(a => { if (seen.has(a.id)) return false; seen.add(a.id); return true; });
 
-    const resultHTML = matches.length
-      ? matches.slice(0, 20).map(a => `
-          <div class="lib-result-item" onclick="renderArticle && renderArticle(${JSON.stringify(a).replace(/"/g, '&quot;')});$('#libOverlay').classList.remove('show');">
-            <div class="lib-result-title">${a.title}</div>
-            <div class="lib-result-meta">${a.categoryName || ''} · ${a.time || ''}</div>
-          </div>`).join('')
-      : `<div class="lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
+      const resultHTML = matches.length
+        ? matches.slice(0, 20).map(a => `
+            <div class="lib-result-item" onclick="renderArticle && renderArticle(${JSON.stringify(a).replace(/"/g, '&quot;')});$('#libOverlay').classList.remove('show');">
+              <div class="lib-result-title">${a.title}</div>
+              <div class="lib-result-meta">${a.categoryName || ''} · ${a.time || ''}</div>
+            </div>`).join('')
+        : `<div class="lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
 
-    // AI summary box
-    const aiSummary = `<div class="lib-ai-box">
-      <div class="lib-ai-label">✦ V-App AI · Tóm tắt</div>
-      <div class="lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là một chủ đề quan trọng được đề cập trong nhiều lĩnh vực. Dựa trên các bài viết hiện có, đây là những thông tin nổi bật bạn nên biết: chủ đề này liên quan đến các xu hướng đang thay đổi trong xã hội, ảnh hưởng đến đời sống và kinh tế. Các chuyên gia nhận định đây là vấn đề cần được quan tâm và theo dõi thường xuyên.</div>
-      <div style="margin-top:10px;font-size:.78rem;color:var(--ink-secondary)">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>
-    </div>`;
+      const aiSummary = `<div class="lib-ai-box">
+        <div class="lib-ai-label">✦ V-App AI · Tóm tắt</div>
+        <div class="lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là một chủ đề quan trọng được đề cập trong nhiều lĩnh vực. Dựa trên các bài viết hiện có, đây là những thông tin nổi bật bạn nên biết: chủ đề này liên quan đến các xu hướng đang thay đổi trong xã hội, ảnh hưởng đến đời sống và kinh tế. Các chuyên gia nhận định đây là vấn đề cần được quan tâm và theo dõi thường xuyên.</div>
+        <div style="margin-top:10px;font-size:.78rem;color:var(--ink-secondary)">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>
+      </div>`;
+
+      resultsHTML = `
+        <div style="padding:4px 24px 4px;font-size:.82rem;color:var(--ink-secondary)">
+          ${matches.length} kết quả cho "<strong>${q}</strong>"
+        </div>
+        <div class="lib-search-layout">
+          <div class="lib-results-col">${resultHTML}</div>
+          <div class="lib-ai-col">${aiSummary}</div>
+        </div>`;
+    }
 
     body.innerHTML = `
-      <div style="padding:16px 24px 4px;font-size:.82rem;color:var(--ink-secondary)">
-        ${matches.length} kết quả cho "<strong>${q}</strong>"
+      <div style="padding:16px 24px 12px">
+        <div class="lib-search-row">
+          <input class="lib-search-input" id="libSearchInput" type="text" placeholder="Tìm chủ đề, từ khóa, câu hỏi..." value="${q ? q.replace(/"/g, '&amp;quot;') : ''}">
+          <button class="lib-search-btn" id="libSearchBtn">Tìm</button>
+        </div>
       </div>
-      <div class="lib-search-layout">
-        <div class="lib-results-col">${resultHTML}</div>
-        <div class="lib-ai-col">${aiSummary}</div>
-      </div>`;
+      ${resultsHTML}`;
+
+    const doSearch = () => libDoSearch($('#libSearchInput').value.trim());
+    $('#libSearchBtn').onclick = doSearch;
+    $('#libSearchInput').onkeydown = e => { if (e.key === 'Enter') doSearch(); };
+    if (!q) setTimeout(() => { const inp = $('#libSearchInput'); if (inp) inp.focus(); }, 50);
   }
 
   function renderLibAITab() {
@@ -1940,7 +1946,7 @@ ul, ol { list-style: none; }
       <ul style="margin:0 0 8px;padding-left:18px">
         <li>Đây là chủ đề được nghiên cứu và ghi nhận rộng rãi trong học thuật và thực tiễn.</li>
         <li>Các chuyên gia thường nhìn nhận vấn đề này qua nhiều góc độ khác nhau.</li>
-        <li>Để tìm hiểu sâu hơn, bạn có thể dùng tab <strong>Tra cứu</strong> để xem các bài viết liên quan.</li>
+        <li>Để giải mã đa tầng hơn, bạn có thể dùng tab <strong>Tra cứu</strong> để xem các bài viết liên quan.</li>
       </ul>
       <div style="font-size:.78rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>`;
   }
@@ -2403,18 +2409,18 @@ ul, ol { list-style: none; }
   const HOME_SIDE_BOXES = {
     'thoi-su':        'weather-box',
     'the-gioi':       'war-map-compact',
-    'xe-cong-nghe':   'thietbi-search',
+    'the-thao':       'match-schedule',
     'phap-luat':      'law-search',
     'giao-duc':       'exam-search',
-    'doi-song-du-lich': 'destination-search',
   };
 
   // Featured interstitials: which box appears below each featured cluster
   const FEATURED_INTERSTITIALS = {
-    'kinh-te':   'stock-search',
-    'nha-dat':   'project-search',
-    'the-thao':  'match-schedule',
-    'suc-khoe':  'disease-search',
+    'kinh-te':          'stock-search',
+    'nha-dat':          'project-search',
+    'xe-cong-nghe':     'thietbi-search',
+    'doi-song-du-lich': 'destination-search',
+    'suc-khoe':         'disease-search',
   };
 
   // ============================================================

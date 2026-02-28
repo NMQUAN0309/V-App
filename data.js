@@ -43,28 +43,6 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "xe-cong-nghe", name: "Xe - Công nghệ",
-    subs: [
-      { id: "thi-truong-xe", name: "Thị trường xe" },
-      { id: "xe-dien", name: "Xe điện" },
-      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
-      { id: "cham-xe", name: "Chăm xe" },
-      { id: "ai", name: "AI" },
-      { id: "khoa-hoc-cn", name: "Khoa học - CN" },
-      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
-    ]
-  },
-  {
-    id: "giai-tri", name: "Giải trí",
-    subs: [
-      { id: "sach", name: "Sách" },
-      { id: "phim", name: "Phim" },
-      { id: "nhac", name: "Nhạc" },
-      { id: "thoi-trang", name: "Thời trang" },
-      { id: "lam-dep", name: "Làm đẹp" }
-    ]
-  },
-  {
     id: "the-thao", name: "Thể thao",
     subs: [
       { id: "bong-da", name: "Bóng đá" },
@@ -75,6 +53,30 @@ const CATEGORIES = [
       { id: "esport", name: "Esport" },
       { id: "cac-mon-khac", name: "Các môn khác" },
       { id: "hau-truong", name: "Hậu trường" }
+    ]
+  },
+  {
+    id: "doi-song-du-lich", name: "Đời sống – Du lịch",
+    subs: [
+      { id: "nhip-song", name: "Nhịp sống" },
+      { id: "bai-hoc-cuoc-song", name: "Bài học cuộc sống" },
+      { id: "phong-cach", name: "Phong cách" },
+      { id: "viec-lam", name: "Việc làm" },
+      { id: "diem-den", name: "Điểm đến", special: "destination-search" },
+      { id: "am-thuc", name: "Ẩm thực" },
+      { id: "kham-pha-dl", name: "Khám phá" }
+    ]
+  },
+  {
+    id: "xe-cong-nghe", name: "Xe - Công nghệ",
+    subs: [
+      { id: "thi-truong-xe", name: "Thị trường xe" },
+      { id: "xe-dien", name: "Xe điện" },
+      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
+      { id: "cham-xe", name: "Chăm xe" },
+      { id: "ai", name: "AI" },
+      { id: "khoa-hoc-cn", name: "Khoa học - CN" },
+      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
     ]
   },
   {
@@ -92,15 +94,13 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "doi-song-du-lich", name: "Đời sống – Du lịch",
+    id: "giai-tri", name: "Giải trí",
     subs: [
-      { id: "nhip-song", name: "Nhịp sống" },
-      { id: "bai-hoc-cuoc-song", name: "Bài học cuộc sống" },
-      { id: "phong-cach", name: "Phong cách" },
-      { id: "viec-lam", name: "Việc làm" },
-      { id: "diem-den", name: "Điểm đến", special: "destination-search" },
-      { id: "am-thuc", name: "Ẩm thực" },
-      { id: "kham-pha-dl", name: "Khám phá" }
+      { id: "sach", name: "Sách" },
+      { id: "phim", name: "Phim" },
+      { id: "nhac", name: "Nhạc" },
+      { id: "thoi-trang", name: "Thời trang" },
+      { id: "lam-dep", name: "Làm đẹp" }
     ]
   },
   {
@@ -122,10 +122,10 @@ const CATEGORIES = [
 ];
 
 // 5 mục chính hiển thị cột phải trang chủ web
-const FEATURED_CATEGORIES = ["kinh-te", "nha-dat", "the-thao", "giai-tri", "suc-khoe"];
+const FEATURED_CATEGORIES = ["kinh-te", "nha-dat", "xe-cong-nghe", "doi-song-du-lich", "suc-khoe"];
 
 // 5 mục chính hiển thị trong mobile stream
-const MOBILE_STREAM_CATEGORIES = ["kinh-te", "nha-dat", "the-thao", "giai-tri", "suc-khoe"];
+const MOBILE_STREAM_CATEGORIES = ["kinh-te", "nha-dat", "xe-cong-nghe", "doi-song-du-lich", "suc-khoe"];
 
 // --- TÁC GIẢ MẪU ---
 const AUTHORS = [

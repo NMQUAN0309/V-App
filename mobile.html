@@ -1269,10 +1269,6 @@ input, select { font-family: inherit; }
     header.className = 'm-lib-header';
     header.innerHTML = `
       <div style="font-size:.95rem;font-weight:800;color:var(--red);margin-bottom:12px">📚 Tri thức mở V-App</div>
-      <div class="m-lib-search-row">
-        <input class="m-lib-search-input" id="mLibSearchInput" type="text" placeholder="Tìm chủ đề, từ khóa...">
-        <button class="m-lib-search-btn" id="mLibSearchBtn">Tìm</button>
-      </div>
       <div class="m-lib-tabs">
         <div class="m-lib-tab active" data-tab="topics">Chủ đề</div>
         <div class="m-lib-tab" data-tab="search">Tra cứu</div>
@@ -1297,9 +1293,6 @@ input, select { font-family: inherit; }
       };
     });
 
-    header.querySelector('#mLibSearchBtn').onclick = () => mLibDoSearch(header.querySelector('#mLibSearchInput').value.trim());
-    header.querySelector('#mLibSearchInput').onkeydown = e => { if (e.key === 'Enter') mLibDoSearch(header.querySelector('#mLibSearchInput').value.trim()); };
-
     mLibRenderTopics();
     $('#m-page-home').classList.add('active');
   }
@@ -1316,10 +1309,10 @@ input, select { font-family: inherit; }
     const body = $('#mLibBody');
     if (!body) return;
     const chips = M_LIB_TRENDING.map(t =>
-      `<span class="m-lib-chip" onclick="$('#mLibSearchInput')&&($('#mLibSearchInput').value='${t}');mLibDoSearch('${t}')">${t}</span>`
+      `<span class="m-lib-chip" onclick="mLibDoSearch('${t}')">${t}</span>`
     ).join('');
     const cards = M_LIB_TOPICS.map(tp =>
-      `<div class="m-lib-topic-card" style="--topic-color:${tp.color}" onclick="$('#mLibSearchInput')&&($('#mLibSearchInput').value='${tp.name}');mLibDoSearch('${tp.name}')">
+      `<div class="m-lib-topic-card" style="--topic-color:${tp.color}" onclick="mLibDoSearch('${tp.name}')">
         <div class="m-lib-topic-icon">${tp.icon}</div>
         <div class="m-lib-topic-name">${tp.name}</div>
       </div>`
@@ -1334,35 +1327,52 @@ input, select { font-family: inherit; }
   function mLibRenderSearch(q) {
     const body = $('#mLibBody');
     if (!body) return;
-    if (!q) { body.innerHTML = `<div class="m-lib-no-results">Nhập từ khóa để tra cứu.</div>`; return; }
-    const ql = q.toLowerCase();
-    let matches = [];
-    Object.values(D.CATEGORY_ARTICLES).forEach(arr => {
-      arr.forEach(a => {
-        if ((a.title && a.title.toLowerCase().includes(ql)) || (a.sapo && a.sapo.toLowerCase().includes(ql))) matches.push(a);
+
+    let resultsHTML = '';
+    if (!q) {
+      resultsHTML = `<div class="m-lib-no-results">Nhập từ khóa để tra cứu.</div>`;
+    } else {
+      const ql = q.toLowerCase();
+      let matches = [];
+      Object.values(D.CATEGORY_ARTICLES).forEach(arr => {
+        arr.forEach(a => {
+          if ((a.title && a.title.toLowerCase().includes(ql)) || (a.sapo && a.sapo.toLowerCase().includes(ql))) matches.push(a);
+        });
       });
-    });
-    const seen = new Set();
-    matches = matches.filter(a => { if (seen.has(a.id)) return false; seen.add(a.id); return true; });
+      const seen = new Set();
+      matches = matches.filter(a => { if (seen.has(a.id)) return false; seen.add(a.id); return true; });
 
-    const resultHTML = matches.length
-      ? matches.slice(0, 15).map(a =>
-          `<div class="m-lib-result-item" onclick="goArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
-            <div class="m-lib-result-title">${a.title}</div>
-            <div class="m-lib-result-meta">${a.categoryName || ''}</div>
-          </div>`).join('')
-      : `<div class="m-lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
+      const resultHTML = matches.length
+        ? matches.slice(0, 15).map(a =>
+            `<div class="m-lib-result-item" onclick="goArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+              <div class="m-lib-result-title">${a.title}</div>
+              <div class="m-lib-result-meta">${a.categoryName || ''}</div>
+            </div>`).join('')
+        : `<div class="m-lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
 
-    const aiHTML = `<div class="m-lib-ai-box">
-      <div class="m-lib-ai-label">✦ V-App AI · Tóm tắt</div>
-      <div class="m-lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là chủ đề liên quan đến nhiều lĩnh vực trong đời sống. Các bài viết dưới đây cung cấp thêm thông tin chi tiết.</div>
-      <div style="font-size:.73rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by V-App AI · Nội dung tham khảo</div>
-    </div>`;
+      const aiHTML = `<div class="m-lib-ai-box">
+        <div class="m-lib-ai-label">✦ V-App AI · Tóm tắt</div>
+        <div class="m-lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là chủ đề liên quan đến nhiều lĩnh vực trong đời sống. Các bài viết dưới đây cung cấp thêm thông tin chi tiết.</div>
+        <div style="font-size:.73rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by V-App AI · Nội dung tham khảo</div>
+      </div>`;
+
+      resultsHTML = `
+        <div style="font-size:.78rem;color:var(--ink-secondary);margin:4px 0 4px">${matches.length} kết quả cho "<strong>${q}</strong>"</div>
+        ${aiHTML}
+        ${resultHTML}`;
+    }
 
     body.innerHTML = `
-      <div style="font-size:.78rem;color:var(--ink-secondary);margin:10px 0 4px">${matches.length} kết quả cho "<strong>${q}</strong>"</div>
-      ${aiHTML}
-      ${resultHTML}`;
+      <div class="m-lib-search-row" style="margin-bottom:8px">
+        <input class="m-lib-search-input" id="mLibSearchInput" type="text" placeholder="Tìm chủ đề, từ khóa..." value="${q ? q.replace(/"/g, '&amp;quot;') : ''}">
+        <button class="m-lib-search-btn" id="mLibSearchBtn">Tìm</button>
+      </div>
+      ${resultsHTML}`;
+
+    const doSearch = () => mLibDoSearch($('#mLibSearchInput').value.trim());
+    $('#mLibSearchBtn').onclick = doSearch;
+    $('#mLibSearchInput').onkeydown = e => { if (e.key === 'Enter') doSearch(); };
+    if (!q) setTimeout(() => { const inp = $('#mLibSearchInput'); if (inp) inp.focus(); }, 50);
   }
 
   function mLibRenderAI() {
@@ -1571,37 +1581,25 @@ input, select { font-family: inherit; }
     appendCatArticles(stream, bdsArts);
     stream.appendChild(renderBoxProject());
 
-    // 5 bài mix #4 (sau BĐS box, trước Thể thao)
+    // 5 bài mix #4 (sau BĐS box, trước Xe - Công nghệ)
     D.MOBILE_MIX_4.forEach(a => stream.appendChild(midCard(a)));
 
-    // === THỂ THAO ===
-    const ttCat = D.CATEGORIES.find(c => c.id === 'the-thao');
-    const ttArts = D.MOBILE_CATEGORY_ARTICLES['the-thao'];
-    appendSectionHead(stream, 'the-thao', ttCat.name);
-    appendCatArticles(stream, ttArts);
+    // === XE - CÔNG NGHỆ ===
+    const xcnCat = D.CATEGORIES.find(c => c.id === 'xe-cong-nghe');
+    const xcnArts = D.MOBILE_CATEGORY_ARTICLES['xe-cong-nghe'];
+    appendSectionHead(stream, 'xe-cong-nghe', xcnCat.name);
+    appendCatArticles(stream, xcnArts);
+    stream.appendChild(renderBoxProductSearch());
 
-    // === LỊCH THI ĐẤU BOX ===
-    const matchBox = el('div', 'm-match-box');
-    const matchDoubled = [...D.MATCH_SCHEDULE, ...D.MATCH_SCHEDULE];
-    const matchItems = matchDoubled.map(m =>
-      `<span class="m-match-item"><span class="m-match-time">${m.time}</span> ${m.home} <span class="m-match-vs">vs</span> ${m.away}</span>`
-    ).join('');
-    matchBox.innerHTML = `
-      <div class="m-match-header">
-        <a href="#category/the-thao/lich-thi-dau" class="m-match-title">⚽ Lịch thi đấu</a>
-        <a href="#category/the-thao/lich-thi-dau" class="m-match-more">Xem thêm →</a>
-      </div>
-      <div class="m-match-ticker-wrap"><div class="m-match-ticker-inner">${matchItems}</div></div>`;
-    stream.appendChild(matchBox);
-
-    // 5 bài mix top #2 (thay thế box Quote)
+    // 5 bài mix top #2
     D.MOBILE_MIX_2.forEach(a => stream.appendChild(midCard(a)));
 
-    // === GIẢI TRÍ ===
-    const gtCat = D.CATEGORIES.find(c => c.id === 'giai-tri');
-    const gtArts = D.MOBILE_CATEGORY_ARTICLES['giai-tri'];
-    appendSectionHead(stream, 'giai-tri', gtCat.name);
-    appendCatArticles(stream, gtArts);
+    // === ĐỜI SỐNG – DU LỊCH ===
+    const dsdlCat = D.CATEGORIES.find(c => c.id === 'doi-song-du-lich');
+    const dsdlArts = D.MOBILE_CATEGORY_ARTICLES['doi-song-du-lich'];
+    appendSectionHead(stream, 'doi-song-du-lich', dsdlCat.name);
+    appendCatArticles(stream, dsdlArts);
+    stream.appendChild(renderBoxDestinationSearch());
 
     // === VIDEO SWIPE CLUSTER (sau Giải trí) ===
     const videoSection = el('div', 'm-video-section');
@@ -1638,12 +1636,11 @@ input, select { font-family: inherit; }
     // === REMAINING CATEGORIES ===
     // Boxes that appear after specific categories
     const boxAfter = {
-      'thoi-su':          renderBoxWeather,
-      'xe-cong-nghe':     renderBoxProductSearch,
-      'the-gioi':         renderBoxWarMapHome,
-      'phap-luat':        renderBoxLawSearch,
-      'giao-duc':         renderBoxExamSearch,
-      'doi-song-du-lich': renderBoxDestinationSearch,
+      'thoi-su':  renderBoxWeather,
+      'the-thao': renderBoxMobileMatchSchedule,
+      'the-gioi': renderBoxWarMapHome,
+      'phap-luat': renderBoxLawSearch,
+      'giao-duc':  renderBoxExamSearch,
     };
     const boxInit = {
       'the-gioi': () => initWarMapMini('homeWmWrap'),
@@ -1827,6 +1824,21 @@ input, select { font-family: inherit; }
         <button class="m-search-btn">Tìm kiếm</button>
       </div>
     </div>`;
+    return box;
+  }
+
+  function renderBoxMobileMatchSchedule() {
+    const box = el('div', 'm-match-box');
+    const matchDoubled = [...D.MATCH_SCHEDULE, ...D.MATCH_SCHEDULE];
+    const matchItems = matchDoubled.map(m =>
+      `<span class="m-match-item"><span class="m-match-time">${m.time}</span> ${m.home} <span class="m-match-vs">vs</span> ${m.away}</span>`
+    ).join('');
+    box.innerHTML = `
+      <div class="m-match-header">
+        <a href="#category/the-thao/lich-thi-dau" class="m-match-title">⚽ Lịch thi đấu</a>
+        <a href="#category/the-thao/lich-thi-dau" class="m-match-more">Xem thêm →</a>
+      </div>
+      <div class="m-match-ticker-wrap"><div class="m-match-ticker-inner">${matchItems}</div></div>`;
     return box;
   }
 

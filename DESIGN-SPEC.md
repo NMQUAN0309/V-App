@@ -192,11 +192,13 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 
 ### Trang chủ (`#home`)
 1. Header + Ticker + Nav
-2. **Cụm Top** (4 bài nổi bật):
-   - Bài #1: layout ngang — ava lớn (~45%) + title & sapo bên phải
-   - 3 bài phụ bên dưới: ava nhỏ + title + sapo
+2. **Cụm Top** (5 bài nổi bật):
+   - Hàng trên (grid ~8fr / ~2.5fr):
+     - Bài #1 (trái): layout ngang — ava lớn (~62%) + title & sapo bên phải
+     - Bài #2 (phải): layout dọc — ava full width (16/9) → title → sapo bên dưới
+   - Hàng dưới: 3 bài nhỏ (3 cột đều nhau), mỗi bài layout ngang — ava + title + sapo
 3. **2 cột chính** (grid 1fr 2fr):
-   - **Cột trái (1/3)**: 15 bài, mỗi bài = ava → title → sapo (vertical)
+   - **Cột trái (1/3)**: 20 bài, mỗi bài = ava → title → sapo (vertical)
    - **Cột phải (2/3)**: 5 cụm featured (Kinh doanh, BĐS, Thể thao, Giải trí, Sức khỏe)
      - Mỗi cụm: tên mục + danh sách mục con → bài top 1 (ava + title + sapo) + 1 bài title+sapo cạnh → 3 bài title+sapo
      - **Interstitial box** xuất hiện bên dưới một số cụm featured:
@@ -298,7 +300,6 @@ Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
   Xe               → Box: Tra cứu phạt nguội
   Du lịch          → Box: Khám phá điểm đến
   Tiêu dùng
-  Video
 ```
 
 ### Loại card bài viết (Mobile)

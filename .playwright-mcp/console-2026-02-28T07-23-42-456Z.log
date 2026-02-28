@@ -23,3 +23,27 @@
 [ 7204252ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
 [ 7204253ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
 [ 7264250ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[ 9004405ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[ 9004945ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[ 9004945ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[ 9037738ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[10805076ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[10805625ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[10805625ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[10806389ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[12605765ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[12606206ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[12606206ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[12620291ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[14406330ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[14406910ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[14406910ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[14466911ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[16207033ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[16207549ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[16207550ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[16209790ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[18007653ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[18008000ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[18008000ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[18011951ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81

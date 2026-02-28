@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V-App - Trang thông tin điện tử</title>
+<title>VTimes - Trang thông tin điện tử</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Noto+Serif:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
@@ -213,19 +213,15 @@ ul, ol { list-style: none; }
   border-right: 2px solid var(--border);
 }
 .nav-cats-scroll {
-  flex: 1; min-width: 0; overflow: hidden;
-  position: relative; display: flex; align-items: center;
+  flex: 1; min-width: 0; overflow-x: auto;
+  -ms-overflow-style: none; scrollbar-width: none;
+  display: flex; align-items: center;
+  cursor: grab; user-select: none;
 }
-/* Inner wrapper animates — duplicated twice for seamless loop */
+.nav-cats-scroll::-webkit-scrollbar { display: none; }
+.nav-cats-scroll.is-dragging { cursor: grabbing; }
 .nav-cats-inner {
   display: flex; align-items: center; flex-shrink: 0;
-  animation: navCatsAutoScroll 60s linear infinite;
-  will-change: transform;
-}
-.nav-cats-inner:hover { animation-play-state: paused; }
-@keyframes navCatsAutoScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 
 .nav-special-btn {
@@ -1027,35 +1023,17 @@ ul, ol { list-style: none; }
 .local-panel-body { padding: 0 24px 24px; }
 
 /* ============================================================
-   THƯ VIỆN OVERLAY
+   THƯ VIỆN PAGE
    ============================================================ */
-.lib-overlay {
-  display: none; position: fixed; inset: 0; z-index: 160;
-  background: rgba(0,0,0,.55); align-items: flex-start; justify-content: center;
-  padding: 32px 16px;
-}
-.lib-overlay.show { display: flex; }
-.lib-panel {
-  background: var(--white); width: min(1100px, 95vw); max-height: 90vh;
-  border-radius: 14px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.25);
-  display: flex; flex-direction: column;
-}
-/* Header: logo + search + close */
 .lib-header {
-  padding: 18px 24px 0; background: var(--white);
-  border-bottom: 1px solid var(--border); flex-shrink: 0;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: sticky; top: 103px; z-index: 50;
 }
-.lib-title-row {
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+.lib-header-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 16px var(--gutter) 0;
 }
-.lib-title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+.lib-title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
 .lib-title span { color: var(--red); }
-.lib-close {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem; transition: background var(--transition); cursor: pointer; flex-shrink: 0;
-}
-.lib-close:hover { background: var(--surface); }
 .lib-search-row {
   display: flex; gap: 8px; margin-bottom: 0;
 }
@@ -1072,8 +1050,8 @@ ul, ol { list-style: none; }
 .lib-search-btn:hover { background: #c62828; }
 /* Tab bar */
 .lib-tabs-bar {
-  display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid var(--border);
-  background: var(--white); flex-shrink: 0;
+  display: flex; gap: 0; border-bottom: 1px solid var(--border);
+  background: var(--white);
 }
 .lib-tab {
   padding: 11px 20px; font-size: .88rem; font-weight: 600; color: var(--ink-secondary);
@@ -1083,7 +1061,7 @@ ul, ol { list-style: none; }
 .lib-tab:hover { color: var(--red); }
 .lib-tab.active { color: var(--red); border-bottom-color: var(--red); }
 /* Body */
-.lib-body { flex: 1; overflow-y: auto; padding: 24px; min-height: 0; }
+.lib-body { padding: 24px var(--gutter); max-width: var(--max-w); margin: 0 auto; }
 /* Trending chips */
 .lib-trending { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; align-items: center; }
 .lib-trending-label { font-size: .8rem; color: var(--ink-tertiary); font-weight: 600; }
@@ -1284,8 +1262,8 @@ ul, ol { list-style: none; }
 <header class="site-header">
   <div class="header-inner">
     <a href="#home" class="logo">
-      <img src="v-app logo.png" alt="V-App">
-      <span class="logo-text">V-App</span>
+      <img src="v-app logo.png" alt="VTimes">
+      <span class="logo-text">VTimes</span>
     </a>
     <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1333,7 +1311,7 @@ ul, ol { list-style: none; }
   <div class="menu-backdrop" id="menuBackdrop"></div>
   <div class="menu-panel">
     <div class="menu-header">
-      <span class="logo-text" style="color:var(--red)">V-App</span>
+      <span class="logo-text" style="color:var(--red)">VTimes</span>
       <button class="menu-close" id="menuClose">&times;</button>
     </div>
     <div class="menu-list" id="menuList"></div>
@@ -1370,21 +1348,21 @@ ul, ol { list-style: none; }
 <!-- ============================================================
      THƯ VIỆN OVERLAY
      ============================================================ -->
-<div class="lib-overlay" id="libOverlay">
-  <div class="lib-panel">
-    <div class="lib-header">
-      <div class="lib-title-row">
-        <div class="lib-title">📚 <span>Tri thức mở</span> V-App</div>
-        <button class="lib-close" id="libClose">&times;</button>
-      </div>
+<!-- ============================================================
+     PAGE: LIBRARY
+     ============================================================ -->
+<div id="page-library" class="page">
+  <div class="lib-header" id="libHeader">
+    <div class="lib-header-inner">
+      <div class="lib-title">📚 <span>Bách khoa tri thức</span> VTimes</div>
       <div class="lib-tabs-bar">
         <div class="lib-tab active" data-tab="topics">Chủ đề</div>
         <div class="lib-tab" data-tab="search">Tra cứu</div>
         <div class="lib-tab" data-tab="ai">✦ Hỏi AI</div>
       </div>
     </div>
-    <div class="lib-body" id="libBody"></div>
   </div>
+  <div class="lib-body" id="libBody"></div>
 </div>
 
 <!-- ============================================================
@@ -1455,8 +1433,8 @@ ul, ol { list-style: none; }
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="f-logo">V-App</div>
-    <p>Trang thông tin điện tử V-App &copy; 2026. Prototype Demo.</p>
+    <div class="f-logo">VTimes</div>
+    <p>Trang thông tin điện tử VTimes &copy; 2026. Prototype Demo.</p>
   </div>
 </footer>
 
@@ -1595,23 +1573,20 @@ ul, ol { list-style: none; }
       <a href="javascript:void(0)" class="nav-special-btn" id="navLatest">Mới nhất</a>
       <a href="javascript:void(0)" class="nav-special-btn" id="navLocal">Địa phương ▾</a>
       <a href="javascript:void(0)" class="nav-special-btn" id="navQuantam">Quan tâm ▾</a>
-      <a href="javascript:void(0)" class="nav-special-btn" id="navLibrary" style="border-right:none">📚 Tri thức mở</a>`;
+      <a href="#library" class="nav-special-btn" style="border-right:none">📚 Bách khoa tri thức</a>`;
 
-    // Scrollable category list — inner wrapper duplicated for seamless CSS animation
+    // Scrollable category list
     const catsScroll = el('div', 'nav-cats-scroll');
     catsScroll.id = 'navCatsScroll';
     const catsInner = el('div', 'nav-cats-inner');
     catsInner.id = 'navCatsInner';
-    // Duplicate categories twice so the -50% translate loops seamlessly
-    for (let pass = 0; pass < 2; pass++) {
-      D.CATEGORIES.forEach(cat => {
-        const a = el('a', 'nav-cat-link');
-        a.href = `#category/${cat.id}`;
-        a.dataset.cat = cat.id;
-        a.textContent = cat.name;
-        catsInner.appendChild(a);
-      });
-    }
+    D.CATEGORIES.forEach(cat => {
+      const a = el('a', 'nav-cat-link');
+      a.href = `#category/${cat.id}`;
+      a.dataset.cat = cat.id;
+      a.textContent = cat.name;
+      catsInner.appendChild(a);
+    });
     catsScroll.appendChild(catsInner);
 
     nav.innerHTML = '';
@@ -1621,7 +1596,36 @@ ul, ol { list-style: none; }
     $('#navLatest').addEventListener('click', () => { showLatestNews(); });
     $('#navLocal').addEventListener('click', () => { showLocalNews(); });
     $('#navQuantam').addEventListener('click', () => { showQuantamPanel(); });
-    $('#navLibrary').addEventListener('click', () => { showLibrary(); });
+    // navLibrary navigates via href="#library"
+
+    // Mouse drag to scroll
+    enableDragScroll(catsScroll);
+  }
+
+  function enableDragScroll(el) {
+    let isDown = false, startX, sl, didDrag = false;
+    el.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      isDown = true; didDrag = false;
+      startX = e.pageX; sl = el.scrollLeft;
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false;
+      el.classList.remove('is-dragging');
+    });
+    el.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      const dx = e.pageX - startX;
+      if (Math.abs(dx) > 4) {
+        didDrag = true;
+        el.classList.add('is-dragging');
+        el.scrollLeft = sl - dx;
+      }
+    });
+    el.addEventListener('click', e => {
+      if (didDrag) { e.preventDefault(); e.stopPropagation(); didDrag = false; }
+    }, true);
   }
 
   // ============================================================
@@ -1763,14 +1767,12 @@ ul, ol { list-style: none; }
 
   let libChatHistory = [];
 
-  function showLibrary() {
-    const overlay = $('#libOverlay');
-    overlay.classList.add('show');
-    renderLibTopicsTab();
-    // Tab switching
-    overlay.querySelectorAll('.lib-tab').forEach(tab => {
+  function renderLibrary() {
+    libChatHistory = [];
+    const page = $('#page-library');
+    page.querySelectorAll('.lib-tab').forEach(tab => {
       tab.onclick = () => {
-        overlay.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
+        page.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         const which = tab.dataset.tab;
         if (which === 'topics') renderLibTopicsTab();
@@ -1778,13 +1780,12 @@ ul, ol { list-style: none; }
         else if (which === 'ai') renderLibAITab();
       };
     });
-    // Close
-    $('#libClose').onclick = () => overlay.classList.remove('show');
-    overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('show'); };
+    page.querySelectorAll('.lib-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'topics'));
+    renderLibTopicsTab();
   }
 
   function libSetActiveTab(name) {
-    $('#libOverlay').querySelectorAll('.lib-tab').forEach(t => {
+    $('#page-library').querySelectorAll('.lib-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.tab === name);
     });
   }
@@ -1843,16 +1844,16 @@ ul, ol { list-style: none; }
 
       const resultHTML = matches.length
         ? matches.slice(0, 20).map(a => `
-            <div class="lib-result-item" onclick="renderArticle && renderArticle(${JSON.stringify(a).replace(/"/g, '&quot;')});$('#libOverlay').classList.remove('show');">
+            <div class="lib-result-item" onclick="goArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
               <div class="lib-result-title">${a.title}</div>
               <div class="lib-result-meta">${a.categoryName || ''} · ${a.time || ''}</div>
             </div>`).join('')
         : `<div class="lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
 
       const aiSummary = `<div class="lib-ai-box">
-        <div class="lib-ai-label">✦ V-App AI · Tóm tắt</div>
-        <div class="lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là một chủ đề quan trọng được đề cập trong nhiều lĩnh vực. Dựa trên các bài viết hiện có, đây là những thông tin nổi bật bạn nên biết: chủ đề này liên quan đến các xu hướng đang thay đổi trong xã hội, ảnh hưởng đến đời sống và kinh tế. Các chuyên gia nhận định đây là vấn đề cần được quan tâm và theo dõi thường xuyên.</div>
-        <div style="margin-top:10px;font-size:.78rem;color:var(--ink-secondary)">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>
+        <div class="lib-ai-label">✦ VTimes AI · Tóm tắt</div>
+        <div class="lib-ai-text">Theo VTimes AI, <strong>"${q}"</strong> là một chủ đề quan trọng được đề cập trong nhiều lĩnh vực. Dựa trên các bài viết hiện có, đây là những thông tin nổi bật bạn nên biết: chủ đề này liên quan đến các xu hướng đang thay đổi trong xã hội, ảnh hưởng đến đời sống và kinh tế. Các chuyên gia nhận định đây là vấn đề cần được quan tâm và theo dõi thường xuyên.</div>
+        <div style="margin-top:10px;font-size:.78rem;color:var(--ink-secondary)">✦ Powered by VTimes AI · Nội dung mang tính tham khảo</div>
       </div>`;
 
       resultsHTML = `
@@ -1892,13 +1893,13 @@ ul, ol { list-style: none; }
         <div class="lib-chat-messages" id="libChatMessages">
           <div class="lib-ai-welcome">
             <div style="font-size:1.5rem;margin-bottom:8px">✦</div>
-            <div style="font-weight:700;font-size:1rem;margin-bottom:4px">V-App AI</div>
+            <div style="font-weight:700;font-size:1rem;margin-bottom:4px">VTimes AI</div>
             <div style="font-size:.88rem;color:var(--ink-secondary);margin-bottom:16px">Hỏi bất cứ điều gì về khoa học, lịch sử, kinh tế...</div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">${starterChips}</div>
           </div>
         </div>
         <div class="lib-chat-input-row">
-          <input class="lib-chat-input" id="libChatInput" type="text" placeholder="Hỏi V-App AI...">
+          <input class="lib-chat-input" id="libChatInput" type="text" placeholder="Hỏi VTimes AI...">
           <button class="lib-chat-send" id="libChatSend">Gửi</button>
         </div>
       </div>`;
@@ -1941,19 +1942,17 @@ ul, ol { list-style: none; }
     // Match a known topic for a slightly tailored reply
     const matched = LIB_TOPICS.find(t => ql.includes(t.name.toLowerCase()) || ql.includes(t.key));
     const topicNote = matched ? `lĩnh vực <strong>${matched.name}</strong>` : 'nhiều lĩnh vực khác nhau';
-    return `<div style="font-weight:700;margin-bottom:8px">✦ V-App AI</div>
+    return `<div style="font-weight:700;margin-bottom:8px">✦ VTimes AI</div>
       <p style="margin:0 0 8px">Câu hỏi của bạn về <em>"${q}"</em> liên quan đến ${topicNote}.</p>
       <ul style="margin:0 0 8px;padding-left:18px">
         <li>Đây là chủ đề được nghiên cứu và ghi nhận rộng rãi trong học thuật và thực tiễn.</li>
         <li>Các chuyên gia thường nhìn nhận vấn đề này qua nhiều góc độ khác nhau.</li>
         <li>Để giải mã đa tầng hơn, bạn có thể dùng tab <strong>Tra cứu</strong> để xem các bài viết liên quan.</li>
       </ul>
-      <div style="font-size:.78rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>`;
+      <div style="font-size:.78rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by VTimes AI · Nội dung mang tính tham khảo</div>`;
   }
 
-  $('#libOverlay') && $('#libOverlay').addEventListener('click', e => {
-    if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
-  });
+
 
   // ============================================================
   // BUILD HAMBURGER MENU
@@ -2169,7 +2168,7 @@ ul, ol { list-style: none; }
         </div>
         <div class="vf-info">
           <div class="vf-title">${a.title}</div>
-          <div class="vf-meta">${a.time} · V-App Video</div>
+          <div class="vf-meta">${a.time} · VTimes Video</div>
         </div>`;
       item.addEventListener('click', () => openVideoLightbox(articles, i));
       feed.appendChild(item);
@@ -2953,6 +2952,10 @@ ul, ol { list-style: none; }
     } else if (parts[0] === 'article' && parts[1]) {
       $('#page-article').classList.add('active');
       renderArticle(parts[1]);
+    } else if (parts[0] === 'library') {
+      $('#page-library').classList.add('active');
+      renderLibrary();
+      window.scrollTo(0, 0);
     } else {
       $('#page-home').classList.add('active');
       window.scrollTo(0, 0);

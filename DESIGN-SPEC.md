@@ -1,7 +1,7 @@
-# V-App - Tài liệu thiết kế giao diện
+# VTimes - Tài liệu thiết kế giao diện
 
 ## Tổng quan
-Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao diện.
+Trang thông tin điện tử VTimes - prototype để demo cấu trúc và giao diện.
 
 ## Công nghệ
 - HTML/CSS/JS thuần (không framework)
@@ -373,7 +373,7 @@ Không gian tra cứu bách khoa kết hợp AI. Không phải chuyên mục tin
 ### Ghi chú AI
 - Prototype — không có API thật, dùng template JS để mô phỏng phản hồi
 - Chat: user bubble (phải, đỏ) + AI bubble (trái, trắng border)
-- Label: "✦ Powered by V-App AI · Nội dung mang tính tham khảo"
+- Label: "✦ Powered by VTimes AI · Nội dung mang tính tham khảo"
 
 ### Web vs Mobile
 - **Web:** full-screen overlay (`z-index: 160`), panel `min(1100px, 95vw)`, layout 2 cột cho kết quả tra cứu

@@ -1,5 +1,5 @@
 // ============================================================
-// V-App Sample Data
+// VTimes Sample Data
 // File này chứa toàn bộ dữ liệu mẫu dùng chung cho web.html và mobile.html
 // ============================================================
 
@@ -43,6 +43,43 @@ const CATEGORIES = [
     ]
   },
   {
+    id: "xe-cong-nghe", name: "Xe - Công nghệ",
+    subs: [
+      { id: "thi-truong-xe", name: "Thị trường xe" },
+      { id: "xe-dien", name: "Xe điện" },
+      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
+      { id: "cham-xe", name: "Chăm xe" },
+      { id: "ai", name: "AI" },
+      { id: "khoa-hoc-cn", name: "Khoa học - CN" },
+      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
+    ]
+  },
+  {
+    id: "suc-khoe", name: "Sức khỏe",
+    subs: [
+      { id: "cac-benh", name: "Các bệnh", special: "disease-search" },
+      { id: "song-khoe", name: "Sống khỏe" }
+    ]
+  },
+  {
+    id: "giao-duc", name: "Giáo dục",
+    subs: [
+      { id: "tuyen-sinh", name: "Tuyển sinh" },
+      { id: "du-hoc", name: "Du học" },
+      { id: "de-thi-dap-an", name: "Đề thi & Đáp án", special: "exam-search" }
+    ]
+  },
+  {
+    id: "giai-tri", name: "Giải trí",
+    subs: [
+      { id: "sach", name: "Sách" },
+      { id: "phim", name: "Phim" },
+      { id: "nhac", name: "Nhạc" },
+      { id: "thoi-trang", name: "Thời trang" },
+      { id: "lam-dep", name: "Làm đẹp" }
+    ]
+  },
+  {
     id: "the-thao", name: "Thể thao",
     subs: [
       { id: "bong-da", name: "Bóng đá" },
@@ -68,47 +105,10 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "xe-cong-nghe", name: "Xe - Công nghệ",
-    subs: [
-      { id: "thi-truong-xe", name: "Thị trường xe" },
-      { id: "xe-dien", name: "Xe điện" },
-      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
-      { id: "cham-xe", name: "Chăm xe" },
-      { id: "ai", name: "AI" },
-      { id: "khoa-hoc-cn", name: "Khoa học - CN" },
-      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
-    ]
-  },
-  {
-    id: "suc-khoe", name: "Sức khỏe",
-    subs: [
-      { id: "cac-benh", name: "Các bệnh", special: "disease-search" },
-      { id: "song-khoe", name: "Sống khỏe" }
-    ]
-  },
-  {
     id: "phap-luat", name: "Pháp luật",
     subs: [
       { id: "phap-dinh", name: "Pháp đình" },
       { id: "thu-vien-phap-luat", name: "Thư viện pháp luật", special: "law-search" }
-    ]
-  },
-  {
-    id: "giai-tri", name: "Giải trí",
-    subs: [
-      { id: "sach", name: "Sách" },
-      { id: "phim", name: "Phim" },
-      { id: "nhac", name: "Nhạc" },
-      { id: "thoi-trang", name: "Thời trang" },
-      { id: "lam-dep", name: "Làm đẹp" }
-    ]
-  },
-  {
-    id: "giao-duc", name: "Giáo dục",
-    subs: [
-      { id: "tuyen-sinh", name: "Tuyển sinh" },
-      { id: "du-hoc", name: "Du học" },
-      { id: "de-thi-dap-an", name: "Đề thi & Đáp án", special: "exam-search" }
     ]
   },
   {
@@ -136,9 +136,9 @@ const AUTHORS = [
 
 // --- NGUỒN MẪU ---
 const SOURCES = [
-  "V-App News", "Thông tấn xã Việt Nam", "Báo Nhân Dân",
+  "VTimes News", "Thông tấn xã Việt Nam", "Báo Nhân Dân",
   "Vietnam News Agency", "Báo Tuổi Trẻ", "Tạp chí Kinh tế",
-  "Trung tâm Tin tức V-App", "Ban Thời sự V-App"
+  "Trung tâm Tin tức VTimes", "Ban Thời sự VTimes"
 ];
 
 // --- 10 QUOTES VĨ NHÂN ---
@@ -169,11 +169,11 @@ const UTILITIES = [
 
 // --- LINK MẪU ---
 const SAMPLE_LINKS = [
-  "https://picsum.photos/seed/vapp1/800/450",
-  "https://picsum.photos/seed/vapp2/800/450",
-  "https://picsum.photos/seed/vapp3/800/450",
-  "https://picsum.photos/seed/vapp4/800/450",
-  "https://picsum.photos/seed/vapp5/800/450"
+  "https://picsum.photos/seed/vtimes1/800/450",
+  "https://picsum.photos/seed/vtimes2/800/450",
+  "https://picsum.photos/seed/vtimes3/800/450",
+  "https://picsum.photos/seed/vtimes4/800/450",
+  "https://picsum.photos/seed/vtimes5/800/450"
 ];
 
 // --- TIÊU ĐỀ MẪU ---
@@ -308,7 +308,7 @@ function createArticle(categoryId, subId) {
     title: randomPick(SAMPLE_TITLES),
     sapo: randomPick(SAMPLE_SAPOS),
     content: "Đây là bài sample phục vụ tham khảo thiết kế. Nội dung bài viết thực tế sẽ được thay thế trong phiên bản chính thức. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nội dung mẫu này chỉ để hiển thị bố cục và font chữ trên giao diện.",
-    avaUrl: "https://picsum.photos/seed/vapp" + id + "/800/450",
+    avaUrl: "https://picsum.photos/seed/vtimes" + id + "/800/450",
     time: randomTime(),
     author: randomPick(AUTHORS),
     source: randomPick(SOURCES),

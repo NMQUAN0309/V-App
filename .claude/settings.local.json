@@ -9,7 +9,9 @@
       "mcp__playwright__browser_click",
       "mcp__playwright__browser_run_code",
       "mcp__playwright__browser_console_messages",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node \"c:/Users/nmqua/Dropbox/Bot/V-App redesign/_patch_web.js\")",
+      "Bash(node \"c:/Users/nmqua/Dropbox/Bot/V-App redesign/_patch_mob.js\")"
     ]
   }
 }

@@ -1,0 +1,9 @@
+[     115ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[     144ms] [WARNING] Failed to decode downloaded font: data:application/font-woff2, @ https://vnexpress.net/goc-nhin:735
+[     848ms] [ERROR] Attestation check for Attribution Reporting on https://www.google-analytics.com failed. @ https://vnexpress.net/goc-nhin:0
+[    1002ms] [WARNING] WARNING: Multiple instances of Three.js being imported. @ https://la2.vnecdn.net/static/device_model_min.js:0
+[    1004ms] [WARNING] WARNING: Multiple instances of Three.js being imported. @ https://la2.vnecdn.net/static/device_model_min.js:0
+[    1014ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[    1015ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[    1218ms] [ERROR] Attestation check for Attribution Reporting on https://www.google-analytics.com failed. @ https://vnexpress.net/goc-nhin:0
+[    8678ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81

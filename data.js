@@ -10,7 +10,6 @@ const CATEGORIES = [
     subs: [
       { id: "chinh-tri", name: "Chính trị" },
       { id: "dan-sinh", name: "Dân sinh" },
-      { id: "quoc-te", name: "Quốc tế" },
       { id: "giao-thong", name: "Giao thông" }
     ]
   },
@@ -19,7 +18,7 @@ const CATEGORIES = [
     subs: [
       { id: "phan-tich", name: "Phân tích" },
       { id: "quan-su", name: "Quân sự", special: "war-map" },
-      { id: "kham-pha", name: "Khám phá" }
+      { id: "kham-pha", name: "Thế giới đó đây" }
     ]
   },
   {
@@ -28,8 +27,9 @@ const CATEGORIES = [
       { id: "dau-tu", name: "Đầu tư" },
       { id: "doanh-nghiep", name: "Doanh nghiệp" },
       { id: "chung-khoan", name: "Chứng khoán", special: "stock-search" },
-      { id: "bank", name: "Bank", special: "ebank-search" },
-      { id: "vi-mo", name: "Vĩ mô" }
+      { id: "bank", name: "Ngân hàng", special: "ebank-search" },
+      { id: "vi-mo", name: "Vĩ mô" },
+      { id: "tieu-dung", name: "Tiêu dùng" }
     ]
   },
   {
@@ -122,11 +122,8 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "tieu-dung", name: "Tiêu dùng",
-    subs: [
-      { id: "hang-hoa", name: "Hàng hóa" },
-      { id: "mua-ban", name: "Mua bán" }
-    ]
+    id: "goc-chuyen-gia", name: "Góc chuyên gia",
+    subs: []
   },
   {
     id: "video", name: "Video",
@@ -358,8 +355,12 @@ function getRandomQuote() {
 // PRE-GENERATE DỮ LIỆU CHO TRANG CHỦ
 // ============================================================
 
-// Bài top trang chủ (5 bài: 1 lớn + 1 trung bình + 3 nhỏ)
-const HOME_TOP_ARTICLES = generateArticles("thoi-su", 5);
+// Bài từ mục Góc chuyên gia dùng cho vị trí top 5 trang chủ
+const GCG_ARTICLE = createArticle("goc-chuyen-gia");
+
+// Bài top trang chủ (5 bài: 1 lớn + 1 trung bình + 3 nhỏ — bài #5 là Góc chuyên gia)
+const HOME_TOP_ARTICLES = generateArticles("thoi-su", 4);
+HOME_TOP_ARTICLES.push(GCG_ARTICLE);
 
 // 20 bài cột trái trang chủ
 const HOME_LEFT_ARTICLES = [];
@@ -400,7 +401,8 @@ const MOST_READ_48H = generateArticles("thoi-su", 5).map((a, i) => {
 // ============================================================
 // MOBILE STREAM DATA
 // ============================================================
-const MOBILE_TOP_5 = generateArticles("thoi-su", 5);
+const MOBILE_TOP_5 = generateArticles("thoi-su", 4);
+MOBILE_TOP_5.push(GCG_ARTICLE);
 const MOBILE_CATEGORY_ARTICLES = {};
 MOBILE_STREAM_CATEGORIES.forEach(catId => {
   MOBILE_CATEGORY_ARTICLES[catId] = generateArticles(catId, 5);

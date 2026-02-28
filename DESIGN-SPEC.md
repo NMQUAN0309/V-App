@@ -63,7 +63,7 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 | Đời sống | Chuyên mục |
 | Giáo dục | Chuyên mục |
 | Du lịch | Chuyên mục |
-| Tiêu dùng | Chuyên mục |
+| Góc chuyên gia | Chuyên mục (đang phát triển) |
 | Video | Chuyên mục |
 
 **Bố cục nav (Web):** 4 nút đầu (🏠, Mới nhất, Địa phương, Quan tâm) cố định bên trái, không cuộn. Phần chuyên mục bên phải tự động cuộn ngang theo vòng lặp (auto-scroll animation), hover để dừng.
@@ -75,13 +75,13 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 ## Cấu trúc chuyên mục
 
 ### 1. Thời sự
-- Chính trị | Dân sinh | Quốc tế | Giao thông
+- Chính trị | Dân sinh | Giao thông
 
 ### 2. Thế giới
-- Phân tích | Quân sự ⚙ (Bản đồ chiến sự) | Khám phá
+- Phân tích | Quân sự ⚙ (Bản đồ chiến sự) | Thế giới đó đây
 
 ### 3. Kinh doanh
-- Đầu tư | Doanh nghiệp | Chứng khoán ⚙ | Bank ⚙ | Vĩ mô
+- Đầu tư | Doanh nghiệp | Chứng khoán ⚙ | Ngân hàng ⚙ | Vĩ mô | Tiêu dùng
 
 ### 4. Công nghệ
 - AI | Khoa học | Thiết bị ⚙
@@ -113,14 +113,14 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 ### 13. Du lịch
 - Điểm đến ⚙ | Ẩm thực | Khám phá
 
-### 14. Tiêu dùng
-- Hàng hóa | Mua bán
+### 14. Góc chuyên gia ★
+- (không có mục con — đang phát triển)
 
 ### 15. Video
 - (không có mục con)
 
 > **⚙** Mục con có search box / widget tra cứu hiển thị đầu trang khi vào mục đó.
-> **★** Mục con ở trạng thái "Đang phát triển" — hiện trang thông báo khi truy cập.
+> **★** Mục ở trạng thái "Đang phát triển" — hiện trang thông báo khi truy cập.
 
 ---
 
@@ -299,7 +299,7 @@ Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
   Đời sống
   Xe               → Box: Tra cứu phạt nguội
   Du lịch          → Box: Khám phá điểm đến
-  Tiêu dùng
+  Góc chuyên gia   (đang phát triển)
 ```
 
 ### Loại card bài viết (Mobile)

@@ -552,6 +552,45 @@ input, select { font-family: inherit; }
 .m-coming-soon-icon { font-size: 2.8rem; margin-bottom: 14px; }
 .m-coming-soon-title { font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
 .m-coming-soon-sub { font-size: .85rem; color: var(--ink-secondary); max-width: 280px; line-height: 1.6; }
+.m-cat-badge {
+  display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .03em;
+  color: #fff; background: var(--red); border-radius: 3px;
+  padding: 2px 6px; margin-bottom: 5px; cursor: pointer; text-decoration: none;
+}
+.m-cat-badge:hover { background: #c62828; }
+
+/* ============================================================
+   GÓC CHUYÊN GIA — MOBILE
+   ============================================================ */
+.m-gcg-article {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 13px 0; border-bottom: 1px solid var(--border-light);
+}
+.m-gcg-article:first-child { padding-top: 0; }
+.m-gcg-article:last-child { border-bottom: none; }
+.m-gcg-body { flex: 1; min-width: 0; }
+.m-gcg-title {
+  font-size: .95rem; font-weight: 700; color: var(--ink); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 4px; cursor: pointer;
+}
+.m-gcg-title:hover { color: var(--red); }
+.m-gcg-sapo {
+  font-size: .82rem; color: var(--ink-secondary); line-height: 1.45; margin-bottom: 5px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-gcg-avatar-wrap {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 62px;
+}
+.m-gcg-avatar {
+  width: 50px; height: 50px;
+  border-radius: 50%; object-fit: cover; object-position: top center;
+  border: 2px solid var(--border-light); background: var(--surface); cursor: pointer;
+}
+.m-gcg-author {
+  font-size: .68rem; font-weight: 700; color: var(--red);
+  text-align: center; line-height: 1.3; word-break: break-word;
+}
 
 /* ============================================================
    ARTICLE DETAIL — MOBILE
@@ -1199,7 +1238,18 @@ input, select { font-family: inherit; }
     stream.innerHTML = '';
 
     // 5 bài top nổi bật (full width)
-    D.MOBILE_TOP_5.forEach(a => stream.appendChild(fullCard(a)));
+    D.MOBILE_TOP_5.forEach((a, i) => {
+      const card = fullCard(a);
+      if (i === D.MOBILE_TOP_5.length - 1 && a.categoryId === 'goc-chuyen-gia') {
+        const badge = document.createElement('a');
+        badge.className = 'm-cat-badge';
+        badge.textContent = 'Góc chuyên gia';
+        badge.href = '#category/goc-chuyen-gia';
+        badge.addEventListener('click', e => { e.stopPropagation(); location.hash = '#category/goc-chuyen-gia'; });
+        card.querySelector('.m-card-body')?.prepend(badge);
+      }
+      stream.appendChild(card);
+    });
 
     // === KINH DOANH (in a visible card/frame) ===
     const kdCat = D.CATEGORIES.find(c => c.id === 'kinh-doanh');
@@ -1483,6 +1533,36 @@ input, select { font-family: inherit; }
   }
 
   // ============================================================
+  // GÓC CHUYÊN GIA — MOBILE
+  // ============================================================
+  function renderGCGPageMobile() {
+    $('#mVideoFeedPage').classList.remove('active');
+    $('#mCatNormal').style.display = '';
+    $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === 'goc-chuyen-gia'));
+    $('#mCatSubs').innerHTML = '';
+    $('#mCatSpecial').innerHTML = '';
+
+    const stream = $('#mCatStream');
+    stream.innerHTML = '';
+    const articles = D.CATEGORY_ARTICLES['goc-chuyen-gia'] || [];
+    articles.forEach(a => {
+      const item = el('div', 'm-gcg-article fade-in');
+      item.innerHTML = `
+        <div class="m-gcg-body">
+          <div class="m-gcg-title">${a.title}</div>
+          <div class="m-gcg-sapo">${a.sapo}</div>
+        </div>
+        <div class="m-gcg-avatar-wrap">
+          <img class="m-gcg-avatar" src="https://picsum.photos/seed/author${a.id}/80/80" alt="${a.author}" loading="lazy">
+          <div class="m-gcg-author">${a.author}</div>
+        </div>`;
+      item.querySelector('.m-gcg-title').addEventListener('click', () => goArticle(a));
+      item.querySelector('.m-gcg-avatar').addEventListener('click', () => goArticle(a));
+      stream.appendChild(item);
+    });
+  }
+
+  // ============================================================
   // MOBILE VIDEO FEED
   // ============================================================
   function renderMobileVideoFeed() {
@@ -1553,6 +1633,23 @@ input, select { font-family: inherit; }
   function renderCategory(catId, subId) {
     const cat = D.CATEGORIES.find(c => c.id === catId);
     if (!cat) return;
+
+    // Góc chuyên gia — custom opinion layout
+    if (catId === 'goc-chuyen-gia') { renderGCGPageMobile(); return; }
+
+    // Check comingSoon on top-level category
+    if (cat.comingSoon) {
+      $('#mVideoFeedPage').classList.remove('active');
+      $('#mCatNormal').style.display = '';
+      $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === catId));
+      $('#mCatSubs').innerHTML = '';
+      $('#mCatStream').innerHTML = `<div class="m-coming-soon">
+        <div class="m-coming-soon-icon">🚧</div>
+        <div class="m-coming-soon-title">Đang phát triển</div>
+        <div class="m-coming-soon-sub">Tính năng này đang được xây dựng. Vui lòng quay lại sau!</div>
+      </div>`;
+      return;
+    }
 
     // Check comingSoon on sub
     if (subId) {

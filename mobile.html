@@ -1300,7 +1300,7 @@ input, select { font-family: inherit; }
     const boxInit = {
       'the-gioi': () => initWarMapMini('homeWmWrap'),
     };
-    const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id));
+    const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id) && c.id !== 'video');
     remCats.forEach(cat => {
       const articles = D.MOBILE_REMAINING[cat.id];
       if (!articles || !articles.length) return;

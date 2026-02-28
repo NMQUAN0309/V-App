@@ -22,7 +22,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "kinh-doanh", name: "Kinh doanh",
+    id: "kinh-te", name: "Kinh tế",
     subs: [
       { id: "dau-tu", name: "Đầu tư" },
       { id: "doanh-nghiep", name: "Doanh nghiệp" },
@@ -33,15 +33,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "cong-nghe", name: "Công nghệ",
-    subs: [
-      { id: "ai", name: "AI" },
-      { id: "khoa-hoc", name: "Khoa học" },
-      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
-    ]
-  },
-  {
-    id: "bat-dong-san", name: "Bất động sản",
+    id: "nha-dat", name: "Nhà đất",
     subs: [
       { id: "chinh-sach", name: "Chính sách" },
       { id: "thi-truong", name: "Thị trường" },
@@ -51,10 +43,15 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "suc-khoe", name: "Sức khỏe",
+    id: "xe-cong-nghe", name: "Xe - Công nghệ",
     subs: [
-      { id: "cac-benh", name: "Các bệnh", special: "disease-search" },
-      { id: "song-khoe", name: "Sống khỏe" }
+      { id: "thi-truong-xe", name: "Thị trường xe" },
+      { id: "xe-dien", name: "Xe điện" },
+      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
+      { id: "cham-xe", name: "Chăm xe" },
+      { id: "ai", name: "AI" },
+      { id: "khoa-hoc-cn", name: "Khoa học - CN" },
+      { id: "thiet-bi", name: "Thiết bị", special: "thietbi-search" }
     ]
   },
   {
@@ -81,10 +78,29 @@ const CATEGORIES = [
     ]
   },
   {
+    id: "suc-khoe", name: "Sức khỏe",
+    subs: [
+      { id: "cac-benh", name: "Các bệnh", special: "disease-search" },
+      { id: "song-khoe", name: "Sống khỏe" }
+    ]
+  },
+  {
     id: "phap-luat", name: "Pháp luật",
     subs: [
       { id: "phap-dinh", name: "Pháp đình" },
       { id: "thu-vien-phap-luat", name: "Thư viện pháp luật", special: "law-search" }
+    ]
+  },
+  {
+    id: "doi-song-du-lich", name: "Đời sống – Du lịch",
+    subs: [
+      { id: "nhip-song", name: "Nhịp sống" },
+      { id: "bai-hoc-cuoc-song", name: "Bài học cuộc sống" },
+      { id: "phong-cach", name: "Phong cách" },
+      { id: "viec-lam", name: "Việc làm" },
+      { id: "diem-den", name: "Điểm đến", special: "destination-search" },
+      { id: "am-thuc", name: "Ẩm thực" },
+      { id: "kham-pha-dl", name: "Khám phá" }
     ]
   },
   {
@@ -96,33 +112,7 @@ const CATEGORIES = [
     ]
   },
   {
-    id: "doi-song", name: "Đời sống",
-    subs: [
-      { id: "nhip-song", name: "Nhịp sống" },
-      { id: "bai-hoc-cuoc-song", name: "Bài học cuộc sống" },
-      { id: "phong-cach", name: "Phong cách" },
-      { id: "viec-lam", name: "Việc làm" }
-    ]
-  },
-  {
-    id: "xe", name: "Xe",
-    subs: [
-      { id: "thi-truong-xe", name: "Thị trường" },
-      { id: "xe-dien", name: "Xe điện" },
-      { id: "kinh-nghiem-lai-xe", name: "Kinh nghiệm lái xe", special: "traffic-fine" },
-      { id: "cham-xe", name: "Chăm xe" }
-    ]
-  },
-  {
-    id: "du-lich", name: "Du lịch",
-    subs: [
-      { id: "diem-den", name: "Điểm đến", special: "destination-search" },
-      { id: "am-thuc", name: "Ẩm thực" },
-      { id: "kham-pha-dl", name: "Khám phá" }
-    ]
-  },
-  {
-    id: "goc-chuyen-gia", name: "Góc chuyên gia",
+    id: "goc-nhin-chuyen-gia", name: "Góc nhìn chuyên gia",
     subs: []
   },
   {
@@ -132,10 +122,10 @@ const CATEGORIES = [
 ];
 
 // 5 mục chính hiển thị cột phải trang chủ web
-const FEATURED_CATEGORIES = ["kinh-doanh", "bat-dong-san", "the-thao", "giai-tri", "suc-khoe"];
+const FEATURED_CATEGORIES = ["kinh-te", "nha-dat", "the-thao", "giai-tri", "suc-khoe"];
 
 // 5 mục chính hiển thị trong mobile stream
-const MOBILE_STREAM_CATEGORIES = ["kinh-doanh", "bat-dong-san", "the-thao", "giai-tri", "suc-khoe"];
+const MOBILE_STREAM_CATEGORIES = ["kinh-te", "nha-dat", "the-thao", "giai-tri", "suc-khoe"];
 
 // --- TÁC GIẢ MẪU ---
 const AUTHORS = [
@@ -356,7 +346,7 @@ function getRandomQuote() {
 // ============================================================
 
 // Bài từ mục Góc chuyên gia dùng cho vị trí top 5 trang chủ
-const GCG_ARTICLE = createArticle("goc-chuyen-gia");
+const GCG_ARTICLE = createArticle("goc-nhin-chuyen-gia");
 
 // Bài top trang chủ (5 bài: 1 lớn + 1 trung bình + 3 nhỏ — bài #5 là Góc chuyên gia)
 const HOME_TOP_ARTICLES = generateArticles("thoi-su", 4);
@@ -420,27 +410,27 @@ CATEGORIES.forEach(cat => {
 const MOBILE_MIX_1 = [
   createArticle("thoi-su"),
   createArticle("the-gioi"),
-  createArticle("cong-nghe"),
+  createArticle("xe-cong-nghe"),
   createArticle("giao-duc"),
   createArticle("phap-luat")
 ];
 
 // 5 bài mix top thay thế box Quote (sau Thể thao trong mobile)
 const MOBILE_MIX_2 = [
-  createArticle("du-lich"),
+  createArticle("doi-song-du-lich"),
   createArticle("suc-khoe"),
-  createArticle("xe"),
-  createArticle("doi-song"),
+  createArticle("xe-cong-nghe"),
+  createArticle("doi-song-du-lich"),
   createArticle("thoi-su")
 ];
 
 // 5 bài mix top (sau Giải trí, trước Remaining trong mobile)
 const MOBILE_MIX_3 = [
-  createArticle("kinh-doanh"),
+  createArticle("kinh-te"),
   createArticle("the-thao"),
-  createArticle("bat-dong-san"),
+  createArticle("nha-dat"),
   createArticle("giao-duc"),
-  createArticle("cong-nghe")
+  createArticle("xe-cong-nghe")
 ];
 
 // 5 bài mix top (sau BĐS box, trước Thể thao trong mobile)
@@ -448,8 +438,8 @@ const MOBILE_MIX_4 = [
   createArticle("thoi-su"),
   createArticle("the-gioi"),
   createArticle("phap-luat"),
-  createArticle("du-lich"),
-  createArticle("doi-song")
+  createArticle("doi-song-du-lich"),
+  createArticle("doi-song-du-lich")
 ];
 
 // 5 video cho cụm Video mobile (swipe ngang)

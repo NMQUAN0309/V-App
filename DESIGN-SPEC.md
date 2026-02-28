@@ -44,29 +44,28 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 ## Thanh điều hướng (Navigation)
 
 ### Thứ tự nút nav (cả Web và Mobile)
-| Nút | Chức năng |
-|-----|-----------|
-| 🏠 | Về trang chủ |
-| Mới nhất | Tất cả bài viết, sắp xếp từ mới → cũ |
-| Địa phương ▼ | Dropdown lọc tin theo địa phương (Hà Nội, TPHCM, Đà Nẵng, Hải Phòng, Cần Thơ, Huế) |
-| Quan tâm ▼ | Dropdown chọn chủ đề theo dõi |
-| Thời sự | Chuyên mục |
-| Thế giới | Chuyên mục |
-| Kinh doanh | Chuyên mục |
-| Bất động sản | Chuyên mục |
-| Công nghệ | Chuyên mục |
-| Xe | Chuyên mục |
-| Giải trí | Chuyên mục |
-| Thể thao | Chuyên mục |
-| Sức khỏe | Chuyên mục |
-| Pháp luật | Chuyên mục |
-| Đời sống | Chuyên mục |
-| Giáo dục | Chuyên mục |
-| Du lịch | Chuyên mục |
-| Góc chuyên gia | Chuyên mục (đang phát triển) |
-| Video | Chuyên mục |
+| # | Nút | Chức năng |
+|---|-----|-----------|
+| 1 | 🏠 | Về trang chủ |
+| 2 | Mới nhất | Tất cả bài viết, sắp xếp từ mới → cũ |
+| 3 | Địa phương | Lọc toàn bộ tin bài liên quan đến địa phương độc giả chọn (VD: Hà Nội, TPHCM...) |
+| 4 | Quan tâm | Độc giả tick chọn chủ đề quan tâm (BĐS, Công nghệ, Sức khỏe...) |
+| 5 | 📚 Tri thức mở | Bách khoa toàn thư kết hợp AI — full-screen overlay |
+| 6 | Thời sự | Chuyên mục |
+| 7 | Thế giới | Chuyên mục |
+| 8 | Kinh tế | Chuyên mục |
+| 9 | Nhà đất | Chuyên mục |
+| 10 | Xe - Công nghệ | Chuyên mục |
+| 11 | Giải trí | Chuyên mục |
+| 12 | Thể thao | Chuyên mục |
+| 13 | Sức khỏe | Chuyên mục |
+| 14 | Pháp luật | Chuyên mục |
+| 15 | Đời sống – Du lịch | Chuyên mục |
+| 16 | Giáo dục | Chuyên mục |
+| 17 | Góc nhìn chuyên gia | Chuyên mục |
+| 18 | Video | Chuyên mục |
 
-**Bố cục nav (Web):** 4 nút đầu (🏠, Mới nhất, Địa phương, Quan tâm) cố định bên trái, không cuộn. Phần chuyên mục bên phải tự động cuộn ngang theo vòng lặp (auto-scroll animation), hover để dừng.
+**Bố cục nav (Web):** 5 nút đầu (🏠, Mới nhất, Địa phương, Quan tâm, 📚 Tri thức mở) cố định bên trái, không cuộn. Phần chuyên mục bên phải tự động cuộn ngang theo vòng lặp (auto-scroll animation), hover để dừng.
 
 **Bố cục nav (Mobile):** Tất cả nằm trong thanh cuộn ngang, hỗ trợ drag.
 
@@ -80,43 +79,37 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 ### 2. Thế giới
 - Phân tích | Quân sự ⚙ (Bản đồ chiến sự) | Thế giới đó đây
 
-### 3. Kinh doanh
+### 3. Kinh tế
 - Đầu tư | Doanh nghiệp | Chứng khoán ⚙ | Ngân hàng ⚙ | Vĩ mô | Tiêu dùng
 
-### 4. Công nghệ
-- AI | Khoa học | Thiết bị ⚙
-
-### 5. Bất động sản
+### 4. Nhà đất
 - Chính sách | Thị trường | Dự án ⚙ | Quy hoạch ⚙ | Không gian sống
 
-### 6. Sức khỏe
-- Các bệnh ⚙ | Sống khỏe
+### 5. Xe - Công nghệ
+- Thị trường xe | Xe điện | Kinh nghiệm lái xe ⚙ | Chăm xe | AI | Khoa học - CN | Thiết bị ⚙
 
-### 7. Giải trí
+### 6. Giải trí
 - Sách | Phim | Nhạc | Thời trang | Làm đẹp
 
-### 8. Thể thao
+### 7. Thể thao
 - Bóng đá | Lịch thi đấu ★ | Tennis | Pickleball | Golf | Esport | Các môn khác | Hậu trường
+
+### 8. Sức khỏe
+- Các bệnh ⚙ | Sống khỏe
 
 ### 9. Pháp luật
 - Pháp đình | Thư viện pháp luật ⚙
 
-### 10. Giáo dục
+### 10. Đời sống – Du lịch
+- Nhịp sống | Bài học cuộc sống | Phong cách | Việc làm | Điểm đến ⚙ | Ẩm thực | Khám phá
+
+### 11. Giáo dục
 - Tuyển sinh | Du học | Đề thi & Đáp án ⚙
 
-### 11. Đời sống
-- Nhịp sống | Bài học cuộc sống | Phong cách | Việc làm
+### 12. Góc nhìn chuyên gia
+- (không có mục con — giao diện riêng theo phong cách opinion)
 
-### 12. Xe
-- Thị trường | Xe điện | Kinh nghiệm lái xe ⚙ | Chăm xe
-
-### 13. Du lịch
-- Điểm đến ⚙ | Ẩm thực | Khám phá
-
-### 14. Góc chuyên gia ★
-- (không có mục con — đang phát triển)
-
-### 15. Video
+### 13. Video
 - (không có mục con)
 
 > **⚙** Mục con có search box / widget tra cứu hiển thị đầu trang khi vào mục đó.
@@ -130,17 +123,17 @@ Trang thông tin điện tử V-App - prototype để demo cấu trúc và giao 
 
 | Mục con | Widget |
 |---------|--------|
-| Chứng khoán (Kinh doanh) | Ô tìm mã CK (VD: VIC, VNM) |
-| Bank (Kinh doanh) | Ô tìm lãi suất + bộ lọc: Gửi/Vay, Ngân hàng, Kỳ hạn |
-| Thiết bị (Công nghệ) | Ô tìm sản phẩm công nghệ (điện thoại, laptop, tivi, tủ lạnh...) |
-| Dự án (BĐS) | Ô tìm dự án bất động sản |
-| Quy hoạch (BĐS) | Ô tìm quy hoạch theo tỉnh/thành phố + quận/huyện |
+| Chứng khoán (Kinh tế) | Ô tìm mã CK (VD: VIC, VNM) |
+| Ngân hàng (Kinh tế) | Ô tìm lãi suất + bộ lọc: Gửi/Vay, Ngân hàng, Kỳ hạn |
+| Thiết bị (Xe - Công nghệ) | Ô tìm sản phẩm công nghệ (điện thoại, laptop, tivi, tủ lạnh...) |
+| Dự án (Nhà đất) | Ô tìm dự án bất động sản |
+| Quy hoạch (Nhà đất) | Ô tìm quy hoạch theo tỉnh/thành phố + quận/huyện |
 | Các bệnh (Sức khỏe) | Ô tìm loại bệnh, triệu chứng |
 | Quân sự (Thế giới) | **Bản đồ chiến sự** (xem chi tiết bên dưới) |
 | Thư viện pháp luật (Pháp luật) | Ô tìm văn bản pháp luật theo số hiệu, tên |
 | Đề thi & Đáp án (Giáo dục) | Ô tìm + bộ lọc: Năm, Cấp (trường/tỉnh/quốc gia), Môn học |
-| Kinh nghiệm lái xe (Xe) | Tra cứu phạt nguội: nhập biển số xe |
-| Điểm đến (Du lịch) | Ô tìm địa danh, thành phố du lịch |
+| Kinh nghiệm lái xe (Xe - Công nghệ) | Tra cứu phạt nguội: nhập biển số xe |
+| Điểm đến (Đời sống – Du lịch) | Ô tìm địa danh, thành phố du lịch |
 
 ---
 
@@ -199,11 +192,11 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
    - Hàng dưới: 3 bài nhỏ (3 cột đều nhau), mỗi bài layout ngang — ava + title + sapo
 3. **2 cột chính** (grid 1fr 2fr):
    - **Cột trái (1/3)**: 20 bài, mỗi bài = ava → title → sapo (vertical)
-   - **Cột phải (2/3)**: 5 cụm featured (Kinh doanh, BĐS, Thể thao, Giải trí, Sức khỏe)
+   - **Cột phải (2/3)**: 5 cụm featured (Kinh tế, Nhà đất, Thể thao, Giải trí, Sức khỏe)
      - Mỗi cụm: tên mục + danh sách mục con → bài top 1 (ava + title + sapo) + 1 bài title+sapo cạnh → 3 bài title+sapo
      - **Interstitial box** xuất hiện bên dưới một số cụm featured:
-       - Sau Kinh doanh → Tra cứu mã chứng khoán
-       - Sau BĐS → Tìm kiếm dự án
+       - Sau Kinh tế → Tra cứu mã chứng khoán
+       - Sau Nhà đất → Tìm kiếm dự án
        - Sau Thể thao → Lịch thi đấu (ticker cuộn ngang)
        - Sau Sức khỏe → Tra cứu bệnh
 4. **Mục còn lại** (2 cột: bài viết 1fr + box sidebar 300px):
@@ -212,12 +205,10 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 |-----|-------------|
 | Thời sự | Thời tiết 5 thành phố |
 | Thế giới | Bản đồ Chiến sự compact + legend |
-| Công nghệ | Tìm kiếm sản phẩm công nghệ |
+| Xe - Công nghệ | Tìm kiếm sản phẩm công nghệ |
 | Pháp luật | Thư viện văn bản pháp luật |
 | Giáo dục | Tra cứu đề thi & đáp án |
-| Xe | Tra cứu phạt nguội |
-| Du lịch | Tra cứu điểm đến |
-| Đời sống | Quote box (ảnh → trích dẫn → tên tác giả) |
+| Đời sống – Du lịch | Tra cứu điểm đến |
 | Các mục còn lại | Không có box (chỉ danh sách bài) |
 
 ### Trang mục (`#category/{id}`)
@@ -248,7 +239,7 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 ### Header
 - ☰ (hamburger) + Logo giữa + 🔔 (thông báo)
 - Ô tìm kiếm phía dưới
-- Nav cuộn ngang: 🏠 | Mới nhất | Địa phương | Quan tâm | Thời sự | Thế giới | ...
+- Nav cuộn ngang: 🏠 | Mới nhất | Địa phương | Quan tâm | 📚 Tri thức mở | Thời sự | Thế giới | Kinh tế | Nhà đất | Xe - Công nghệ | ...
 - Ticker chạy ngang
 
 ### Hamburger Menu (Mobile)
@@ -260,15 +251,15 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 ```
 5 bài top nổi bật (full card: ava full width + title + sapo)
 ─────────────────────────────────────────────────────
-[KINH DOANH — khung card nổi bật]
-  5 bài Kinh doanh (full + half + 3×compact)
+[KINH TẾ — khung card nổi bật]
+  5 bài Kinh tế (full + half + 3×compact)
 Box: Tra cứu mã chứng khoán
 ─────────────────────────────────────────────────────
 5 bài mix (mid card: ava trung bình + title + sapo)
 ─────────────────────────────────────────────────────
-[BĐS]
-  5 bài Bất động sản
-Box: Tìm kiếm dự án BĐS
+[NHÀ ĐẤT]
+  5 bài Nhà đất
+Box: Tìm kiếm dự án
 ─────────────────────────────────────────────────────
 5 bài mix (mid card)
 ─────────────────────────────────────────────────────
@@ -291,15 +282,13 @@ Box: Lịch thi đấu (ticker cuộn ngang)
 Box: Tra cứu bệnh
 ─────────────────────────────────────────────────────
 Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
-  Thời sự          → Box: Thời tiết 7 ngày
-  Thế giới         → Box: Bản đồ Chiến sự (mini map)
-  Công nghệ        → Box: Tìm kiếm sản phẩm công nghệ
-  Pháp luật        → Box: Thư viện văn bản pháp luật
-  Giáo dục         → Box: Tra cứu đề thi & đáp án
-  Đời sống
-  Xe               → Box: Tra cứu phạt nguội
-  Du lịch          → Box: Khám phá điểm đến
-  Góc chuyên gia   (đang phát triển)
+  Thời sự            → Box: Thời tiết 7 ngày
+  Thế giới           → Box: Bản đồ Chiến sự (mini map)
+  Xe - Công nghệ     → Box: Tìm kiếm sản phẩm công nghệ
+  Pháp luật          → Box: Thư viện văn bản pháp luật
+  Giáo dục           → Box: Tra cứu đề thi & đáp án
+  Đời sống – Du lịch → Box: Khám phá điểm đến
+  Góc nhìn chuyên gia
 ```
 
 ### Loại card bài viết (Mobile)
@@ -316,17 +305,16 @@ Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
 
 | Box | Vị trí | Nội dung |
 |-----|--------|----------|
-| Tra cứu mã chứng khoán | Sau Kinh doanh | Ô tìm mã CK |
-| Tìm kiếm dự án BĐS | Sau BĐS | Ô tìm dự án |
+| Tra cứu mã chứng khoán | Sau Kinh tế | Ô tìm mã CK |
+| Tìm kiếm dự án | Sau Nhà đất | Ô tìm dự án |
 | Lịch thi đấu | Sau Thể thao | Ticker cuộn ngang: giờ + đội nhà vs đội khách |
 | Tra cứu bệnh | Sau Sức khỏe | Ô tìm tên bệnh, triệu chứng |
 | Thời tiết 7 ngày | Sau Thời sự | Grid ngày + icon + nhiệt độ |
 | Bản đồ Chiến sự | Sau Thế giới | Mini map + legend 3 xung đột |
-| Tìm kiếm sản phẩm công nghệ | Sau Công nghệ | Ô tìm điện thoại, laptop... |
+| Tìm kiếm sản phẩm công nghệ | Sau Xe - Công nghệ | Ô tìm điện thoại, laptop... |
 | Thư viện pháp luật | Sau Pháp luật | Ô tìm văn bản pháp luật |
 | Tra cứu đề thi & đáp án | Sau Giáo dục | Ô tìm từ khóa |
-| Tra cứu phạt nguội | Sau Xe | Ô nhập biển số |
-| Khám phá điểm đến | Sau Du lịch | Ô tìm địa danh |
+| Khám phá điểm đến | Sau Đời sống – Du lịch | Ô tìm địa danh |
 
 ### Video Lightbox (Mobile)
 Khi click vào thumbnail video trong strip trang chủ hoặc trang Video:
@@ -363,6 +351,33 @@ Hiển thị trang "🚧 Đang phát triển" thay vì danh sách bài viết.
 Riêng biệt với video lightbox trang chủ.
 - Trang danh sách video: cuộn dọc, mỗi item = ảnh + tiêu đề + thời lượng + thời gian đăng
 - Click item → mở video lightbox (vertical snap)
+
+---
+
+## Thư viện (`📚 Thư viện`)
+
+Không gian tra cứu bách khoa kết hợp AI. Không phải chuyên mục tin tức — mở dạng full-screen overlay (web) hoặc inline trong stream (mobile).
+
+### Bố cục 3 tab
+
+| Tab | Nội dung |
+|-----|----------|
+| Chủ đề | Grid 12 chủ đề (Khoa học, Lịch sử, Địa lý, Pháp luật, Sức khỏe, Kinh tế, Văn hóa, Công nghệ, Toán học, Môi trường, Sinh học, Vật lý) + Xu hướng chips |
+| Tra cứu | Nhập từ khóa → cột trái list bài liên quan + cột phải AI tóm tắt |
+| ✦ Hỏi AI | Chat interface, AI trả lời mô phỏng sau 900ms, có typing indicator |
+
+### Tính năng tìm kiếm
+- Tìm trong `CATEGORY_ARTICLES` (tất cả chuyên mục), khớp title và sapo
+- AI summary box: tóm tắt mô phỏng có chèn keyword
+
+### Ghi chú AI
+- Prototype — không có API thật, dùng template JS để mô phỏng phản hồi
+- Chat: user bubble (phải, đỏ) + AI bubble (trái, trắng border)
+- Label: "✦ Powered by V-App AI · Nội dung mang tính tham khảo"
+
+### Web vs Mobile
+- **Web:** full-screen overlay (`z-index: 160`), panel `min(1100px, 95vw)`, layout 2 cột cho kết quả tra cứu
+- **Mobile:** inline trong `#mHomeStream`, layout 1 cột, chat chiếm toàn chiều cao khả dụng
 
 ---
 

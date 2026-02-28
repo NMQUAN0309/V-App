@@ -14,30 +14,35 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --red: #D32F2F;
-  --red-dark: #B71C1C;
-  --red-light: #FFEBEE;
-  --red-accent: #FF5252;
-  --ink: #1A1A1A;
-  --ink-secondary: #555;
-  --ink-tertiary: #888;
-  --ink-faint: #AAA;
-  --surface: #FAFAFA;
-  --surface-warm: #F7F5F3;
-  --border: #E8E4E0;
-  --border-light: #F0EDEA;
+  /* Primary accent — vibrant royal blue */
+  --red: #1C64D1;
+  --red-dark: #1450A8;
+  --red-light: #EBF3FF;
+  --red-accent: #5B9DF5;
+  /* Text — cool slate scale */
+  --ink: #0D1B2E;
+  --ink-secondary: #3A4F6A;
+  --ink-tertiary: #6B82A0;
+  --ink-faint: #9DB4CC;
+  /* Surfaces */
+  --surface: #F5F8FC;
+  --surface-warm: #EBF0F7;
+  --bg-card: #FFFFFF;
+  /* Borders */
+  --border: #C8D8EB;
+  --border-light: #DDEAF6;
   --white: #FFFFFF;
   --font-body: 'Noto Sans', sans-serif;
   --font-headline: 'Noto Serif', 'Noto Sans', serif;
   --max-w: 1200px;
   --gutter: 24px;
   --radius: 4px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
-  --shadow-md: 0 2px 12px rgba(0,0,0,.08);
+  --shadow-sm: 0 1px 4px rgba(28,100,209,.07);
+  --shadow-md: 0 3px 14px rgba(28,100,209,.10);
   --transition: .2s ease;
 }
 
-html { font-size: 15px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
 body { font-family: var(--font-body); color: var(--ink); background: var(--white); line-height: 1.6; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
@@ -84,7 +89,7 @@ ul, ol { list-style: none; }
    TICKER BAR
    ============================================================ */
 .ticker-bar {
-  background: linear-gradient(90deg, #B71C1C 0%, #E53935 30%, #FF6D00 70%, #FFA000 100%);
+  background: linear-gradient(90deg, #1450A8 0%, #1C64D1 35%, #0891B2 70%, #0EA5E9 100%);
   color: #fff; overflow: hidden;
   font-size: .8rem; font-weight: 500; letter-spacing: .02em; height: 34px; line-height: 34px;
 }
@@ -1022,6 +1027,169 @@ ul, ol { list-style: none; }
 .local-panel-body { padding: 0 24px 24px; }
 
 /* ============================================================
+   THƯ VIỆN OVERLAY
+   ============================================================ */
+.lib-overlay {
+  display: none; position: fixed; inset: 0; z-index: 160;
+  background: rgba(0,0,0,.55); align-items: flex-start; justify-content: center;
+  padding: 32px 16px;
+}
+.lib-overlay.show { display: flex; }
+.lib-panel {
+  background: var(--white); width: min(1100px, 95vw); max-height: 90vh;
+  border-radius: 14px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.25);
+  display: flex; flex-direction: column;
+}
+/* Header: logo + search + close */
+.lib-header {
+  padding: 18px 24px 0; background: var(--white);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.lib-title-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.lib-title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+.lib-title span { color: var(--red); }
+.lib-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; transition: background var(--transition); cursor: pointer; flex-shrink: 0;
+}
+.lib-close:hover { background: var(--surface); }
+.lib-search-row {
+  display: flex; gap: 8px; margin-bottom: 0;
+}
+.lib-search-input {
+  flex: 1; padding: 10px 16px; border: 2px solid var(--border); border-radius: 8px;
+  font-size: .95rem; font-family: var(--font-body); outline: none;
+  transition: border-color var(--transition);
+}
+.lib-search-input:focus { border-color: var(--red); }
+.lib-search-btn {
+  padding: 10px 20px; background: var(--red); color: #fff; border-radius: 8px;
+  font-weight: 600; font-size: .9rem; cursor: pointer; transition: background var(--transition);
+}
+.lib-search-btn:hover { background: #c62828; }
+/* Tab bar */
+.lib-tabs-bar {
+  display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid var(--border);
+  background: var(--white); flex-shrink: 0;
+}
+.lib-tab {
+  padding: 11px 20px; font-size: .88rem; font-weight: 600; color: var(--ink-secondary);
+  cursor: pointer; border-bottom: 2px solid transparent; transition: color var(--transition);
+  white-space: nowrap;
+}
+.lib-tab:hover { color: var(--red); }
+.lib-tab.active { color: var(--red); border-bottom-color: var(--red); }
+/* Body */
+.lib-body { flex: 1; overflow-y: auto; padding: 24px; min-height: 0; }
+/* Trending chips */
+.lib-trending { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; align-items: center; }
+.lib-trending-label { font-size: .8rem; color: var(--ink-tertiary); font-weight: 600; }
+.lib-chip {
+  padding: 4px 14px; border: 1px solid var(--border); border-radius: 20px;
+  font-size: .82rem; cursor: pointer; transition: all var(--transition);
+}
+.lib-chip:hover { background: var(--red); color: #fff; border-color: var(--red); }
+/* Topic grid */
+.lib-topic-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px;
+}
+.lib-topic-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px 12px; border-radius: 10px; cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: 1px solid var(--border); gap: 8px; text-align: center;
+}
+.lib-topic-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.lib-topic-icon { font-size: 1.8rem; line-height: 1; }
+.lib-topic-name { font-size: .85rem; font-weight: 600; color: var(--ink); }
+/* Search results layout */
+.lib-search-layout {
+  display: grid; grid-template-columns: 1fr 320px; gap: 24px;
+}
+.lib-results-list { display: flex; flex-direction: column; gap: 0; }
+.lib-result-item {
+  padding: 14px 0; border-bottom: 1px solid var(--border-light); cursor: pointer;
+}
+.lib-result-item:last-child { border-bottom: none; }
+.lib-result-cat {
+  font-size: .72rem; font-weight: 700; color: var(--red); text-transform: uppercase;
+  letter-spacing: .04em; margin-bottom: 4px;
+}
+.lib-result-title {
+  font-size: .95rem; font-weight: 700; color: var(--ink); line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 4px;
+}
+.lib-result-title:hover { color: var(--red); }
+.lib-result-sapo {
+  font-size: .82rem; color: var(--ink-secondary);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* AI summary box */
+.lib-ai-box {
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f2ff 100%);
+  border: 1px solid #bdd6f7; border-radius: 12px; padding: 18px;
+  position: sticky; top: 0;
+}
+.lib-ai-box-title {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-headline); font-size: .9rem; font-weight: 700; color: var(--red);
+  margin-bottom: 10px;
+}
+.lib-ai-sparkle { font-size: 1rem; }
+.lib-ai-content {
+  font-size: .86rem; color: var(--ink); line-height: 1.7; margin-bottom: 12px;
+}
+.lib-ai-sources { margin-top: 10px; border-top: 1px solid #ffd0d0; padding-top: 10px; }
+.lib-ai-sources-title { font-size: .75rem; font-weight: 700; color: var(--ink-tertiary); margin-bottom: 6px; }
+.lib-ai-source-link {
+  display: block; font-size: .8rem; color: var(--red);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;
+  cursor: pointer;
+}
+.lib-ai-source-link:hover { text-decoration: underline; }
+.lib-ai-badge {
+  margin-top: 12px; font-size: .7rem; color: var(--ink-tertiary);
+  text-align: right; font-style: italic;
+}
+/* AI Chat */
+.lib-chat-wrap { display: flex; flex-direction: column; height: 100%; min-height: 400px; }
+.lib-chat-messages {
+  flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+  padding-bottom: 16px; margin-bottom: 16px;
+}
+.lib-chat-bubble {
+  max-width: 75%; padding: 12px 16px; border-radius: 12px;
+  font-size: .88rem; line-height: 1.6;
+}
+.lib-chat-bubble.user {
+  align-self: flex-end; background: var(--red); color: #fff;
+  border-bottom-right-radius: 3px;
+}
+.lib-chat-bubble.ai {
+  align-self: flex-start; background: var(--surface); color: var(--ink);
+  border-bottom-left-radius: 3px; border: 1px solid var(--border);
+}
+.lib-chat-bubble.ai strong { color: var(--red); }
+.lib-chat-bubble.typing { opacity: .6; font-style: italic; }
+.lib-chat-input-row { display: flex; gap: 8px; flex-shrink: 0; }
+.lib-chat-input {
+  flex: 1; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px;
+  font-size: .9rem; font-family: var(--font-body); outline: none;
+  transition: border-color var(--transition);
+}
+.lib-chat-input:focus { border-color: var(--red); }
+.lib-chat-send {
+  padding: 10px 18px; background: var(--red); color: #fff; border-radius: 8px;
+  font-weight: 600; cursor: pointer; transition: background var(--transition);
+}
+.lib-chat-send:hover { background: #c62828; }
+.lib-no-results { text-align: center; padding: 48px 24px; color: var(--ink-tertiary); font-size: .9rem; }
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .site-footer {
@@ -1196,6 +1364,30 @@ ul, ol { list-style: none; }
     </div>
     <div class="local-cities-bar" id="localCities"></div>
     <div class="local-panel-body" id="localBody"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     THƯ VIỆN OVERLAY
+     ============================================================ -->
+<div class="lib-overlay" id="libOverlay">
+  <div class="lib-panel">
+    <div class="lib-header">
+      <div class="lib-title-row">
+        <div class="lib-title">📚 <span>Tri thức mở</span> V-App</div>
+        <button class="lib-close" id="libClose">&times;</button>
+      </div>
+      <div class="lib-search-row">
+        <input class="lib-search-input" id="libSearchInput" type="text" placeholder="Tìm chủ đề, từ khóa, câu hỏi...">
+        <button class="lib-search-btn" id="libSearchBtn">Tìm</button>
+      </div>
+      <div class="lib-tabs-bar">
+        <div class="lib-tab active" data-tab="topics">Chủ đề</div>
+        <div class="lib-tab" data-tab="search">Tra cứu</div>
+        <div class="lib-tab" data-tab="ai">✦ Hỏi AI</div>
+      </div>
+    </div>
+    <div class="lib-body" id="libBody"></div>
   </div>
 </div>
 
@@ -1406,7 +1598,8 @@ ul, ol { list-style: none; }
       <a href="#home" class="nav-special-btn" style="font-size:1.1rem">🏠</a>
       <a href="javascript:void(0)" class="nav-special-btn" id="navLatest">Mới nhất</a>
       <a href="javascript:void(0)" class="nav-special-btn" id="navLocal">Địa phương ▾</a>
-      <a href="javascript:void(0)" class="nav-special-btn" id="navQuantam" style="border-right:none">Quan tâm ▾</a>`;
+      <a href="javascript:void(0)" class="nav-special-btn" id="navQuantam">Quan tâm ▾</a>
+      <a href="javascript:void(0)" class="nav-special-btn" id="navLibrary" style="border-right:none">📚 Tri thức mở</a>`;
 
     // Scrollable category list — inner wrapper duplicated for seamless CSS animation
     const catsScroll = el('div', 'nav-cats-scroll');
@@ -1432,6 +1625,7 @@ ul, ol { list-style: none; }
     $('#navLatest').addEventListener('click', () => { showLatestNews(); });
     $('#navLocal').addEventListener('click', () => { showLocalNews(); });
     $('#navQuantam').addEventListener('click', () => { showQuantamPanel(); });
+    $('#navLibrary').addEventListener('click', () => { showLibrary(); });
   }
 
   // ============================================================
@@ -1550,6 +1744,212 @@ ul, ol { list-style: none; }
   });
 
   // ============================================================
+  // THƯ VIỆN (LIBRARY)
+  // ============================================================
+  const LIB_TOPICS = [
+    { icon: '🔬', name: 'Khoa học',   color: '#7c3aed', key: 'khoa-hoc' },
+    { icon: '🏛',  name: 'Lịch sử',   color: '#92400e', key: 'lich-su' },
+    { icon: '🌍',  name: 'Địa lý',    color: '#065f46', key: 'dia-ly' },
+    { icon: '⚖️', name: 'Pháp luật', color: '#1e3a8a', key: 'phap-luat' },
+    { icon: '💊',  name: 'Sức khỏe',  color: '#0369a1', key: 'suc-khoe' },
+    { icon: '💰',  name: 'Kinh tế',   color: '#92400e', key: 'kinh-te' },
+    { icon: '🎭',  name: 'Văn hóa',   color: '#c2410c', key: 'van-hoa' },
+    { icon: '🤖',  name: 'Công nghệ', color: '#be123c', key: 'cong-nghe' },
+    { icon: '📐',  name: 'Toán học',  color: '#6d28d9', key: 'toan-hoc' },
+    { icon: '🌱',  name: 'Môi trường',color: '#166534', key: 'moi-truong' },
+    { icon: '🧬',  name: 'Sinh học',  color: '#be185d', key: 'sinh-hoc' },
+    { icon: '⚡',  name: 'Vật lý',    color: '#b45309', key: 'vat-ly' },
+  ];
+
+  const LIB_TRENDING = ['Lạm phát', 'Trí tuệ nhân tạo', 'Biến đổi khí hậu', 'Hiệp định thương mại', 'Cách mạng công nghiệp', 'Năng lượng tái tạo'];
+
+  const LIB_AI_STARTERS = ['Lạm phát là gì?', 'Biến đổi khí hậu ảnh hưởng thế nào?', 'AI hoạt động ra sao?', 'Tại sao cần năng lượng tái tạo?'];
+
+  let libChatHistory = [];
+
+  function showLibrary() {
+    const overlay = $('#libOverlay');
+    overlay.classList.add('show');
+    renderLibTopicsTab();
+    // Tab switching
+    overlay.querySelectorAll('.lib-tab').forEach(tab => {
+      tab.onclick = () => {
+        overlay.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const which = tab.dataset.tab;
+        if (which === 'topics') renderLibTopicsTab();
+        else if (which === 'search') renderLibSearchTab('');
+        else if (which === 'ai') renderLibAITab();
+      };
+    });
+    // Search button
+    $('#libSearchBtn').onclick = () => libDoSearch($('#libSearchInput').value.trim());
+    $('#libSearchInput').onkeydown = e => { if (e.key === 'Enter') libDoSearch($('#libSearchInput').value.trim()); };
+    // Close
+    $('#libClose').onclick = () => overlay.classList.remove('show');
+    overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('show'); };
+  }
+
+  function libSetActiveTab(name) {
+    $('#libOverlay').querySelectorAll('.lib-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === name);
+    });
+  }
+
+  function libDoSearch(q) {
+    if (!q) return;
+    libSetActiveTab('search');
+    renderLibSearchTab(q);
+  }
+
+  function renderLibTopicsTab() {
+    const body = $('#libBody');
+    // Trending chips
+    const chips = LIB_TRENDING.map(t =>
+      `<span class="lib-chip" onclick="$('#libSearchInput').value='${t}';libDoSearch('${t}')">${t}</span>`
+    ).join('');
+    // Topic grid
+    const cards = LIB_TOPICS.map(tp =>
+      `<div class="lib-topic-card" style="--topic-color:${tp.color}" onclick="$('#libSearchInput').value='${tp.name}';libDoSearch('${tp.name}')">
+        <div class="lib-topic-icon">${tp.icon}</div>
+        <div class="lib-topic-name">${tp.name}</div>
+      </div>`
+    ).join('');
+    body.innerHTML = `
+      <div style="padding:20px 24px 0">
+        <div class="lib-trending">
+          <span style="font-size:.8rem;color:var(--ink-secondary);font-weight:600;margin-right:8px">Xu hướng:</span>
+          ${chips}
+        </div>
+      </div>
+      <div style="padding:16px 24px 24px">
+        <div style="font-size:.82rem;color:var(--ink-secondary);font-weight:700;letter-spacing:.06em;margin-bottom:12px">KHÁM PHÁ CHỦ ĐỀ</div>
+        <div class="lib-topic-grid">${cards}</div>
+      </div>`;
+  }
+
+  function renderLibSearchTab(q) {
+    libSetActiveTab('search');
+    const body = $('#libBody');
+    if (!q) {
+      body.innerHTML = `<div class="lib-no-results">Nhập từ khóa vào ô tìm kiếm bên trên để tra cứu.</div>`;
+      return;
+    }
+    // Search across all CATEGORY_ARTICLES
+    const ql = q.toLowerCase();
+    let matches = [];
+    Object.values(D.CATEGORY_ARTICLES).forEach(arr => {
+      arr.forEach(a => {
+        if ((a.title && a.title.toLowerCase().includes(ql)) || (a.sapo && a.sapo.toLowerCase().includes(ql))) {
+          matches.push(a);
+        }
+      });
+    });
+    // Deduplicate by id
+    const seen = new Set();
+    matches = matches.filter(a => { if (seen.has(a.id)) return false; seen.add(a.id); return true; });
+
+    const resultHTML = matches.length
+      ? matches.slice(0, 20).map(a => `
+          <div class="lib-result-item" onclick="renderArticle && renderArticle(${JSON.stringify(a).replace(/"/g, '&quot;')});$('#libOverlay').classList.remove('show');">
+            <div class="lib-result-title">${a.title}</div>
+            <div class="lib-result-meta">${a.categoryName || ''} · ${a.time || ''}</div>
+          </div>`).join('')
+      : `<div class="lib-no-results">Không tìm thấy kết quả cho "<strong>${q}</strong>".</div>`;
+
+    // AI summary box
+    const aiSummary = `<div class="lib-ai-box">
+      <div class="lib-ai-label">✦ V-App AI · Tóm tắt</div>
+      <div class="lib-ai-text">Theo V-App AI, <strong>"${q}"</strong> là một chủ đề quan trọng được đề cập trong nhiều lĩnh vực. Dựa trên các bài viết hiện có, đây là những thông tin nổi bật bạn nên biết: chủ đề này liên quan đến các xu hướng đang thay đổi trong xã hội, ảnh hưởng đến đời sống và kinh tế. Các chuyên gia nhận định đây là vấn đề cần được quan tâm và theo dõi thường xuyên.</div>
+      <div style="margin-top:10px;font-size:.78rem;color:var(--ink-secondary)">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>
+    </div>`;
+
+    body.innerHTML = `
+      <div style="padding:16px 24px 4px;font-size:.82rem;color:var(--ink-secondary)">
+        ${matches.length} kết quả cho "<strong>${q}</strong>"
+      </div>
+      <div class="lib-search-layout">
+        <div class="lib-results-col">${resultHTML}</div>
+        <div class="lib-ai-col">${aiSummary}</div>
+      </div>`;
+  }
+
+  function renderLibAITab() {
+    libSetActiveTab('ai');
+    const body = $('#libBody');
+    libChatHistory = [];
+    const starterChips = LIB_AI_STARTERS.map(s =>
+      `<span class="lib-chip" style="cursor:pointer" onclick="libSendChat('${s}')">${s}</span>`
+    ).join('');
+    body.innerHTML = `
+      <div class="lib-chat-wrap">
+        <div class="lib-chat-messages" id="libChatMessages">
+          <div class="lib-ai-welcome">
+            <div style="font-size:1.5rem;margin-bottom:8px">✦</div>
+            <div style="font-weight:700;font-size:1rem;margin-bottom:4px">V-App AI</div>
+            <div style="font-size:.88rem;color:var(--ink-secondary);margin-bottom:16px">Hỏi bất cứ điều gì về khoa học, lịch sử, kinh tế...</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">${starterChips}</div>
+          </div>
+        </div>
+        <div class="lib-chat-input-row">
+          <input class="lib-chat-input" id="libChatInput" type="text" placeholder="Hỏi V-App AI...">
+          <button class="lib-chat-send" id="libChatSend">Gửi</button>
+        </div>
+      </div>`;
+    $('#libChatSend').onclick = () => { const v = $('#libChatInput').value.trim(); if (v) libSendChat(v); };
+    $('#libChatInput').onkeydown = e => { if (e.key === 'Enter') { const v = $('#libChatInput').value.trim(); if (v) libSendChat(v); } };
+  }
+
+  function libSendChat(text) {
+    const msgs = $('#libChatMessages');
+    if (!msgs) return;
+    // Hide welcome if present
+    const welcome = msgs.querySelector('.lib-ai-welcome');
+    if (welcome) welcome.remove();
+    $('#libChatInput') && ($('#libChatInput').value = '');
+
+    // User bubble
+    const userBubble = el('div', 'lib-chat-bubble lib-chat-user');
+    userBubble.textContent = text;
+    msgs.appendChild(userBubble);
+
+    // Typing indicator
+    const typing = el('div', 'lib-chat-bubble lib-chat-ai lib-chat-typing');
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    // Simulated AI reply after 800ms
+    setTimeout(() => {
+      typing.remove();
+      const reply = libGenerateAIReply(text);
+      const aiBubble = el('div', 'lib-chat-bubble lib-chat-ai');
+      aiBubble.innerHTML = reply;
+      msgs.appendChild(aiBubble);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 900);
+  }
+
+  function libGenerateAIReply(q) {
+    const ql = q.toLowerCase();
+    // Match a known topic for a slightly tailored reply
+    const matched = LIB_TOPICS.find(t => ql.includes(t.name.toLowerCase()) || ql.includes(t.key));
+    const topicNote = matched ? `lĩnh vực <strong>${matched.name}</strong>` : 'nhiều lĩnh vực khác nhau';
+    return `<div style="font-weight:700;margin-bottom:8px">✦ V-App AI</div>
+      <p style="margin:0 0 8px">Câu hỏi của bạn về <em>"${q}"</em> liên quan đến ${topicNote}.</p>
+      <ul style="margin:0 0 8px;padding-left:18px">
+        <li>Đây là chủ đề được nghiên cứu và ghi nhận rộng rãi trong học thuật và thực tiễn.</li>
+        <li>Các chuyên gia thường nhìn nhận vấn đề này qua nhiều góc độ khác nhau.</li>
+        <li>Để tìm hiểu sâu hơn, bạn có thể dùng tab <strong>Tra cứu</strong> để xem các bài viết liên quan.</li>
+      </ul>
+      <div style="font-size:.78rem;color:var(--ink-secondary);margin-top:6px">✦ Powered by V-App AI · Nội dung mang tính tham khảo</div>`;
+  }
+
+  $('#libOverlay') && $('#libOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+  });
+
+  // ============================================================
   // BUILD HAMBURGER MENU
   // ============================================================
   function buildMenu() {
@@ -1597,9 +1997,9 @@ ul, ol { list-style: none; }
     const feat2Div = makeCardH(feat2, { medium: true, extraClass: 'top-featured-secondary fade-up', titleSize: '1.15rem' });
     feat2Div.style.animationDelay = '.1s';
     const gcgBadge = el('a', 'cat-badge');
-    gcgBadge.textContent = 'Góc chuyên gia';
-    gcgBadge.href = '#category/goc-chuyen-gia';
-    gcgBadge.addEventListener('click', e => { e.stopPropagation(); location.hash = '#category/goc-chuyen-gia'; });
+    gcgBadge.textContent = 'Góc nhìn chuyên gia';
+    gcgBadge.href = '#category/goc-nhin-chuyen-gia';
+    gcgBadge.addEventListener('click', e => { e.stopPropagation(); location.hash = '#category/goc-nhin-chuyen-gia'; });
     feat2Div.prepend(gcgBadge);
     featRow.appendChild(feat2Div);
     topGrid.appendChild(featRow);
@@ -1826,13 +2226,13 @@ ul, ol { list-style: none; }
   function renderGCGPage() {
     $('#videoFeedPage').classList.remove('active');
     $('#catNormalContainer').style.display = '';
-    $$('.nav-cat-link').forEach(l => l.classList.toggle('active', l.dataset.cat === 'goc-chuyen-gia'));
+    $$('.nav-cat-link').forEach(l => l.classList.toggle('active', l.dataset.cat === 'goc-nhin-chuyen-gia'));
     $('#webCatSubsBar').style.display = 'none';
     ['catSpecial','catTopCluster','catLeft','catRight'].forEach(id => { $('#'+id).innerHTML = ''; });
 
     const stream = $('#catStream');
     stream.innerHTML = '';
-    const articles = D.CATEGORY_ARTICLES['goc-chuyen-gia'] || [];
+    const articles = D.CATEGORY_ARTICLES['goc-nhin-chuyen-gia'] || [];
     if (!articles.length) return;
 
     const wrap = el('div', 'gcg-wrap');
@@ -1883,7 +2283,7 @@ ul, ol { list-style: none; }
     if (!cat) return;
 
     // Góc chuyên gia — custom opinion layout
-    if (catId === 'goc-chuyen-gia') { renderGCGPage(); return; }
+    if (catId === 'goc-nhin-chuyen-gia') { renderGCGPage(); return; }
 
     // Check comingSoon on top-level category
     if (cat.comingSoon) { renderComingSoon(catId, null); return; }
@@ -2001,22 +2401,20 @@ ul, ol { list-style: none; }
   // HOME PAGE SIDE BOX MAPPING
   // ============================================================
   const HOME_SIDE_BOXES = {
-    'thoi-su':   'weather-box',
-    'the-gioi':  'war-map-compact',
-    'cong-nghe': 'thietbi-search',
-    'phap-luat': 'law-search',
-    'giao-duc':  'exam-search',
-    'xe':        'traffic-fine',
-    'du-lich':   'destination-search',
-    'doi-song':  'quote-box',
+    'thoi-su':        'weather-box',
+    'the-gioi':       'war-map-compact',
+    'xe-cong-nghe':   'thietbi-search',
+    'phap-luat':      'law-search',
+    'giao-duc':       'exam-search',
+    'doi-song-du-lich': 'destination-search',
   };
 
   // Featured interstitials: which box appears below each featured cluster
   const FEATURED_INTERSTITIALS = {
-    'kinh-doanh':  'stock-search',
-    'bat-dong-san':'project-search',
-    'the-thao':    'match-schedule',
-    'suc-khoe':    'disease-search',
+    'kinh-te':   'stock-search',
+    'nha-dat':   'project-search',
+    'the-thao':  'match-schedule',
+    'suc-khoe':  'disease-search',
   };
 
   // ============================================================

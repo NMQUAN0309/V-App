@@ -839,7 +839,7 @@ input, select { font-family: inherit; }
 .m-ai-q-answer {
   max-height: 0; overflow: hidden; transition: max-height .4s ease;
 }
-.m-ai-q.open .m-ai-q-answer { max-height: 200px; }
+.m-ai-q.open .m-ai-q-answer { max-height: 2000px; }
 .m-ai-q-answer p {
   padding: 0 14px 12px; font-size: .82rem; line-height: 1.5;
   color: var(--ink-secondary); border-top: 1px solid var(--border-light);
@@ -2133,7 +2133,7 @@ input, select { font-family: inherit; }
   function renderBoxVnMapHome() {
     const box = el('div', 'm-box');
     box.innerHTML = `<div class="m-box-inner">
-      <div class="m-box-label">🇻🇳 Tin nóng — Bản đồ Việt Nam</div>
+      <div class="m-box-label">Tin nóng</div>
       <div class="vn-map-mini-wrap" id="homeVnMapWrap">
         <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
       </div>
@@ -2489,7 +2489,7 @@ input, select { font-family: inherit; }
     if (catId === 'thoi-su') {
       const vnBox = el('div', 'm-box');
       vnBox.innerHTML = `<div class="m-box-inner">
-        <div class="m-box-label">🇻🇳 Tin nóng — Bản đồ Việt Nam</div>
+        <div class="m-box-label">Tin nóng</div>
         <div class="vn-map-mini-wrap" id="catVnMapWrap">
           <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
         </div>

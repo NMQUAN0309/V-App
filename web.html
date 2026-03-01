@@ -986,7 +986,7 @@ ul, ol { list-style: none; }
   transition: max-height .4s ease, padding .3s;
 }
 .ai-q-card.open .ai-q-answer {
-  max-height: 200px; padding: 0 16px 14px;
+  max-height: 2000px; padding: 0 16px 14px;
 }
 .ai-q-answer p {
   font-size: .87rem; line-height: 1.6; color: var(--ink-secondary);
@@ -1809,7 +1809,11 @@ ul, ol { list-style: none; }
     all.slice(0, 30).forEach(a => {
       const row = el('div', 'article-row');
       row.innerHTML = articleRowHTML(a);
-      makeClickable(row, a);
+      const handler = () => { overlay.classList.remove('show'); goArticle(a); };
+      const title = row.querySelector('.title');
+      const img = row.querySelector('img');
+      if (title) { title.style.cursor = 'pointer'; title.addEventListener('click', handler); }
+      if (img) { img.style.cursor = 'pointer'; img.addEventListener('click', handler); }
       body.appendChild(row);
     });
     overlay.classList.add('show');
@@ -2542,7 +2546,7 @@ ul, ol { list-style: none; }
 
       const mapCol = el('div', 'cat-top-map-col');
       mapCol.innerHTML = `<div class="cat-special-box" data-present="vn-map">
-        <h3>🇻🇳 Tin nóng — Bản đồ Việt Nam</h3>
+        <h3>Tin nóng</h3>
         <div class="vn-map-web-wrap" id="catVnMapWrap">
           <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
         </div>
@@ -3103,7 +3107,7 @@ ul, ol { list-style: none; }
         </div>`;
       }
       case 'vn-map-box': return `<div class="cat-special-box">
-        <h3>🇻🇳 Tin nóng — Bản đồ Việt Nam</h3>
+        <h3>Tin nóng</h3>
         <div class="vn-map-web-wrap" id="homeVnMapWrap">
           <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
         </div>

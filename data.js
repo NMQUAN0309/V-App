@@ -488,11 +488,12 @@ const FAMOUS_QUOTES = [
 
   // 1. Thay 5 bài top trang chủ
   //    Thời sự + Thế giới + Kinh tế + Thể thao + Sức khỏe
-  const topIds = ['thoi-su', 'the-gioi', 'kinh-te', 'the-thao', 'suc-khoe'];
+  const topIds = ['thoi-su', 'the-gioi', 'kinh-te', 'the-thao', 'goc-nhin-chuyen-gia'];
   HOME_TOP_ARTICLES.splice(0, 5, ...topIds.map(id => R[id]));
 
-  // Top mobile: giữ nguyên 5 bài (cùng topIds như web)
-  MOBILE_TOP_5.splice(0, 5, ...topIds.map(id => R[id]));
+  // Top mobile: bài 5 là Góc nhìn chuyên gia
+  const mobileTopIds = ['thoi-su', 'the-gioi', 'kinh-te', 'the-thao', 'goc-nhin-chuyen-gia'];
+  MOBILE_TOP_5.splice(0, 5, ...mobileTopIds.map(id => R[id]));
 
   // 2. Thay bài [0] trong HOME_FEATURED (5 mục nổi bật)
   FEATURED_CATEGORIES.forEach(catId => {

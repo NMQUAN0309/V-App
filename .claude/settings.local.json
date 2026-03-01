@@ -11,7 +11,16 @@
       "mcp__playwright__browser_console_messages",
       "Bash(python3:*)",
       "Bash(node \"c:/Users/nmqua/Dropbox/Bot/V-App redesign/_patch_web.js\")",
-      "Bash(node \"c:/Users/nmqua/Dropbox/Bot/V-App redesign/_patch_mob.js\")"
+      "Bash(node \"c:/Users/nmqua/Dropbox/Bot/V-App redesign/_patch_mob.js\")",
+      "WebFetch(domain:dantri.com.vn)",
+      "WebFetch(domain:tuoitre.vn)",
+      "WebFetch(domain:nguoihanoi.vn)",
+      "WebFetch(domain:vnexpress.net)",
+      "WebFetch(domain:luatvietnam.vn)",
+      "WebFetch(domain:vietstock.vn)",
+      "WebFetch(domain:tiin.vn)",
+      "WebFetch(domain:baochinhphu.vn)",
+      "WebFetch(domain:thethaovanhoa.vn)"
     ]
   }
 }

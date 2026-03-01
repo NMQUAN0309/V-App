@@ -1441,6 +1441,7 @@ ul, ol { list-style: none; }
 <!-- ============================================================
      DATA + APP JS
      ============================================================ -->
+<script src="real-articles.js"></script>
 <script src="data.js"></script>
 <script>
 (function() {
@@ -1828,7 +1829,16 @@ ul, ol { list-style: none; }
 
     let resultsHTML = '';
     if (!q) {
-      resultsHTML = `<div class="lib-no-results">Nhập từ khóa để tra cứu.</div>`;
+      const specialSubs = [
+        {special: 'war-map'}, {special: 'traffic-fine'}, {special: 'stock-search'},
+        {special: 'ebank-search'}, {special: 'project-search'}, {special: 'quyhoach-search'},
+        {special: 'disease-search'}, {special: 'law-search'}, {special: 'exam-search'},
+        {special: 'destination-search'}, {special: 'thietbi-search'},
+      ];
+      resultsHTML = `<div style="padding:4px 24px 16px">
+        <div style="font-size:.82rem;font-weight:600;color:var(--ink-secondary);margin-bottom:12px;letter-spacing:.03em;text-transform:uppercase">Công cụ tra cứu chuyên biệt</div>
+        ${specialSubs.map(s => buildSpecialBox(s)).join('')}
+      </div>`;
     } else {
       const ql = q.toLowerCase();
       let matches = [];
@@ -1878,7 +1888,10 @@ ul, ol { list-style: none; }
     const doSearch = () => libDoSearch($('#libSearchInput').value.trim());
     $('#libSearchBtn').onclick = doSearch;
     $('#libSearchInput').onkeydown = e => { if (e.key === 'Enter') doSearch(); };
-    if (!q) setTimeout(() => { const inp = $('#libSearchInput'); if (inp) inp.focus(); }, 50);
+    if (!q) {
+      initWarMap();
+      setTimeout(() => { const inp = $('#libSearchInput'); if (inp) inp.focus(); }, 50);
+    }
   }
 
   function renderLibAITab() {
@@ -2824,8 +2837,8 @@ ul, ol { list-style: none; }
     html += `<div class="article-author fade-up">${a.author}</div>`;
     html += `<div class="article-source fade-up">${a.source}</div>`;
 
-    // AI Questions
-    const questions = D.getRandomQuestions();
+    // AI Questions — dùng câu hỏi riêng của bài thật nếu có
+    const questions = (a.questions && a.questions.length === 4) ? a.questions : D.getRandomQuestions();
     html += `<div class="ai-questions fade-up">
       <h3>Giải mã đa tầng</h3>`;
     questions.forEach((q, i) => {

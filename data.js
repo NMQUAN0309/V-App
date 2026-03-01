@@ -473,6 +473,64 @@ const FAMOUS_QUOTES = [
   { quote: 'Hành trình vạn dặm bắt đầu từ một bước chân.', author: 'Lão Tử', initials: 'LT', color: '#00695C' },
 ];
 
+// ============================================================
+// INJECT BÀI THẬT VÀO CÁC MẢNG DỮ LIỆU
+// (chạy sau khi real-articles.js đã load)
+// ============================================================
+(function injectRealArticles() {
+  const R = window.VAPP_REAL;
+  if (!R) return;
+
+  // Gán ID và metadata còn thiếu
+  Object.values(R).forEach(a => {
+    a.questions = a.questions || [];
+  });
+
+  // 1. Thay 5 bài top trang chủ
+  //    Thời sự + Thế giới + Kinh tế + Thể thao + Sức khỏe
+  const topIds = ['thoi-su', 'the-gioi', 'kinh-te', 'the-thao', 'suc-khoe'];
+  HOME_TOP_ARTICLES.splice(0, 5, ...topIds.map(id => R[id]));
+
+  // Thay toàn bộ top mobile bằng 12 bài thật (tất cả chuyên mục)
+  const mobileAllIds = ['thoi-su','the-gioi','kinh-te','nha-dat','xe-cong-nghe','suc-khoe','giao-duc','giai-tri','the-thao','doi-song-du-lich','phap-luat','goc-nhin-chuyen-gia'];
+  MOBILE_TOP_5.splice(0, MOBILE_TOP_5.length, ...mobileAllIds.map(id => R[id]).filter(Boolean));
+
+  // 2. Thay bài [0] trong HOME_FEATURED (5 mục nổi bật)
+  FEATURED_CATEGORIES.forEach(catId => {
+    if (R[catId] && HOME_FEATURED[catId] && HOME_FEATURED[catId].length > 0) {
+      HOME_FEATURED[catId][0] = R[catId];
+    }
+  });
+
+  // 3. Thay bài [0] trong HOME_REMAINING (các mục còn lại)
+  Object.keys(HOME_REMAINING).forEach(catId => {
+    if (R[catId] && HOME_REMAINING[catId] && HOME_REMAINING[catId].length > 0) {
+      HOME_REMAINING[catId][0] = R[catId];
+    }
+  });
+
+  // 4. Thay bài [0] trong CATEGORY_ARTICLES (trang mục)
+  Object.keys(CATEGORY_ARTICLES).forEach(catId => {
+    if (R[catId] && CATEGORY_ARTICLES[catId] && CATEGORY_ARTICLES[catId].length > 0) {
+      CATEGORY_ARTICLES[catId][0] = R[catId];
+    }
+  });
+
+  // 5. Thay bài [0] trong MOBILE_CATEGORY_ARTICLES
+  Object.keys(MOBILE_CATEGORY_ARTICLES).forEach(catId => {
+    if (R[catId] && MOBILE_CATEGORY_ARTICLES[catId] && MOBILE_CATEGORY_ARTICLES[catId].length > 0) {
+      MOBILE_CATEGORY_ARTICLES[catId][0] = R[catId];
+    }
+  });
+
+  // 6. Thay bài [0] trong MOBILE_REMAINING (các mục không nằm trong stream)
+  Object.keys(MOBILE_REMAINING).forEach(catId => {
+    if (R[catId] && MOBILE_REMAINING[catId] && MOBILE_REMAINING[catId].length > 0) {
+      MOBILE_REMAINING[catId][0] = R[catId];
+    }
+  });
+})();
+
 // EXPORT (global)
 // ============================================================
 window.VAPP = {
@@ -510,5 +568,6 @@ window.VAPP = {
   getRandomQuote,
   randomPick,
   MATCH_SCHEDULE,
-  FAMOUS_QUOTES
+  FAMOUS_QUOTES,
+  get REAL_ARTICLES() { return window.VAPP_REAL || {}; }
 };

@@ -59,3 +59,15 @@
 [23410010ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
 [23410010ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
 [23420415ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[25210207ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[25210721ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[25210721ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[25211928ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[27010911ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[27011482ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[27011483ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[27011883ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81
+[28811660ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://vnexpress.net/goc-nhin:104
+[28812130ms] [ERROR] Not signed in with the identity provider. @ https://vnexpress.net/goc-nhin:0
+[28812130ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://vnexpress.net/goc-nhin:0
+[28817167ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:81

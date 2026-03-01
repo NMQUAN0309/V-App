@@ -1101,6 +1101,7 @@ input, select { font-family: inherit; }
   <p>Trang thông tin điện tử VTimes &copy; 2026. Prototype.</p>
 </footer>
 
+<script src="real-articles.js"></script>
 <script src="data.js"></script>
 <script>
 (function() {
@@ -2315,7 +2316,7 @@ input, select { font-family: inherit; }
     </div>`;
 
     // AI Q&A
-    const questions = D.getRandomQuestions();
+    const questions = (a.questions && a.questions.length === 4) ? a.questions : D.getRandomQuestions();
     html += `<div class="m-ai-section">
       <div class="m-ai-title">Giải mã đa tầng</div>`;
     questions.forEach((q, i) => {

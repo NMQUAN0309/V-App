@@ -20,7 +20,8 @@
       "WebFetch(domain:vietstock.vn)",
       "WebFetch(domain:tiin.vn)",
       "WebFetch(domain:baochinhphu.vn)",
-      "WebFetch(domain:thethaovanhoa.vn)"
+      "WebFetch(domain:thethaovanhoa.vn)",
+      "mcp__playwright__browser_install"
     ]
   }
 }

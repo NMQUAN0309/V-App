@@ -8,7 +8,7 @@ Trang thông tin điện tử VTimes - prototype để demo cấu trúc và giao
 - 2 file riêng: `web.html` (bản desktop) + `mobile.html` (bản di động)
 - Mỗi file chứa 3 trang: Trang chủ, Trang mục, Trang bài chi tiết
 - Chuyển trang bằng JS (hash-based routing)
-- Sample data chung trong `data.js`
+- Dữ liệu dùng chung trong `data.js` + `real-articles.js`
 
 ## Design System
 
@@ -185,7 +185,7 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 
 ### Trang chủ (`#home`)
 1. Header + Ticker + Nav
-2. **Cụm Top** (5 bài nổi bật):
+2. **Cụm Top** (5 bài nổi bật — bài thật từ các mục Thời sự, Thế giới, Kinh tế, Thể thao, Sức khỏe):
    - Hàng trên (grid ~8fr / ~2.5fr):
      - Bài #1 (trái): layout ngang — ava lớn (~62%) + title & sapo bên phải
      - Bài #2 (phải): layout dọc — ava full width (16/9) → title → sapo bên dưới
@@ -193,7 +193,7 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 3. **2 cột chính** (grid 1fr 2fr):
    - **Cột trái (1/3)**: 20 bài, mỗi bài = ava → title → sapo (vertical)
    - **Cột phải (2/3)**: 5 cụm featured (Kinh tế, Nhà đất, Thể thao, Giải trí, Sức khỏe)
-     - Mỗi cụm: tên mục + danh sách mục con → bài top 1 (ava + title + sapo) + 1 bài title+sapo cạnh → 3 bài title+sapo
+     - Mỗi cụm: tên mục + danh sách mục con → bài top 1 (bài thật — ava + title + sapo) + 1 bài title+sapo cạnh → 3 bài title+sapo
      - **Interstitial box** xuất hiện bên dưới một số cụm featured:
        - Sau Kinh tế → Tra cứu mã chứng khoán
        - Sau Nhà đất → Tìm kiếm dự án
@@ -201,20 +201,20 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
        - Sau Sức khỏe → Tra cứu bệnh
 4. **Mục còn lại** (2 cột: bài viết 1fr + box sidebar 300px):
 
-| Mục | Box sidebar |
-|-----|-------------|
-| Thời sự | Thời tiết 5 thành phố |
-| Thế giới | Bản đồ Chiến sự compact + legend |
-| Xe - Công nghệ | Tìm kiếm sản phẩm công nghệ |
-| Pháp luật | Thư viện văn bản pháp luật |
-| Giáo dục | Tra cứu đề thi & đáp án |
-| Đời sống – Du lịch | Tra cứu điểm đến |
-| Các mục còn lại | Không có box (chỉ danh sách bài) |
+| Mục | Bài top 1 | Box sidebar |
+|-----|-----------|-------------|
+| Thời sự | Bài thật | Thời tiết 5 thành phố |
+| Thế giới | Bài thật | Bản đồ Chiến sự compact + legend |
+| Xe - Công nghệ | Bài thật | Tìm kiếm sản phẩm công nghệ |
+| Pháp luật | Bài thật | Thư viện văn bản pháp luật |
+| Giáo dục | Bài thật | Tra cứu đề thi & đáp án |
+| Đời sống – Du lịch | Bài thật | Tra cứu điểm đến |
+| Các mục còn lại | Bài thật | Không có box (chỉ danh sách bài) |
 
 ### Trang mục (`#category/{id}`)
 1. Header + Ticker + Nav
 2. **Search box / widget** (nếu mục con có)
-3. **Cụm top 4 bài**: 1 bài lớn + 3 bài nhỏ, đều có ava + title + sapo
+3. **Cụm top 4 bài**: bài top 1 là bài thật, 3 bài còn lại sample. Đều có ava + title + sapo
 4. **2 cột**:
    - Trái: 10 bài đủ info (ava + title + sapo)
    - Phải: các cụm mục con, mỗi cụm có 2 bài (1 full + 1 title+sapo)
@@ -225,7 +225,9 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 2. Breadcrumb: Mục › Mục con
 3. Thời gian đăng + 🔊 Audio
 4. Title → **Sapo** (đậm) → Nội dung → Tác giả (phải) → Nguồn (phải)
-5. **4 câu hỏi AI** (expand/collapse với CSS transition)
+5. **4 câu hỏi "Giải mã đa tầng"** (expand/collapse với CSS transition)
+   - Bài thật: 4 câu hỏi riêng viết tay, sâu sắc, ~200 chữ/đáp án
+   - Bài sample: 4 câu hỏi random từ pool AI_QUESTIONS
 6. Tiện ích liên quan (grid)
 7. Toàn cảnh (5 bài) + Xem thêm
 8. Tin cùng chuyên mục (5 bài) + Xem thêm
@@ -249,28 +251,30 @@ Các quốc gia xung đột được tô màu trên bản đồ. Có animated pu
 ### Trang chủ (`#home`) — Stream chính
 
 ```
-5 bài top nổi bật (full card: ava full width + title + sapo)
+5 bài top (full card: ava full width + title + sapo)
+  — Bài thật từ 5 chuyên mục: Thời sự, Thế giới, Kinh tế, Thể thao, Sức khỏe
+  — Bài cuối (Góc nhìn chuyên gia nếu có) có badge GCG riêng
 ─────────────────────────────────────────────────────
 [KINH TẾ — khung card nổi bật]
-  5 bài Kinh tế (full + half + 3×compact)
+  5 bài Kinh tế (full + half + 3×compact), bài 1 là bài thật
 Box: Tra cứu mã chứng khoán
 ─────────────────────────────────────────────────────
 5 bài mix (mid card: ava trung bình + title + sapo)
 ─────────────────────────────────────────────────────
 [NHÀ ĐẤT]
-  5 bài Nhà đất
+  5 bài Nhà đất, bài 1 là bài thật
 Box: Tìm kiếm dự án
 ─────────────────────────────────────────────────────
 5 bài mix (mid card)
 ─────────────────────────────────────────────────────
 [THỂ THAO]
-  5 bài Thể thao
+  5 bài Thể thao, bài 1 là bài thật
 Box: Lịch thi đấu (ticker cuộn ngang)
 ─────────────────────────────────────────────────────
 5 bài mix (mid card)
 ─────────────────────────────────────────────────────
 [GIẢI TRÍ]
-  5 bài Giải trí
+  5 bài Giải trí, bài 1 là bài thật
 ─────────────────────────────────────────────────────
 [VIDEO — strip cuộn ngang]
   5 video thumbnail (click → xem fullscreen vertical)
@@ -278,10 +282,10 @@ Box: Lịch thi đấu (ticker cuộn ngang)
 5 bài mix (mid card)
 ─────────────────────────────────────────────────────
 [SỨC KHỎE]
-  5 bài Sức khỏe
+  5 bài Sức khỏe, bài 1 là bài thật
 Box: Tra cứu bệnh
 ─────────────────────────────────────────────────────
-Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
+Remaining — mỗi mục 5 bài, bài 1 là bài thật (theo thứ tự CATEGORIES):
   Thời sự            → Box: Thời tiết 7 ngày
   Thế giới           → Box: Bản đồ Chiến sự (mini map)
   Xe - Công nghệ     → Box: Tìm kiếm sản phẩm công nghệ
@@ -294,7 +298,7 @@ Remaining — mỗi mục 5 bài (theo thứ tự CATEGORIES):
 ### Loại card bài viết (Mobile)
 | Loại | Dùng ở đâu | Cấu trúc |
 |------|-----------|----------|
-| full card | Bài 1 mỗi mục featured, top 5 | ava full width → title → sapo |
+| full card | Bài 1 mỗi mục featured, top 12 | ava full width → title → sapo |
 | half card | Bài 2 mỗi mục featured | ava ~50% float trái + title + sapo |
 | compact card | Bài 3–5 mỗi mục featured | title + sapo |
 | mid card | Mix articles, remaining | ava ~120px float trái + title + sapo |
@@ -328,7 +332,7 @@ Khi click vào thumbnail video trong strip trang chủ hoặc trang Video:
 1. Header mobile + Nav
 2. Mục con (cuộn ngang)
 3. Search box / widget (nếu mục con có)
-4. Stream bài: full card + half card + compact cards
+4. Stream bài: full card (bài thật) + half card + compact cards
 
 ### Trang mục con có `comingSoon`
 Hiển thị trang "🚧 Đang phát triển" thay vì danh sách bài viết.
@@ -338,7 +342,9 @@ Hiển thị trang "🚧 Đang phát triển" thay vì danh sách bài viết.
 2. Breadcrumb: Mục lớn › Mục con + ▼ dropdown chọn mục khác
 3. Thời gian đăng + 🔊
 4. Title → **Sapo** → Nội dung → Tác giả (phải) → Nguồn (phải)
-5. **4 câu hỏi AI** (expand/collapse)
+5. **4 câu hỏi "Giải mã đa tầng"** (expand/collapse)
+   - Bài thật: 4 câu hỏi riêng, ~200 chữ/đáp án
+   - Bài sample: random từ pool
 6. Tiện ích liên quan
 7. Toàn cảnh (5 bài)
 8. Tin cùng chuyên mục (5 bài)
@@ -363,8 +369,27 @@ Không gian tra cứu bách khoa kết hợp AI. Không phải chuyên mục tin
 | Tab | Nội dung |
 |-----|----------|
 | Chủ đề | Grid 12 chủ đề (Khoa học, Lịch sử, Địa lý, Pháp luật, Sức khỏe, Kinh tế, Văn hóa, Công nghệ, Toán học, Môi trường, Sinh học, Vật lý) + Xu hướng chips |
-| Tra cứu | Nhập từ khóa → cột trái list bài liên quan + cột phải AI tóm tắt |
+| Tra cứu | Ô tìm từ khóa + toàn bộ 11 công cụ tra cứu chuyên biệt (xem dưới) |
 | ✦ Hỏi AI | Chat interface, AI trả lời mô phỏng sau 900ms, có typing indicator |
+
+### Tab Tra cứu — Công cụ chuyên biệt
+Hiển thị đầy đủ khi tab mở (trước khi nhập từ khóa), theo thứ tự:
+
+| # | Công cụ |
+|---|---------|
+| 1 | 🌍 Bản đồ Chiến sự Thế giới (đầy đủ, tương tác) |
+| 2 | 🚗 Tra cứu phạt nguội (biển số xe) |
+| 3 | Tra cứu mã chứng khoán |
+| 4 | Tra cứu lãi suất ngân hàng (Gửi/Vay, Ngân hàng, Kỳ hạn) |
+| 5 | Tìm kiếm dự án bất động sản |
+| 6 | Tra cứu quy hoạch (Tỉnh + Quận/huyện) |
+| 7 | Tra cứu thông tin bệnh |
+| 8 | Thư viện văn bản pháp luật |
+| 9 | Tra cứu đề thi & đáp án (Năm, Cấp, Môn học) |
+| 10 | Khám phá điểm đến du lịch |
+| 11 | Tìm kiếm sản phẩm công nghệ |
+
+Khi nhập từ khóa và tìm → cột trái list bài liên quan + cột phải AI tóm tắt.
 
 ### Tính năng tìm kiếm
 - Tìm trong `CATEGORY_ARTICLES` (tất cả chuyên mục), khớp title và sapo
@@ -392,32 +417,59 @@ Không gian tra cứu bách khoa kết hợp AI. Không phải chuyên mục tin
 
 ---
 
-## Data (`data.js`)
+## Data
 
-### Dữ liệu dùng chung
+### File `data.js`
+Chứa toàn bộ dữ liệu dùng chung, export ra `window.VAPP`. Khi load, tự động inject bài thật từ `window.VAPP_REAL` (do `real-articles.js` cung cấp) vào các mảng dữ liệu trước khi export.
+
+### File `real-articles.js`
+Chứa 12 bài viết thật (1 bài mỗi chuyên mục), export ra `window.VAPP_REAL`. Phải được load **trước** `data.js`.
+
+| # | Chuyên mục | Bài | Nguồn |
+|---|-----------|-----|-------|
+| 1 | Thời sự | Tàu du lịch chở 41 người bốc cháy trên Vịnh Hạ Long | Báo Dân trí |
+| 2 | Thế giới | Mỹ — Iran đàm phán hạt nhân | VnExpress |
+| 3 | Kinh tế | Mục tiêu GDP tăng trưởng 10% | LuatVietnam |
+| 4 | Nhà đất | Thị trường bất động sản 2026 sàng lọc | VnExpress |
+| 5 | Xe - Công nghệ | Thị trường xe máy điện | Tuổi Trẻ |
+| 6 | Sức khỏe | TP.HCM nâng cấp hệ thống y tế | Báo Dân trí |
+| 7 | Giáo dục | Tuyển sinh đại học 2026 | Tuổi Trẻ |
+| 8 | Giải trí | Phim Tết 2026 | Thể thao & Văn hóa |
+| 9 | Thể thao | U23 Việt Nam dự Asiad | Báo Dân trí |
+| 10 | Đời sống – Du lịch | Hà Nội đón 3,18 triệu lượt khách | Người Hà Nội |
+| 11 | Pháp luật | Chính phủ họp về công tác pháp luật | Báo Chính phủ |
+| 12 | Góc nhìn chuyên gia | Kinh tế chữ K | Vietstock |
+
+### Biến dữ liệu chính
 | Biến | Mô tả |
 |------|-------|
 | `CATEGORIES` | Toàn bộ cấu trúc chuyên mục + mục con |
-| `FEATURED_CATEGORIES` | 5 mục hiển thị cột phải trang chủ web |
+| `FEATURED_CATEGORIES` | 5 mục hiển thị cột phải trang chủ web (Kinh tế, Nhà đất, Xe-CN, Đời sống, Sức khỏe) |
 | `MOBILE_STREAM_CATEGORIES` | 5 mục có section riêng trong stream mobile |
-| `MOBILE_TOP_5` | 5 bài top trang chủ mobile |
+| `MOBILE_TOP_5` | 5 bài top trang chủ mobile (Thời sự, Thế giới, Kinh tế, Thể thao, Sức khỏe — bài thật) |
 | `MOBILE_MIX_1/2/3/4` | Các nhóm bài mix giữa các section |
 | `MOBILE_VIDEO_ARTICLES` | 5 video cho strip trang chủ |
-| `MOBILE_CATEGORY_ARTICLES` | Bài viết 5 mục featured mobile |
-| `MOBILE_REMAINING` | Bài viết các mục còn lại mobile |
+| `MOBILE_CATEGORY_ARTICLES` | Bài viết 5 mục featured mobile, bài [0] là bài thật |
+| `MOBILE_REMAINING` | Bài viết các mục còn lại mobile, bài [0] là bài thật |
+| `HOME_TOP_ARTICLES` | 5 bài top trang chủ web (Thời sự, Thế giới, Kinh tế, Thể thao, Sức khỏe) |
+| `HOME_FEATURED` | Bài viết 5 mục featured web, bài [0] là bài thật |
+| `HOME_REMAINING` | Bài viết các mục còn lại web, bài [0] là bài thật |
+| `CATEGORY_ARTICLES` | Bài viết trang mục, bài [0] là bài thật |
 | `MATCH_SCHEDULE` | Lịch thi đấu mẫu cho box thể thao |
 | `FAMOUS_QUOTES` | Trích dẫn danh nhân cho quote box web |
 | `WEATHER_DATA` | Dữ liệu thời tiết 5 thành phố + 7 ngày |
 | `BANKS`, `LOAN_TERMS` | Danh sách ngân hàng và kỳ hạn vay |
 
-### Cấu trúc bài viết mẫu
+### Cấu trúc bài viết
 ```js
 {
-  id, title, sapo, content,
-  avaUrl,       // URL ảnh đại diện
-  catId, subId, // phân loại
+  id,           // số nguyên — bài thật: 9001–9012
+  title, sapo, content,
+  avaUrl,       // URL ảnh đại diện (bài thật: URL ảnh thực từ nguồn)
+  categoryId, categoryName,
+  subId, subName,
   author, source,
   time,         // chỉ hiển thị trong bài chi tiết
-  aiQuestions   // 4 câu hỏi AI kèm đáp án
+  questions     // chỉ có ở bài thật: array 4 phần tử {q, a} — ~200 chữ/đáp án
 }
 ```

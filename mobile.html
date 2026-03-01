@@ -997,6 +997,80 @@ input, select { font-family: inherit; }
 .m-lib-chat-wrap {
   display: flex; flex-direction: column; height: calc(100vh - 230px); padding: 0 16px;
 }
+
+/* ============================================================
+   PRESENT MODE — mobile
+   ============================================================ */
+.m-present-bar {
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px 16px 6px;
+  border-top: 1px solid #FFCDD2;
+}
+/* Tabs sticky offset: adjusted for present bar height (~32px) added to header */
+#mTabs { top: 90px; }
+.m-present-toggle-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 14px;
+  background: transparent;
+  border: 1.5px solid #E53935;
+  border-radius: 20px;
+  color: #E53935;
+  font-size: 0.73rem; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.03em;
+}
+.m-present-toggle-btn:active { opacity: 0.7; }
+.m-present-toggle-btn.mpm-on { background: #E53935; color: #fff; }
+.m-present-toggle-btn .mptb-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; display: inline-block; flex-shrink: 0;
+}
+.m-present-toggle-btn.mpm-on .mptb-dot { animation: mptb-blink 1.1s ease-in-out infinite; }
+@keyframes mptb-blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+.present-m-lit {
+  outline: 3px solid #E53935;
+  outline-offset: 4px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 8px rgba(229,57,53,0.08);
+  animation: mpm-glow 2.4s ease-in-out infinite;
+}
+@keyframes mpm-glow {
+  0%,100%{ box-shadow: 0 0 0 8px rgba(229,57,53,0.08); }
+  50%{ box-shadow: 0 0 0 15px rgba(229,57,53,0.03); }
+}
+
+.m-present-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 10001;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  border-top: 4px solid #E53935;
+  padding: 16px 20px 36px;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.18);
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  font-family: 'Noto Sans', sans-serif;
+}
+.m-present-sheet.mps-show { transform: translateY(0); }
+.m-ps-top {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  margin-bottom: 8px;
+}
+.m-ps-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.69rem; font-weight: 700; color: #E53935;
+  background: #FFEBEE; border-radius: 20px;
+  padding: 3px 9px; letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0;
+}
+.m-ps-badge::before { content:'●'; font-size:.56rem; }
+.m-ps-close {
+  background: none; border: none; color: #bbb;
+  font-size: 1.1rem; cursor: pointer; padding: 0 4px; line-height: 1; flex-shrink: 0;
+}
+.m-ps-close:active { color: #444; }
+.m-ps-title {
+  font-weight: 700; font-size: 0.92rem; color: #111; line-height: 1.35; margin-bottom: 7px;
+}
+.m-ps-desc { font-size: 0.82rem; color: #555; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -1010,6 +1084,9 @@ input, select { font-family: inherit; }
       <span class="m-logo-text">VTimes</span>
     </a>
     <button class="m-bell" id="mBell">🔔<span class="m-bell-dot"></span></button>
+  </div>
+  <div class="m-present-bar">
+    <button class="m-present-toggle-btn" id="mPresentToggleBtn" onclick="mTogglePresent()"><span class="mptb-dot"></span> Present Mode</button>
   </div>
 </header>
 
@@ -2495,6 +2572,16 @@ input, select { font-family: inherit; }
 })();
 </script>
 
+<!-- PRESENT MODE BOTTOM SHEET -->
+<div class="m-present-sheet" id="mPresentSheet">
+  <div class="m-ps-top">
+    <span class="m-ps-badge" id="mPsBadge">Điểm 1</span>
+    <button class="m-ps-close" onclick="mDismissPresent()" aria-label="Đóng">✕</button>
+  </div>
+  <div class="m-ps-title" id="mPsTitle"></div>
+  <div class="m-ps-desc" id="mPsDesc"></div>
+</div>
+
 <!-- AI SUMMARY POPUP -->
 <div class="art-summary-popup" id="mArtSummaryPopup">
   <div class="art-summary-header">
@@ -2503,6 +2590,294 @@ input, select { font-family: inherit; }
   </div>
   <div class="art-summary-text" id="mArtSummaryText"></div>
 </div>
+
+<script>
+// ============================================================
+// PRESENT MODE — mobile.html
+// ============================================================
+(function() {
+  const M_POINT_LABELS = {
+    1: 'Điểm 1 — Giao diện',
+    2: 'Điểm 2 — Bách khoa',
+    3: 'Điểm 3 — Chuyên gia'
+  };
+
+  const M_ANNOTATIONS = {
+    home: [
+      {
+        selector: '#mTabs',
+        point: 1,
+        maxScroll: 160,
+        title: 'Cấu trúc chuyên mục tinh gọn',
+        desc: 'Lấy khung VNE làm nền, đổi tên & tinh gọn số mục — dễ tra cứu, điều hướng bằng ngón tay chỉ một chạm.'
+      },
+      {
+        selector: '#mTabLocal',
+        point: 1,
+        maxScroll: 160,
+        title: 'Tin địa phương',
+        desc: 'Một chạm: chuyển ngay sang luồng tin tỉnh thành theo vị trí — Hà Nội, TP.HCM, Đà Nẵng... không bị cuốn vào tin không liên quan.'
+      },
+      {
+        selector: '#mTabQuantam',
+        point: 1,
+        maxScroll: 160,
+        title: '"Quan tâm" — Cá nhân hóa nội dung',
+        desc: 'Chọn chủ đề yêu thích, hệ thống tự lọc bài phù hợp — feed tin riêng của từng người đọc, không còn lướt tin không liên quan.'
+      },
+      {
+        selector: '#mTabLatest',
+        point: 1,
+        maxScroll: 160,
+        title: '"Mới nhất" — Tất cả tin theo thời gian',
+        desc: 'Toàn bộ tin từ mọi chuyên mục, sắp xếp theo thời điểm đăng mới nhất — không bỏ sót bất kỳ tin nào vừa cập nhật.'
+      },
+      {
+        selector: '.m-ticker',
+        point: 1,
+        title: 'Thông tin thời gian thực',
+        desc: 'Cập nhật liên tục: thời tiết, giá vàng, chứng khoán — không cần rời ứng dụng để tra cứu.'
+      },
+      {
+        selector: '[data-present="traffic"]',
+        point: 1,
+        title: 'Tra cứu phạt nguội',
+        desc: 'Nhập biển số xe — xem ngay kết quả vi phạm giao thông bị camera ghi nhận, không cần truy cập trang Cục CSGT.'
+      },
+      {
+        selector: '[data-present="stock"]',
+        point: 1,
+        title: 'Tra cứu mã chứng khoán',
+        desc: 'Giá, khối lượng giao dịch, biến động mã CK theo thời gian thực — độc giả đầu tư không cần rời app để theo dõi danh mục.'
+      },
+      {
+        selector: '[data-present="law"]',
+        point: 1,
+        title: 'Thư viện văn bản pháp luật',
+        desc: 'Nghị định, Thông tư, Luật... tra cứu nhanh ngay trên app — tiện ích không thể thiếu với doanh nghiệp và người làm luật.'
+      },
+      {
+        selector: '[data-present="disease"]',
+        point: 1,
+        title: 'Tra cứu thông tin bệnh',
+        desc: 'Triệu chứng, nguyên nhân, điều trị, phòng ngừa — giúp độc giả chủ động sức khỏe thay vì chỉ đọc tin y tế thụ động.'
+      },
+      {
+        selector: '[data-present="project"]',
+        point: 1,
+        title: 'Tìm kiếm dự án bất động sản',
+        desc: 'Kiểm tra pháp lý, tiến độ xây dựng, chủ đầu tư các dự án BĐS toàn quốc — hỗ trợ quyết định mua nhà và đầu tư có căn cứ.'
+      },
+      {
+        selector: '[data-present="weather"]',
+        point: 1,
+        title: 'Dự báo thời tiết 7 ngày',
+        desc: 'Thời tiết chi tiết các ngày tới theo từng địa điểm — lên kế hoạch di chuyển, du lịch mà không cần mở app thời tiết riêng.'
+      }
+    ],
+    article: [
+      {
+        selector: '.m-article-meta',
+        point: 1,
+        title: 'Đọc hoặc Nghe',
+        desc: 'Linh hoạt theo nhu cầu — đọc khi yên tĩnh, nghe khi đang di chuyển. Nút Nghe phục vụ tốt nhất lúc đang trên đường.'
+      },
+      {
+        selector: '.m-ai-section',
+        point: 1,
+        title: '"Giải mã đa tầng"',
+        desc: 'Bách khoa tích hợp trong từng bài — không chỉ biết tin, mà hiểu sâu bản chất vấn đề và ngữ cảnh xung quanh.'
+      },
+      {
+        selector: '.m-utilities',
+        point: 1,
+        title: 'Tiện ích tra cứu liên quan',
+        desc: 'Gợi ý công cụ tra cứu phù hợp với chủ đề bài đang đọc — tiếp cận thông tin chuyên sâu hơn ngay tại trang, không cần tìm kiếm riêng.'
+      },
+      {
+        selector: '.m-related',
+        point: 1,
+        title: '"Toàn cảnh" — Đa chiều, đa nguồn',
+        desc: 'Nhiều nguồn, nhiều góc nhìn về cùng sự kiện — người đọc tự đánh giá, không bị dẫn dắt một chiều.'
+      },
+      {
+        selector: '#mSticky',
+        point: 1,
+        title: 'Tương tác ngay trong bài',
+        desc: 'Hỏi AI về tin đang đọc, Lưu bài, Like, Chia sẻ — tất cả chỉ một chạm, không cần rời trang hay thoát khỏi bài viết.'
+      }
+    ],
+    library: [
+      {
+        selector: '.m-lib-header',
+        point: 2,
+        title: '"Bách khoa tri thức"',
+        desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+      }
+    ],
+    expert: [
+      {
+        selector: '#m-page-category .m-cat-stream, #mCatStream',
+        point: 3,
+        title: '"Góc nhìn chuyên gia"',
+        desc: 'Bài viết chuyên sâu từ chuyên gia hàng đầu: kinh tế, tài chính, sức khỏe, giáo dục — phân tích bền vững, không chỉ tin nhất thời.'
+      }
+    ]
+  };
+
+  // M7: Auto-tag .m-box elements with data-present attributes by label text
+  function mPmLabelElements() {
+    document.querySelectorAll('.m-box').forEach(box => {
+      const text = (box.querySelector('.m-box-label') || {}).textContent || '';
+      if (text.includes('phạt nguội'))       box.dataset.present = 'traffic';
+      else if (text.includes('chứng khoán')) box.dataset.present = 'stock';
+      else if (text.includes('pháp luật'))   box.dataset.present = 'law';
+      else if (text.includes('bệnh'))        box.dataset.present = 'disease';
+      else if (text.includes('dự án'))       box.dataset.present = 'project';
+      else if (text.includes('thời tiết'))   box.dataset.present = 'weather';
+      else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
+      else if (text.includes('đề thi'))      box.dataset.present = 'exam';
+      else if (text.includes('điểm đến'))    box.dataset.present = 'destination';
+      else if (text.includes('công nghệ'))   box.dataset.present = 'tech';
+    });
+  }
+
+  let mPresentOn = false;
+  let mPmObserver = null;
+  let mPmScrollTimer = null;
+  let mPmVisibleMap = new Map();
+  let mPmLitEl = null;
+  let mPmDismissedEl = null;
+  let mPmPageKey = 'home';
+
+  function mGetPageKey() {
+    const hash = location.hash || '#home';
+    const parts = hash.replace('#','').split('/');
+    if (parts[0] === 'library') return 'library';
+    if (parts[0] === 'article') return 'article';
+    if (parts[0] === 'category' && parts[1] === 'goc-nhin-chuyen-gia') return 'expert';
+    if (parts[0] === 'home' || parts[0] === '') return 'home';
+    return null;
+  }
+
+  function mGetItems(pageKey) {
+    if (!pageKey || !M_ANNOTATIONS[pageKey]) return [];
+    return M_ANNOTATIONS[pageKey].map(ann => {
+      const el = document.querySelector(ann.selector);
+      return el ? { el, ann } : null;
+    }).filter(Boolean);
+  }
+
+  function mClearObserver() {
+    if (mPmObserver) { mPmObserver.disconnect(); mPmObserver = null; }
+    mPmVisibleMap.clear();
+  }
+
+  function mClearLit() {
+    if (mPmLitEl) { mPmLitEl.classList.remove('present-m-lit'); mPmLitEl = null; }
+  }
+
+  function mInitObserver(pageKey) {
+    mClearObserver();
+    const items = mGetItems(pageKey);
+    if (!items.length) return;
+    mPmObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => mPmVisibleMap.set(e.target, e.intersectionRatio));
+    }, { threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0] });
+    items.forEach(({ el }) => { mPmObserver.observe(el); });
+  }
+
+  function mFindBest(pageKey) {
+    const vh = window.innerHeight;
+    const viewCenter = vh * 0.42;
+    const scrollY = window.scrollY || window.pageYOffset;
+    let best = null, bestScore = Infinity;
+    mGetItems(pageKey).forEach(({ el, ann }) => {
+      const ratio = mPmVisibleMap.get(el) || 0;
+      if (ratio < 0.05) return;
+      if (ann.maxScroll !== undefined && scrollY > ann.maxScroll) return;
+      const rect = el.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const dist = Math.abs(elCenter - viewCenter);
+      if (dist < bestScore) { bestScore = dist; best = el; }
+    });
+    return best;
+  }
+
+  function mShowSheet(el, pageKey) {
+    if (!el || el === mPmDismissedEl) return;
+    const item = mGetItems(pageKey).find(i => i.el === el);
+    if (!item) return;
+
+    mClearLit();
+    mPmLitEl = el;
+    el.classList.add('present-m-lit');
+
+    document.getElementById('mPsBadge').textContent = M_POINT_LABELS[item.ann.point] || ('Điểm ' + item.ann.point);
+    document.getElementById('mPsTitle').textContent = item.ann.title;
+    document.getElementById('mPsDesc').textContent = item.ann.desc;
+
+    const sheet = document.getElementById('mPresentSheet');
+    sheet.classList.add('mps-show');
+  }
+
+  function mOnScrollStop() {
+    if (!mPresentOn) return;
+    const best = mFindBest(mPmPageKey);
+    if (best && best !== mPmLitEl) mShowSheet(best, mPmPageKey);
+  }
+
+  function mHideAll() {
+    document.getElementById('mPresentSheet').classList.remove('mps-show');
+    mClearLit();
+    mPmDismissedEl = null;
+  }
+
+  function mDismissPresent() {
+    mPmDismissedEl = mPmLitEl;
+    mClearLit();
+    document.getElementById('mPresentSheet').classList.remove('mps-show');
+  }
+  window.mDismissPresent = mDismissPresent;
+
+  function mTogglePresent() {
+    mPresentOn = !mPresentOn;
+    const btn = document.getElementById('mPresentToggleBtn');
+    btn.classList.toggle('mpm-on', mPresentOn);
+    if (mPresentOn) {
+      mPmLabelElements();
+      mPmPageKey = mGetPageKey();
+      mInitObserver(mPmPageKey);
+      setTimeout(mOnScrollStop, 350);
+    } else {
+      mClearObserver();
+      mHideAll();
+    }
+  }
+  window.mTogglePresent = mTogglePresent;
+
+  // Scroll listener (M5)
+  window.addEventListener('scroll', () => {
+    if (!mPresentOn) return;
+    clearTimeout(mPmScrollTimer);
+    document.getElementById('mPresentSheet').classList.remove('mps-show');
+    mClearLit();
+    mPmScrollTimer = setTimeout(mOnScrollStop, 450);
+  }, { passive: true });
+
+  // Hook hashchange (M6)
+  window.addEventListener('hashchange', () => {
+    if (!mPresentOn) return;
+    mHideAll();
+    mPmPageKey = mGetPageKey();
+    setTimeout(() => {
+      mPmLabelElements();
+      mInitObserver(mPmPageKey);
+      setTimeout(mOnScrollStop, 500);
+    }, 250);
+  });
+})();
+</script>
 
 </body>
 </html>

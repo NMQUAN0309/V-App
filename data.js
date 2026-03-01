@@ -491,9 +491,8 @@ const FAMOUS_QUOTES = [
   const topIds = ['thoi-su', 'the-gioi', 'kinh-te', 'the-thao', 'suc-khoe'];
   HOME_TOP_ARTICLES.splice(0, 5, ...topIds.map(id => R[id]));
 
-  // Thay toàn bộ top mobile bằng 12 bài thật (tất cả chuyên mục)
-  const mobileAllIds = ['thoi-su','the-gioi','kinh-te','nha-dat','xe-cong-nghe','suc-khoe','giao-duc','giai-tri','the-thao','doi-song-du-lich','phap-luat','goc-nhin-chuyen-gia'];
-  MOBILE_TOP_5.splice(0, MOBILE_TOP_5.length, ...mobileAllIds.map(id => R[id]).filter(Boolean));
+  // Top mobile: giữ nguyên 5 bài (cùng topIds như web)
+  MOBILE_TOP_5.splice(0, 5, ...topIds.map(id => R[id]));
 
   // 2. Thay bài [0] trong HOME_FEATURED (5 mục nổi bật)
   FEATURED_CATEGORIES.forEach(catId => {

@@ -253,6 +253,7 @@ ul, ol { list-style: none; }
 .web-cat-sub-link:hover, .web-cat-sub-link.active {
   color: var(--red); border-bottom-color: var(--red);
 }
+.web-cat-sub-parent { font-weight: 700; border-right: 1.5px solid var(--border); margin-right: 4px; }
 
 .nav-local-wrapper { position: relative; }
 .local-dropdown {
@@ -1815,6 +1816,7 @@ ul, ol { list-style: none; }
     let isDown = false, startX, sl, didDrag = false;
     el.addEventListener('mousedown', e => {
       if (e.button !== 0) return;
+      e.preventDefault(); // chặn browser native drag của <a>
       isDown = true; didDrag = false;
       startX = e.pageX; sl = el.scrollLeft;
     });
@@ -2447,7 +2449,8 @@ ul, ol { list-style: none; }
     // Show subcategory bar
     const subBar = $('#webCatSubsBar');
     subBar.style.display = 'block';
-    subBar.innerHTML = cat ? `<div class="web-cat-subs-inner">${
+    subBar.innerHTML = cat ? `<div class="web-cat-subs-inner">
+      <a href="#category/${catId}" class="web-cat-sub-link web-cat-sub-parent${!subId ? ' active' : ''}">${cat.name}</a>${
       cat.subs.map(s =>
         `<a href="#category/${catId}/${s.id}" class="web-cat-sub-link${subId === s.id ? ' active' : ''}">${s.name}</a>`
       ).join('')
@@ -2550,7 +2553,8 @@ ul, ol { list-style: none; }
     // Subcategory bar below nav
     const subBar = $('#webCatSubsBar');
     subBar.style.display = 'block';
-    subBar.innerHTML = `<div class="web-cat-subs-inner">${
+    subBar.innerHTML = `<div class="web-cat-subs-inner">
+      <a href="#category/${catId}" class="web-cat-sub-link web-cat-sub-parent${!subId ? ' active' : ''}">${cat.name}</a>${
       cat.subs.map(sub =>
         `<a href="#category/${catId}/${sub.id}" class="web-cat-sub-link${subId === sub.id ? ' active' : ''}">${sub.name}</a>`
       ).join('')
@@ -2800,7 +2804,7 @@ ul, ol { list-style: none; }
       const countries = await loadWorldAtlas();
       wrap.innerHTML = buildConflictMapSVG(countries, 400, 200, false);
       const svg = wrap.querySelector('svg');
-      if (svg) { svg.style.cursor = 'pointer'; svg.addEventListener('click', () => { location.hash = '#category/the-gioi/quan-su'; }); }
+      if (svg) { svg.style.cursor = 'pointer'; svg.addEventListener('click', () => { location.hash = '#category/the-gioi'; }); }
     } catch(e) {
       wrap.innerHTML = `<div class="wm-load-error">⚠ Lỗi tải bản đồ</div>`;
     }
@@ -3118,7 +3122,7 @@ ul, ol { list-style: none; }
           <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#29B6F6"></span>Xung đột Israel — Gaza</div>
           <div class="wm-mini-conflict"><span class="wm-mini-dot" style="background:#AB47BC"></span>Căng thẳng Mỹ — Iran</div>
         </div>
-        <a href="#category/the-gioi/quan-su" class="war-map-more-link">Xem bản đồ đầy đủ →</a>
+        <a href="#category/the-gioi" class="war-map-more-link">Xem bản đồ đầy đủ →</a>
         </div>`;
       case 'traffic-fine': return `<div class="cat-special-box">
         <h3>🚗 Tra cứu phạt nguội</h3>

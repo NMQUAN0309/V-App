@@ -537,6 +537,7 @@ input, select { font-family: inherit; }
   transition: color var(--transition); flex-shrink: 0;
 }
 .m-cat-sub-item:hover, .m-cat-sub-item.active { color: var(--red); }
+.m-cat-sub-parent { font-weight: 700; border-right: 1.5px solid #e0e0e0; margin-right: 2px; }
 
 .m-cat-special {
   background: var(--white); padding: 16px; margin-bottom: 8px;
@@ -1333,6 +1334,7 @@ input, select { font-family: inherit; }
     let isDown = false, startX = 0, sl = 0, didDrag = false;
     scroll.addEventListener('mousedown', e => {
       if (e.button !== 0) return;
+      e.preventDefault(); // chặn browser native drag của <a>
       isDown = true; didDrag = false;
       startX = e.pageX; sl = scroll.scrollLeft;
     });
@@ -2461,6 +2463,10 @@ input, select { font-family: inherit; }
         $$('.m-tab-item').forEach(t => t.classList.toggle('active', t.dataset.cat === catId));
         const subs = $('#mCatSubs');
         subs.innerHTML = '';
+        const parentItem2 = el('a', 'm-cat-sub-item m-cat-sub-parent');
+        parentItem2.href = `#category/${catId}`;
+        parentItem2.textContent = cat.name;
+        subs.appendChild(parentItem2);
         cat.subs.forEach(s => {
           const item = el('a', 'm-cat-sub-item' + (s.id === subId ? ' active' : ''));
           item.href = `#category/${catId}/${s.id}`;
@@ -2490,6 +2496,11 @@ input, select { font-family: inherit; }
     // Subcategory tabs
     const subs = $('#mCatSubs');
     subs.innerHTML = '';
+    // Parent category item (first)
+    const parentItem = el('a', 'm-cat-sub-item m-cat-sub-parent' + (!subId ? ' active' : ''));
+    parentItem.href = `#category/${catId}`;
+    parentItem.textContent = cat.name;
+    subs.appendChild(parentItem);
     cat.subs.forEach(sub => {
       const item = el('a', 'm-cat-sub-item' + (sub.id === subId ? ' active' : ''));
       item.href = `#category/${catId}/${sub.id}`;
@@ -2618,7 +2629,7 @@ input, select { font-family: inherit; }
       const countries = await loadWorldAtlas();
       wrap.innerHTML = buildConflictMapSVG(countries, 400, 200);
       wrap.style.cursor = 'pointer';
-      wrap.addEventListener('click', () => { location.hash = '#category/the-gioi/quan-su'; });
+      wrap.addEventListener('click', () => { location.hash = '#category/the-gioi'; });
     } catch(e) {
       wrap.innerHTML = `<div style="padding:16px;color:#999;font-size:.8rem;text-align:center">⚠ Lỗi tải bản đồ</div>`;
     }

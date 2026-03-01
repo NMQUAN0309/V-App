@@ -630,6 +630,101 @@ ul, ol { list-style: none; }
   font-weight: 600; margin-top: 2px;
 }
 .war-map-more-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   VN NEWS MAP — WEB
+   ============================================================ */
+.vn-map-web-wrap {
+  position: relative; line-height: 0; background: #b8d4e8;
+  border-radius: 6px; overflow: hidden; margin-bottom: 10px;
+  max-height: 300px;
+}
+.vn-map-web-wrap svg { width: 100%; display: block; }
+.vn-map-legend {
+  display: flex; align-items: center; gap: 7px;
+  font-size: .75rem; color: var(--ink-secondary); margin-bottom: 4px;
+}
+.vn-legend-dot {
+  display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+  background: #E53935; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(229,57,53,.2);
+}
+@keyframes vnPulse {
+  0%   { transform: scale(1); opacity: 0.8; }
+  80%  { transform: scale(3); opacity: 0; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.vn-pulse-ring {
+  fill: #E53935; pointer-events: none;
+  transform-box: fill-box; transform-origin: center;
+  animation: vnPulse 2s ease-out infinite;
+}
+.vn-dot-center { fill: #E53935; stroke: #fff; stroke-width: 1; }
+.vn-map-event-dot { cursor: pointer; }
+/* VN Event Modal (Web — centered) */
+.vn-event-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 800; display: none;
+  align-items: center; justify-content: center;
+}
+.vn-event-overlay.open { display: flex; }
+.vn-event-panel {
+  background: var(--white); border-radius: 12px;
+  width: 100%; max-width: 560px; max-height: 80vh;
+  overflow-y: auto; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  animation: vnModalIn .22s ease;
+}
+@keyframes vnModalIn {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.vn-ep-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--white); z-index: 2;
+  border-radius: 12px 12px 0 0;
+}
+.vn-ep-title { font-weight: 700; font-size: 1rem; color: var(--ink); flex: 1; }
+.vn-ep-close {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; color: var(--ink-secondary); flex-shrink: 0;
+}
+.vn-ep-close:hover { background: var(--surface-warm); }
+.vn-ep-location {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 20px; background: #FEF2F2; border-bottom: 1px solid #FECACA;
+  font-size: .8rem; font-weight: 600; color: #DC2626;
+}
+.vn-ep-top-article {
+  display: flex; gap: 14px; padding: 14px 20px;
+  border-bottom: 1px solid var(--border-light); cursor: pointer;
+}
+.vn-ep-top-article:hover { background: var(--surface); }
+.vn-ep-top-img {
+  width: 90px; height: 68px; border-radius: 6px; object-fit: cover; flex-shrink: 0;
+}
+.vn-ep-top-body { flex: 1; min-width: 0; }
+.vn-ep-top-badge {
+  display: inline-block; font-size: .62rem; font-weight: 700;
+  background: #E53935; color: #fff; padding: 1px 7px; border-radius: 3px; margin-bottom: 6px;
+}
+.vn-ep-top-time { font-size: .7rem; color: var(--ink-faint); margin-bottom: 3px; }
+.vn-ep-top-title { font-size: .9rem; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.vn-ep-list-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 20px; border-bottom: 1px solid var(--border-light); cursor: pointer;
+}
+.vn-ep-list-item:hover { background: var(--surface); }
+.vn-ep-list-time { font-size: .7rem; color: var(--ink-faint); min-width: 66px; flex-shrink: 0; margin-top: 2px; }
+.vn-ep-list-title { font-size: .84rem; color: var(--ink); line-height: 1.4; }
+.vn-ep-see-more {
+  display: block; text-align: center; font-size: .82rem; font-weight: 600;
+  color: var(--red); padding: 14px 20px;
+}
+.vn-ep-see-more:hover { text-decoration: underline; }
+
 /* Mini war map (home sidebar + mobile) */
 .wm-mini-wrap {
   position: relative; line-height: 0; background: #b8d4e8;
@@ -729,6 +824,10 @@ ul, ol { list-style: none; }
 .cat-top-cluster {
   display: grid; grid-template-columns: 1fr; gap: var(--gutter); margin-bottom: 32px;
 }
+.cat-top-with-map { display: flex; gap: 28px; align-items: flex-start; }
+.cat-top-articles-col { flex: 1; min-width: 0; display: grid; grid-template-columns: 1fr; gap: var(--gutter); }
+.cat-top-map-col { width: 280px; flex-shrink: 0; }
+.cat-top-map-col .cat-special-box { margin: 0; }
 .cat-top-featured .title { font-size: 1.5rem; }
 .cat-top-small {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter);
@@ -1287,65 +1386,30 @@ ul, ol { list-style: none; }
   50%{ box-shadow: 0 0 0 16px rgba(229,57,53,0.03); }
 }
 
-.present-popup {
-  position: fixed; z-index: 10001;
-  width: 262px;
-  background: #fff;
-  border-radius: 12px;
-  border-left: 4px solid #E53935;
-  padding: 13px 15px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.07);
-  display: none;
-  font-family: 'Noto Sans', sans-serif;
-  pointer-events: auto;
+/* Present mode: fixed right-side panel with stacked cards */
+.pm-panel {
+  position: fixed; right: 16px; top: 72px; z-index: 10001;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none; max-height: calc(100vh - 100px);
 }
-.present-popup.pp-show {
-  display: block;
+.pm-card {
+  width: 262px; background: #fff; border-radius: 12px;
+  border-left: 4px solid #E53935; padding: 13px 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.07);
+  pointer-events: auto; font-family: 'Noto Sans', sans-serif;
   animation: pp-in 0.22s ease both;
 }
 @keyframes pp-in {
-  from { opacity:0; transform: scale(.95) translateY(5px); }
-  to   { opacity:1; transform: scale(1)  translateY(0); }
+  from { opacity:0; transform: scale(.95) translateX(10px); }
+  to   { opacity:1; transform: scale(1)  translateX(0); }
 }
-.present-popup-top {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
-  margin-bottom: 7px;
+.pm-card-close {
+  float: right; background: none; border: none; color: #bbb;
+  font-size: 1.05rem; cursor: pointer; padding: 0 0 6px 6px; line-height: 1;
 }
-.present-popup-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 0.7rem; font-weight: 700; color: #E53935;
-  background: #FFEBEE; border-radius: 20px;
-  padding: 3px 9px; letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0;
-}
-.present-popup-badge::before { content:'●'; font-size:.58rem; }
-.present-popup-close {
-  background: none; border: none; color: #bbb;
-  font-size: 1.05rem; cursor: pointer; padding: 0 2px; line-height: 1; flex-shrink: 0;
-}
-.present-popup-close:hover { color: #444; }
-.present-popup-title {
-  font-weight: 700; font-size: 0.87rem; color: #111; line-height: 1.35; margin-bottom: 6px;
-}
-.present-popup-desc { font-size: 0.79rem; color: #555; line-height: 1.58; }
-
-.present-arrow {
-  position: fixed; z-index: 10000; width: 0; height: 0; display: none; pointer-events: none;
-}
-.present-arrow.pa-right {
-  border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-  border-right: 10px solid #fff; display: block;
-  filter: drop-shadow(-2px 0 3px rgba(0,0,0,.09));
-}
-.present-arrow.pa-left {
-  border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-  border-left: 10px solid #fff; display: block;
-  filter: drop-shadow(2px 0 3px rgba(0,0,0,.09));
-}
-.present-arrow.pa-up {
-  border-left: 8px solid transparent; border-right: 8px solid transparent;
-  border-bottom: 10px solid #fff; display: block;
-  filter: drop-shadow(0 -2px 3px rgba(0,0,0,.09));
-}
+.pm-card-close:hover { color: #444; }
+.pm-card-title { font-weight: 700; font-size: 0.87rem; color: #111; line-height: 1.35; margin-bottom: 6px; }
+.pm-card-desc { font-size: 0.79rem; color: #555; line-height: 1.58; }
 </style>
 </head>
 <body>
@@ -2247,8 +2311,9 @@ ul, ol { list-style: none; }
         div.appendChild(boxCol);
       }
 
-      rc.appendChild(div); // must be in DOM before calling initWarMapMini
+      rc.appendChild(div); // must be in DOM before calling init functions
       if (sideBoxType === 'war-map-compact') initWarMapMini('wmCompactSvgWrap');
+      if (sideBoxType === 'vn-map-box') initVnMapWeb('homeVnMapWrap');
     });
   }
 
@@ -2430,16 +2495,16 @@ ul, ol { list-style: none; }
     // Special box
     const specialContainer = $('#catSpecial');
     specialContainer.innerHTML = '';
-    const specialSubs = cat.subs.filter(s => s.special);
-    if (subId) {
+    if (catId === 'the-gioi' && !subId) {
+      specialContainer.innerHTML = buildWarMapWidget();
+      initWarMap();
+      setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 200);
+    } else if (subId) {
       const sub = cat.subs.find(s => s.id === subId);
-      if (sub && sub.special) {
+      if (sub && sub.special && sub.special !== 'war-map') {
         specialContainer.innerHTML = buildSpecialBox(sub);
-        if (sub.special === 'war-map') initWarMap();
         setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 100);
       }
-    } else if (specialSubs.length > 0) {
-      // show first special sub
     }
 
     // Top cluster
@@ -2447,16 +2512,47 @@ ul, ol { list-style: none; }
     const topC = $('#catTopCluster');
     topC.innerHTML = '';
 
-    const featDiv = makeCardH(articles[0], { large: true, extraClass: 'cat-top-featured fade-up', titleSize: '1.4rem' });
-    topC.appendChild(featDiv);
+    if (catId === 'thoi-su' && !subId) {
+      // Two-column: articles left + VN map right
+      const withMap = el('div', 'cat-top-with-map');
 
-    const smallGrid = el('div', 'cat-top-small');
-    articles.slice(1, 4).forEach((a, i) => {
-      const card = makeCardH(a, { medium: true, extraClass: 'fade-up', titleSize: '.95rem' });
-      card.style.animationDelay = (i * .08 + .1) + 's';
-      smallGrid.appendChild(card);
-    });
-    topC.appendChild(smallGrid);
+      const artCol = el('div', 'cat-top-articles-col');
+      const featDiv = makeCardH(articles[0], { large: true, extraClass: 'cat-top-featured fade-up', titleSize: '1.4rem' });
+      artCol.appendChild(featDiv);
+      const smallGrid = el('div', 'cat-top-small');
+      articles.slice(1, 4).forEach((a, i) => {
+        const card = makeCardH(a, { medium: true, extraClass: 'fade-up', titleSize: '.95rem' });
+        card.style.animationDelay = (i * .08 + .1) + 's';
+        smallGrid.appendChild(card);
+      });
+      artCol.appendChild(smallGrid);
+      withMap.appendChild(artCol);
+
+      const mapCol = el('div', 'cat-top-map-col');
+      mapCol.innerHTML = `<div class="cat-special-box" data-present="vn-map">
+        <h3>🇻🇳 Tin nóng — Bản đồ Việt Nam</h3>
+        <div class="vn-map-web-wrap" id="catVnMapWrap">
+          <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
+        </div>
+        <div class="vn-map-legend">
+          <span class="vn-legend-dot"></span>
+          <span class="vn-legend-text">Nhấn vào chấm đỏ để xem chuỗi tin tức</span>
+        </div></div>`;
+      withMap.appendChild(mapCol);
+      topC.appendChild(withMap);
+      setTimeout(() => initVnMapWeb('catVnMapWrap'), 0);
+      setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 200);
+    } else {
+      const featDiv = makeCardH(articles[0], { large: true, extraClass: 'cat-top-featured fade-up', titleSize: '1.4rem' });
+      topC.appendChild(featDiv);
+      const smallGrid = el('div', 'cat-top-small');
+      articles.slice(1, 4).forEach((a, i) => {
+        const card = makeCardH(a, { medium: true, extraClass: 'fade-up', titleSize: '.95rem' });
+        card.style.animationDelay = (i * .08 + .1) + 's';
+        smallGrid.appendChild(card);
+      });
+      topC.appendChild(smallGrid);
+    }
 
     // Left: 10 articles
     const catLeft = $('#catLeft');
@@ -2516,11 +2612,12 @@ ul, ol { list-style: none; }
   // HOME PAGE SIDE BOX MAPPING
   // ============================================================
   const HOME_SIDE_BOXES = {
-    'thoi-su':        'weather-box',
+    'thoi-su':        'vn-map-box',
     'the-gioi':       'war-map-compact',
     'the-thao':       'match-schedule',
     'phap-luat':      'law-search',
     'giao-duc':       'exam-search',
+    'giai-tri':       'weather-box',
   };
 
   // Featured interstitials: which box appears below each featured cluster
@@ -2741,6 +2838,199 @@ ul, ol { list-style: none; }
   }
 
   // ============================================================
+  // VN NEWS MAP — WEB
+  // ============================================================
+  const VN_EVENT_DATA = [
+    {
+      id: 'e1', province: 'Hà Nội', lat: 21.028, lon: 105.834,
+      label: '🔴 Cháy lớn tại Hà Nội',
+      articles: [
+        { time: '16:00 01/03', title: 'Đã khống chế được đám cháy, điều tra nguyên nhân', avaUrl: 'https://picsum.photos/seed/fire1/90/68' },
+        { time: '15:30 01/03', title: 'Người dân sơ tán khẩn cấp, khu vực bị phong tỏa 200m' },
+        { time: '15:10 01/03', title: 'Lực lượng PCCC Hà Nội điều 8 xe chữa cháy đến hiện trường' },
+        { time: '14:45 01/03', title: 'Thương vong vụ cháy: 2 người bị bỏng nặng được đưa vào viện' },
+        { time: '14:32 01/03', title: 'Cháy chung cư mini tại phường Trương Định, 3 người mắc kẹt' }
+      ]
+    },
+    {
+      id: 'e2', province: 'TP. Hồ Chí Minh', lat: 10.762, lon: 106.660,
+      label: '🔴 Tai nạn TP.HCM',
+      articles: [
+        { time: '10:30 01/03', title: 'Toàn bộ 5 nạn nhân đã qua cơn nguy kịch, 1 người cần phẫu thuật', avaUrl: 'https://picsum.photos/seed/acc1/90/68' },
+        { time: '10:10 01/03', title: 'Tài xế xe tải bị tạm giữ, nồng độ cồn vượt ngưỡng cho phép' },
+        { time: '09:45 01/03', title: 'Cảnh sát giao thông triển khai phân luồng, hướng dẫn phương tiện' },
+        { time: '09:28 01/03', title: 'Giao thông ùn tắc nghiêm trọng đoạn Điện Biên Phủ — Hai Bà Trưng' },
+        { time: '09:15 01/03', title: 'Xe tải húc hàng loạt xe máy trên đường Điện Biên Phủ, 5 người nhập viện' }
+      ]
+    },
+    {
+      id: 'e3', province: 'Đà Nẵng', lat: 16.068, lon: 108.212,
+      label: '🔴 Bão số 3 đổ bộ Đà Nẵng',
+      articles: [
+        { time: '10:15 01/03', title: 'Bão suy yếu thành áp thấp nhiệt đới khi vào đến Tây Nguyên', avaUrl: 'https://picsum.photos/seed/storm1/90/68' },
+        { time: '09:00 01/03', title: 'Lũ quét xuất hiện ở vùng núi Hòa Vang, di dời 200 hộ dân' },
+        { time: '08:20 01/03', title: 'Đà Nẵng cho học sinh nghỉ học, dừng hoạt động dịch vụ không thiết yếu' },
+        { time: '07:45 01/03', title: 'Hàng nghìn hộ dân mất điện, nhiều tuyến đường bị cây ngã đổ' },
+        { time: '07:00 01/03', title: 'Bão số 3 đổ bộ vào Đà Nẵng — Quảng Nam, gió giật cấp 11' }
+      ]
+    },
+    {
+      id: 'e4', province: 'Cần Thơ', lat: 10.045, lon: 105.748,
+      label: '🔴 Cháy kho — Cần Thơ',
+      articles: [
+        { time: '13:10 01/03', title: 'Công an Cần Thơ lấy lời khai bảo vệ kho, truy tìm nguyên nhân', avaUrl: 'https://picsum.photos/seed/fire2/90/68' },
+        { time: '12:30 01/03', title: 'Không có thương vong về người, 3 lính cứu hỏa bị ngạt khói' },
+        { time: '12:00 01/03', title: 'Thiệt hại ước tính hàng tỷ đồng, toàn bộ hàng hóa bị thiêu rụi' },
+        { time: '11:35 01/03', title: 'Lửa lan sang kho lân cận, khói đen bao phủ khu vực rộng lớn' },
+        { time: '11:20 01/03', title: 'Cháy kho hàng rộng 2.000m² tại khu công nghiệp Trà Nóc, Cần Thơ' }
+      ]
+    },
+    {
+      id: 'e5', province: 'Quảng Ninh', lat: 21.006, lon: 107.292,
+      label: '🔴 Sập hầm lò — Quảng Ninh',
+      articles: [
+        { time: '10:00 01/03', title: 'Tạm đình chỉ hoạt động mỏ than, chờ điều tra nguyên nhân sự cố', avaUrl: 'https://picsum.photos/seed/mine1/90/68' },
+        { time: '09:30 01/03', title: 'Cả 4 công nhân được đưa ra khỏi hầm, đang được cấp cứu khẩn cấp' },
+        { time: '08:00 01/03', title: 'Đã giải cứu được 2 công nhân, 2 người còn lại chưa có tín hiệu' },
+        { time: '07:15 01/03', title: 'Triển khai lực lượng giải cứu, máy móc đào đường hầm tiếp cận' },
+        { time: '06:30 01/03', title: 'Sập hầm lò khai thác than tại Công ty Than Mạo Khê, 4 công nhân bị nạn' }
+      ]
+    },
+    {
+      id: 'e6', province: 'Nghệ An', lat: 18.672, lon: 105.692,
+      label: '🔴 Triệt phá ma túy lớn',
+      articles: [
+        { time: '10:00 01/03', title: 'Cục Cảnh sát điều tra tội phạm về ma túy vào cuộc điều tra mở rộng', avaUrl: 'https://picsum.photos/seed/sec1/90/68' },
+        { time: '09:00 01/03', title: 'Mạng lưới vận chuyển ma túy qua biên giới Việt — Lào bị triệt phá' },
+        { time: '08:00 01/03', title: 'Công an Nghệ An khởi tố vụ án, tạm giam toàn bộ 12 đối tượng' },
+        { time: '22:30 29/02', title: 'Thu giữ 30kg ma túy tổng hợp, 2 khẩu súng và nhiều vũ khí nóng' },
+        { time: '22:00 29/02', title: 'Triệt phá đường dây ma túy lớn tại Nghệ An, bắt 12 đối tượng' }
+      ]
+    }
+  ];
+
+  const VN_REGION_COUNTRIES = new Set(['704','418','116','156','764','104','458']);
+
+  function vnMapProject(lon, lat, W, H) {
+    const minLon = 98, maxLon = 116, minLat = 4, maxLat = 28;
+    const x = (lon - minLon) / (maxLon - minLon) * W;
+    const y = (maxLat - lat) / (maxLat - minLat) * H;
+    return [x, y];
+  }
+
+  function buildVnMapSVG(countries, W, H) {
+    let paths = '';
+    countries.features.forEach(f => {
+      const id = String(f.id);
+      if (!VN_REGION_COUNTRIES.has(id)) return;
+      const isVN = id === '704';
+      const g = f.geometry;
+      if (!g) return;
+      const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+      let d = '';
+      polys.forEach(poly => {
+        poly.forEach(ring => {
+          if (ring.length < 2) return;
+          for (let i = 0; i < ring.length; i++) {
+            const [x, y] = vnMapProject(ring[i][0], ring[i][1], W, H);
+            if (i === 0) d += 'M' + x.toFixed(1) + ',' + y.toFixed(1);
+            else {
+              const dLon = Math.abs(ring[i][0] - ring[i-1][0]);
+              d += (dLon > 90 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
+            }
+          }
+          d += 'Z';
+        });
+      });
+      if (!d) return;
+      paths += isVN
+        ? `<path d="${d}" fill="#c8ddf5" stroke="#7aaad8" stroke-width="0.6"/>`
+        : `<path d="${d}" fill="#e2ebf5" stroke="#b8c8d8" stroke-width="0.4"/>`;
+    });
+    let dots = '';
+    VN_EVENT_DATA.forEach((ev, i) => {
+      const [cx, cy] = vnMapProject(ev.lon, ev.lat, W, H);
+      const delay = (i * 0.4).toFixed(1);
+      dots += `<g class="vn-map-event-dot" data-evid="${ev.id}" transform="translate(${cx.toFixed(1)},${cy.toFixed(1)})">
+        <circle class="vn-pulse-ring" cx="0" cy="0" r="6" style="animation-delay:${delay}s"/>
+        <circle class="vn-dot-center" cx="0" cy="0" r="4"/>
+      </g>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${W}" height="${H}" fill="#b8d4e8"/>
+      <g>${paths}</g>
+      <g>${dots}</g>
+    </svg>`;
+  }
+
+  async function initVnMapWeb(wrapperId) {
+    const wrap = document.getElementById(wrapperId);
+    if (!wrap) return;
+    try {
+      const countries = await loadWorldAtlas();
+      wrap.innerHTML = buildVnMapSVG(countries, 300, 380);
+      wrap.querySelectorAll('.vn-map-event-dot').forEach(dot => {
+        dot.addEventListener('click', e => {
+          e.stopPropagation();
+          const ev = VN_EVENT_DATA.find(x => x.id === dot.dataset.evid);
+          if (ev) showVnEventPanel(ev);
+        });
+      });
+    } catch(e) {
+      wrap.innerHTML = `<div style="padding:16px;color:#999;font-size:.8rem;text-align:center">⚠ Lỗi tải bản đồ</div>`;
+    }
+  }
+
+  function showVnEventPanel(ev) {
+    let overlay = document.getElementById('vnEventOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'vnEventOverlay';
+      overlay.className = 'vn-event-overlay';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeVnEventPanel(); });
+    }
+    let panel = overlay.querySelector('.vn-event-panel');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = 'vn-event-panel';
+      overlay.appendChild(panel);
+    }
+    const [top, ...rest] = ev.articles;
+    const restHtml = rest.map(a => `
+      <div class="vn-ep-list-item" onclick="location.hash='#category/thoi-su';closeVnEventPanel()">
+        <div class="vn-ep-list-time">${a.time}</div>
+        <div class="vn-ep-list-title">${a.title}</div>
+      </div>`).join('');
+    panel.innerHTML = `
+      <div class="vn-ep-header">
+        <div class="vn-ep-title">${ev.label}</div>
+        <button class="vn-ep-close" onclick="closeVnEventPanel()">✕</button>
+      </div>
+      <div class="vn-ep-location">📍 ${ev.province}</div>
+      <div>
+        <div class="vn-ep-top-article" onclick="location.hash='#category/thoi-su';closeVnEventPanel()">
+          ${top.avaUrl ? `<img class="vn-ep-top-img" src="${top.avaUrl}" alt="" loading="lazy">` : ''}
+          <div class="vn-ep-top-body">
+            <div class="vn-ep-top-badge">MỚI NHẤT</div>
+            <div class="vn-ep-top-time">${top.time}</div>
+            <div class="vn-ep-top-title">${top.title}</div>
+          </div>
+        </div>
+        ${restHtml}
+        <div><a href="#category/thoi-su" class="vn-ep-see-more" onclick="closeVnEventPanel()">Xem toàn bộ tin Thời sự →</a></div>
+      </div>`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.closeVnEventPanel = function() {
+    const overlay = document.getElementById('vnEventOverlay');
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  // ============================================================
   // HOME PAGE SIDE BOX BUILDER
   // ============================================================
   function buildHomeSideBox(type) {
@@ -2800,6 +3090,15 @@ ul, ol { list-style: none; }
           </div>
         </div>`;
       }
+      case 'vn-map-box': return `<div class="cat-special-box">
+        <h3>🇻🇳 Tin nóng — Bản đồ Việt Nam</h3>
+        <div class="vn-map-web-wrap" id="homeVnMapWrap">
+          <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
+        </div>
+        <div class="vn-map-legend">
+          <span class="vn-legend-dot"></span>
+          <span class="vn-legend-text">Nhấn vào chấm đỏ để xem chuỗi tin tức</span>
+        </div></div>`;
       default: return buildSpecialBox({ special: type });
     }
   }
@@ -3123,16 +3422,8 @@ ul, ol { list-style: none; }
 })();
 </script>
 
-<!-- PRESENT MODE POPUP -->
-<div class="present-popup" id="presentPopup">
-  <div class="present-popup-top">
-    <span class="present-popup-badge" id="presentBadge">Điểm 1</span>
-    <button class="present-popup-close" onclick="dismissPresentPopup()" aria-label="Đóng">✕</button>
-  </div>
-  <div class="present-popup-title" id="presentTitle"></div>
-  <div class="present-popup-desc" id="presentDesc"></div>
-</div>
-<div class="present-arrow" id="presentArrow"></div>
+<!-- PRESENT MODE PANEL -->
+<div class="pm-panel" id="pmPanel"></div>
 
 <!-- AI SUMMARY POPUP -->
 <div class="art-summary-popup" id="artSummaryPopup">
@@ -3148,12 +3439,6 @@ ul, ol { list-style: none; }
 // PRESENT MODE — web.html
 // ============================================================
 (function() {
-  const POINT_LABELS = {
-    1: 'Điểm 1 — Giao diện',
-    2: 'Điểm 2 — Bách khoa',
-    3: 'Điểm 3 — Chuyên gia'
-  };
-
   // Annotations per page key
   const ANNOTATIONS = {
     home: [
@@ -3162,7 +3447,7 @@ ul, ol { list-style: none; }
         point: 1,
         maxScroll: 200,
         title: 'Cấu trúc chuyên mục tinh gọn',
-        desc: 'Lấy khung VNE làm nền, đổi tên & tinh gọn số mục — vẫn đủ chính trị, xã hội, pháp luật. Dễ tra cứu hơn, ít rối hơn.'
+        desc: 'Cấu trúc mục đầy đủ các mảng mà một trang tin cần có & tinh gọn số mục — đảm bảo vẫn đủ chính trị, xã hội, pháp luật. Dễ tra cứu, ít rối.'
       },
       {
         selector: '.ticker-bar',
@@ -3196,7 +3481,7 @@ ul, ol { list-style: none; }
         selector: '.top-cluster',
         point: 1,
         title: 'Khu vực tin nổi bật',
-        desc: 'Bố cục trực quan hơn VNE: bài lớn ưu tiên hình ảnh, phân cấp thông tin rõ ràng — độc giả nắm bắt tin quan trọng chỉ trong 3 giây.'
+        desc: 'Giao diện tham khảo cấu trúc theo VNExpress nhưng đã tinh chỉnh để có sự khác biệt: bài lớn ưu tiên hình ảnh, phân cấp thông tin rõ ràng — độc giả nắm bắt tin quan trọng chỉ trong 3 giây.'
       },
       {
         selector: '.video-cluster-section',
@@ -3269,6 +3554,30 @@ ul, ol { list-style: none; }
         point: 1,
         title: 'Bản đồ chiến sự',
         desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp độc giả theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '[data-present="vn-map"]',
+        point: 1,
+        title: 'Bản đồ Tin nóng Việt Nam',
+        desc: 'Chấm đỏ nhấp nháy đúng tỉnh thành xảy ra sự việc — nhấn vào để xem chuỗi tin tức nóng hổi tại địa điểm đó ngay lập tức.'
+      },
+      {
+        selector: '#latestOverlay .latest-panel',
+        point: 1,
+        title: 'Panel "Mới nhất" — Cuộn nhanh không rời trang',
+        desc: 'Toàn bộ tin mới nhất hiện trong panel nổi — đọc xong đóng lại, không mất vị trí đang đọc trên trang chính.'
+      },
+      {
+        selector: '#localOverlay .local-panel',
+        point: 1,
+        title: 'Panel Địa phương — Chọn tỉnh thành tức thì',
+        desc: 'Chọn tỉnh thành, luồng tin lọc ngay theo địa lý — không cần chuyển trang, không mất ngữ cảnh đang đọc.'
+      },
+      {
+        selector: '#quantamOverlay .local-panel',
+        point: 1,
+        title: 'Panel "Quan tâm" — Feed cá nhân hóa',
+        desc: 'Chọn chủ đề yêu thích một lần, hệ thống lọc tin vĩnh viễn theo sở thích — không còn lướt qua nội dung không liên quan.'
       }
     ],
     article: [
@@ -3294,7 +3603,7 @@ ul, ol { list-style: none; }
         selector: '.related-section',
         point: 1,
         title: '"Toàn cảnh" — Đa chiều, đa nguồn',
-        desc: 'Luồng thông tin từ nhiều nguồn, nhiều góc nhìn về cùng sự kiện — người đọc tự đánh giá, không bị dẫn dắt một chiều.'
+        desc: 'Luồng thông tin từ nhiều nguồn, đa chiều về cùng sự kiện, có thêm bài viết góc nhìn chuyên sâu của các chuyên gia — người đọc tự đánh giá, không bị dẫn dắt một chiều.'
       }
     ],
     library: [
@@ -3303,6 +3612,12 @@ ul, ol { list-style: none; }
         point: 2,
         title: '"Bách khoa tri thức"',
         desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+      },
+      {
+        selector: '.lib-tabs-bar',
+        point: 1,
+        title: 'Ba chế độ tra cứu',
+        desc: 'Chủ đề — Tra cứu — Hỏi AI: ba cách tiếp cận tri thức khác nhau, chuyển đổi chỉ một chạm theo nhu cầu của từng lúc.'
       },
       {
         selector: '#libBody [data-present="war-map"]',
@@ -3381,7 +3696,13 @@ ul, ol { list-style: none; }
     ],
     category: [
       {
-        selector: '#catSpecial [data-present="war-map"]',
+        selector: '#catTopCluster [data-present="vn-map"]',
+        point: 1,
+        title: 'Bản đồ Tin nóng Việt Nam',
+        desc: 'Chấm đỏ nhấp nháy đúng tỉnh thành xảy ra sự việc — nhấn vào để xem chuỗi tin tức nóng hổi tại địa điểm đó ngay lập tức.'
+      },
+      {
+        selector: '#catTopCluster [data-present="war-map"], #catSpecial [data-present="war-map"]',
         point: 1,
         title: 'Bản đồ chiến sự',
         desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp độc giả theo dõi tình hình toàn cầu.'
@@ -3465,6 +3786,7 @@ ul, ol { list-style: none; }
       else if (text.includes('công nghệ'))   box.dataset.present = 'tech-search';
       else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
       else if (text.includes('thời tiết'))   box.dataset.present = 'weather';
+      else if (text.includes('bản đồ việt nam')) box.dataset.present = 'vn-map';
     });
     // Tag war-map widget (uses .war-map-full, not .cat-special-box)
     document.querySelectorAll('.war-map-full').forEach(el => {
@@ -3480,8 +3802,8 @@ ul, ol { list-style: none; }
   let pmObserver = null;
   let pmScrollTimer = null;
   let pmVisibleMap = new Map();
-  let pmLitEl = null;
-  let pmDismissedEl = null;
+  let pmLitEls = new Set();
+  let pmDismissedEls = new Set();
   let pmPageKey = 'home';
 
   function pmGetPageKey() {
@@ -3509,7 +3831,8 @@ ul, ol { list-style: none; }
   }
 
   function pmClearLit() {
-    if (pmLitEl) { pmLitEl.classList.remove('present-lit'); pmLitEl = null; }
+    pmLitEls.forEach(el => el.classList.remove('present-lit'));
+    pmLitEls.clear();
   }
 
   function pmInitObserver(pageKey) {
@@ -3525,104 +3848,61 @@ ul, ol { list-style: none; }
     });
   }
 
-  function pmFindBest(pageKey) {
+  // Returns up to 3 visible items sorted by proximity to viewport center
+  function pmFindVisible(pageKey) {
     const vh = window.innerHeight;
-    const viewCenter = vh * 0.42; // slightly above center — feels more natural
-    let best = null, bestScore = Infinity;
-    pmGetItems(pageKey).forEach(({ el }) => {
+    const viewCenter = vh * 0.42;
+    const scrollY = window.scrollY || window.pageYOffset;
+    const candidates = [];
+    pmGetItems(pageKey).forEach(({ el, ann }) => {
       const ratio = pmVisibleMap.get(el) || 0;
-      if (ratio < 0.05) return; // skip elements not in view
+      if (ratio < 0.05) return;
+      if (ann.maxScroll !== undefined && scrollY > ann.maxScroll) return;
+      if (pmDismissedEls.has(el)) return;
       const rect = el.getBoundingClientRect();
       const elCenter = rect.top + rect.height / 2;
       const dist = Math.abs(elCenter - viewCenter);
-      if (dist < bestScore) { bestScore = dist; best = el; }
+      candidates.push({ el, ann, dist });
     });
-    return best;
+    candidates.sort((a, b) => a.dist - b.dist);
+    return candidates.slice(0, 3);
   }
 
-  function pmShowPopup(el, pageKey) {
-    if (!el || el === pmDismissedEl) return;
-    const item = pmGetItems(pageKey).find(i => i.el === el);
-    if (!item) return;
-
+  // Render all visible annotations as stacked cards in the right panel
+  function pmRenderPanel(items) {
+    const panel = document.getElementById('pmPanel');
     pmClearLit();
-    pmLitEl = el;
-    el.classList.add('present-lit');
-
-    document.getElementById('presentBadge').textContent = POINT_LABELS[item.ann.point] || ('Điểm ' + item.ann.point);
-    document.getElementById('presentTitle').textContent = item.ann.title;
-    document.getElementById('presentDesc').textContent = item.ann.desc;
-
-    const popup = document.getElementById('presentPopup');
-    popup.classList.remove('pp-show');
-    popup.style.display = 'none';
-
-    requestAnimationFrame(() => { pmPositionPopup(el); popup.classList.add('pp-show'); });
-  }
-
-  function pmPositionPopup(targetEl) {
-    const popup = document.getElementById('presentPopup');
-    const arrow = document.getElementById('presentArrow');
-    const rect = targetEl.getBoundingClientRect();
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const PW = 274, PH = 148, GAP = 14;
-
-    arrow.className = 'present-arrow';
-    arrow.style.cssText = 'display:none';
-
-    const spaceRight = vw - rect.right;
-    const spaceLeft  = rect.left;
-
-    if (spaceRight >= PW + GAP + 10) {
-      // Right
-      let top = Math.max(12, Math.min(rect.top + rect.height / 2 - PH / 2, vh - PH - 12));
-      popup.style.cssText = 'left:' + (rect.right + GAP) + 'px; top:' + top + 'px; right:auto; bottom:auto';
-      arrow.className = 'present-arrow pa-right';
-      arrow.style.cssText = 'left:' + (rect.right + 4) + 'px; top:' + (top + PH / 2 - 8) + 'px; display:block';
-    } else if (spaceLeft >= PW + GAP + 10) {
-      // Left
-      let top = Math.max(12, Math.min(rect.top + rect.height / 2 - PH / 2, vh - PH - 12));
-      popup.style.cssText = 'left:' + (rect.left - GAP - PW) + 'px; top:' + top + 'px; right:auto; bottom:auto';
-      arrow.className = 'present-arrow pa-left';
-      arrow.style.cssText = 'left:' + (rect.left - GAP - 2) + 'px; top:' + (top + PH / 2 - 8) + 'px; display:block';
-    } else {
-      // Below (or above)
-      let left = Math.max(12, Math.min(rect.left + rect.width / 2 - PW / 2, vw - PW - 12));
-      let top = rect.bottom + GAP;
-      if (top + PH > vh - 12) top = rect.top - GAP - PH;
-      popup.style.cssText = 'left:' + left + 'px; top:' + top + 'px; right:auto; bottom:auto';
-      if (top < rect.top) {
-        arrow.className = 'present-arrow pa-up';
-        arrow.style.cssText = 'left:' + (rect.left + rect.width / 2 - 8) + 'px; top:' + (rect.bottom + 4) + 'px; display:block';
-      }
-    }
+    panel.innerHTML = '';
+    if (!items.length) return;
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'pm-card';
+      card.innerHTML =
+        '<button class="pm-card-close" aria-label="Đóng">✕</button>' +
+        '<div class="pm-card-title">' + item.ann.title + '</div>' +
+        '<div class="pm-card-desc">' + item.ann.desc + '</div>';
+      card.querySelector('.pm-card-close').addEventListener('click', () => {
+        pmDismissedEls.add(item.el);
+        item.el.classList.remove('present-lit');
+        pmLitEls.delete(item.el);
+        card.remove();
+      });
+      panel.appendChild(card);
+      item.el.classList.add('present-lit');
+      pmLitEls.add(item.el);
+    });
   }
 
   function pmOnScrollStop() {
     if (!presentOn) return;
-    const best = pmFindBest(pmPageKey);
-    if (best && best !== pmLitEl) pmShowPopup(best, pmPageKey);
+    pmRenderPanel(pmFindVisible(pmPageKey));
   }
 
   function pmHideAll() {
-    const popup = document.getElementById('presentPopup');
-    const arrow = document.getElementById('presentArrow');
-    popup.classList.remove('pp-show');
-    popup.style.display = 'none';
-    arrow.style.display = 'none';
+    document.getElementById('pmPanel').innerHTML = '';
     pmClearLit();
-    pmDismissedEl = null;
+    pmDismissedEls.clear();
   }
-
-  function dismissPresentPopup() {
-    pmDismissedEl = pmLitEl;
-    pmClearLit();
-    const popup = document.getElementById('presentPopup');
-    popup.classList.remove('pp-show');
-    setTimeout(() => { if (!popup.classList.contains('pp-show')) popup.style.display = 'none'; }, 230);
-    document.getElementById('presentArrow').style.display = 'none';
-  }
-  window.dismissPresentPopup = dismissPresentPopup;
 
   function togglePresent() {
     presentOn = !presentOn;
@@ -3655,9 +3935,7 @@ ul, ol { list-style: none; }
   window.addEventListener('scroll', () => {
     if (!presentOn) return;
     clearTimeout(pmScrollTimer);
-    const popup = document.getElementById('presentPopup');
-    popup.classList.remove('pp-show');
-    document.getElementById('presentArrow').style.display = 'none';
+    document.getElementById('pmPanel').innerHTML = '';
     pmClearLit();
     pmScrollTimer = setTimeout(pmOnScrollStop, 450);
   }, { passive: true });

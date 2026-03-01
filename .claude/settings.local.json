@@ -21,7 +21,8 @@
       "WebFetch(domain:tiin.vn)",
       "WebFetch(domain:baochinhphu.vn)",
       "WebFetch(domain:thethaovanhoa.vn)",
-      "mcp__playwright__browser_install"
+      "mcp__playwright__browser_install",
+      "mcp__playwright__browser_evaluate"
     ]
   }
 }

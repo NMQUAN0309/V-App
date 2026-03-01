@@ -1986,6 +1986,7 @@ ul, ol { list-style: none; }
     if (!q) {
       initWarMap();
       setTimeout(() => { const inp = $('#libSearchInput'); if (inp) inp.focus(); }, 50);
+      setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 100);
     }
   }
 
@@ -2435,6 +2436,7 @@ ul, ol { list-style: none; }
       if (sub && sub.special) {
         specialContainer.innerHTML = buildSpecialBox(sub);
         if (sub.special === 'war-map') initWarMap();
+        setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 100);
       }
     } else if (specialSubs.length > 0) {
       // show first special sub
@@ -3158,12 +3160,14 @@ ul, ol { list-style: none; }
       {
         selector: 'nav.main-nav',
         point: 1,
+        maxScroll: 200,
         title: 'Cấu trúc chuyên mục tinh gọn',
         desc: 'Lấy khung VNE làm nền, đổi tên & tinh gọn số mục — vẫn đủ chính trị, xã hội, pháp luật. Dễ tra cứu hơn, ít rối hơn.'
       },
       {
         selector: '.ticker-bar',
         point: 1,
+        maxScroll: 400,
         title: 'Thông tin thời gian thực',
         desc: 'Cập nhật liên tục: thời tiết, giá vàng, chứng khoán — người đọc không cần rời trang để tra cứu.'
       },
@@ -3173,6 +3177,13 @@ ul, ol { list-style: none; }
         maxScroll: 200,
         title: 'Tin địa phương',
         desc: 'Lọc tin theo từng tỉnh thành: Hà Nội, TP.HCM, Đà Nẵng... Cá nhân hóa luồng tin theo địa lý — không bị cuốn vào tin không liên quan.'
+      },
+      {
+        selector: '#navLatest',
+        point: 1,
+        maxScroll: 200,
+        title: '"Mới nhất" — Tất cả tin theo thời gian',
+        desc: 'Toàn bộ tin từ mọi chuyên mục, sắp xếp theo thời điểm đăng mới nhất — không bỏ sót bất kỳ tin nào vừa cập nhật.'
       },
       {
         selector: '#navQuantam',
@@ -3192,6 +3203,36 @@ ul, ol { list-style: none; }
         point: 1,
         title: 'Góc Video — Xem tin ngắn',
         desc: 'Tin tức dạng video ngắn cuộn dọc, phù hợp tiêu thụ nhanh khi di chuyển — không cần mở YouTube hay TikTok riêng.'
+      },
+      {
+        selector: '[data-present="weather"]',
+        point: 1,
+        title: 'Thời tiết hôm nay',
+        desc: 'Nhiệt độ và thời tiết 5 thành phố lớn ngay trong luồng tin — lên kế hoạch ngày mà không cần mở thêm app thời tiết riêng.'
+      },
+      {
+        selector: '[data-present="match-schedule"]',
+        point: 1,
+        title: 'Lịch thi đấu bóng đá',
+        desc: 'Lịch trực tiếp các trận đấu lớn cập nhật liên tục — fan bóng đá theo dõi ngay trong luồng đọc tin, không bỏ lỡ trận nào.'
+      },
+      {
+        selector: '[data-present="exam-search"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh và phụ huynh.'
+      },
+      {
+        selector: '[data-present="tech-search"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng thông minh — so sánh thông số, giá cả để chọn sản phẩm phù hợp nhất.'
+      },
+      {
+        selector: '[data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
       },
       {
         selector: '[data-present="traffic-fine"]',
@@ -3262,6 +3303,72 @@ ul, ol { list-style: none; }
         point: 2,
         title: '"Bách khoa tri thức"',
         desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+      },
+      {
+        selector: '#libBody [data-present="war-map"]',
+        point: 1,
+        title: 'Bản đồ chiến sự',
+        desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp độc giả theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '#libBody [data-present="traffic-fine"]',
+        point: 1,
+        title: 'Tra cứu phạt nguội',
+        desc: 'Nhập biển số xe — xem kết quả vi phạm giao thông bị camera ghi nhận ngay trên trang, không cần truy cập trang Cục CSGT.'
+      },
+      {
+        selector: '#libBody [data-present="stock-search"]',
+        point: 1,
+        title: 'Tra cứu mã chứng khoán',
+        desc: 'Tìm giá, khối lượng giao dịch, biến động mã CK theo thời gian thực — không cần rời trang để theo dõi danh mục đầu tư.'
+      },
+      {
+        selector: '#libBody [data-present="ebank-search"]',
+        point: 1,
+        title: 'Tra cứu lãi suất ngân hàng',
+        desc: 'So sánh lãi suất gửi tiết kiệm và vay vốn của hàng chục ngân hàng theo kỳ hạn — hỗ trợ quyết định tài chính cá nhân tốt hơn.'
+      },
+      {
+        selector: '#libBody [data-present="project-search"]',
+        point: 1,
+        title: 'Tra cứu dự án bất động sản',
+        desc: 'Kiểm tra pháp lý, tiến độ xây dựng, chủ đầu tư các dự án BĐS toàn quốc — hỗ trợ quyết định mua nhà và đầu tư có căn cứ.'
+      },
+      {
+        selector: '#libBody [data-present="quyhoach-search"]',
+        point: 1,
+        title: 'Tra cứu quy hoạch',
+        desc: 'Kiểm tra thông tin quy hoạch đất đai theo tỉnh thành, quận huyện — biết rõ khu đất định mua thuộc quy hoạch gì trước khi giao dịch.'
+      },
+      {
+        selector: '#libBody [data-present="disease-search"]',
+        point: 1,
+        title: 'Tra cứu thông tin bệnh',
+        desc: 'Tìm hiểu triệu chứng, nguyên nhân, điều trị, phòng ngừa — giúp độc giả chủ động sức khỏe thay vì chỉ đọc tin y tế thụ động.'
+      },
+      {
+        selector: '#libBody [data-present="law-search"]',
+        point: 1,
+        title: 'Thư viện văn bản pháp luật',
+        desc: 'Tra Nghị định, Thông tư, Luật... cập nhật đầy đủ và liên tục — tiện ích không thể thiếu với doanh nghiệp và người làm luật.'
+      },
+      {
+        selector: '#libBody [data-present="exam-search"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh, sinh viên và phụ huynh.'
+      },
+      {
+        selector: '#libBody [data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố nổi tiếng trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
+      },
+      {
+        selector: '#libBody [data-present="tech-search"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng thông minh — so sánh thông số, giá cả, đánh giá để chọn sản phẩm phù hợp nhất.'
       }
     ],
     expert: [
@@ -3271,23 +3378,101 @@ ul, ol { list-style: none; }
         title: '"Góc nhìn chuyên gia"',
         desc: 'Bài viết chuyên sâu từ chuyên gia hàng đầu: kinh tế, tài chính, sức khỏe, giáo dục — phân tích bền vững, không chỉ tin nhất thời.'
       }
+    ],
+    category: [
+      {
+        selector: '#catSpecial [data-present="war-map"]',
+        point: 1,
+        title: 'Bản đồ chiến sự',
+        desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp độc giả theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '#catSpecial [data-present="traffic-fine"]',
+        point: 1,
+        title: 'Tra cứu phạt nguội',
+        desc: 'Nhập biển số xe — xem kết quả vi phạm giao thông bị camera ghi nhận ngay trên trang, không cần truy cập trang Cục CSGT.'
+      },
+      {
+        selector: '#catSpecial [data-present="stock-search"]',
+        point: 1,
+        title: 'Tra cứu mã chứng khoán',
+        desc: 'Tìm giá, khối lượng giao dịch, biến động mã CK theo thời gian thực — không cần rời trang để theo dõi danh mục đầu tư.'
+      },
+      {
+        selector: '#catSpecial [data-present="ebank-search"]',
+        point: 1,
+        title: 'Tra cứu lãi suất ngân hàng',
+        desc: 'So sánh lãi suất gửi tiết kiệm và vay vốn của hàng chục ngân hàng theo kỳ hạn — hỗ trợ quyết định tài chính cá nhân.'
+      },
+      {
+        selector: '#catSpecial [data-present="project-search"]',
+        point: 1,
+        title: 'Tra cứu dự án bất động sản',
+        desc: 'Kiểm tra pháp lý, tiến độ xây dựng, chủ đầu tư các dự án BĐS toàn quốc — hỗ trợ quyết định mua nhà và đầu tư có căn cứ.'
+      },
+      {
+        selector: '#catSpecial [data-present="quyhoach-search"]',
+        point: 1,
+        title: 'Tra cứu quy hoạch',
+        desc: 'Kiểm tra thông tin quy hoạch đất đai theo tỉnh thành, quận huyện — biết rõ khu đất định mua thuộc quy hoạch gì trước khi giao dịch.'
+      },
+      {
+        selector: '#catSpecial [data-present="disease-search"]',
+        point: 1,
+        title: 'Tra cứu thông tin bệnh',
+        desc: 'Tìm hiểu triệu chứng, nguyên nhân, điều trị, phòng ngừa — giúp độc giả chủ động sức khỏe thay vì chỉ đọc tin y tế thụ động.'
+      },
+      {
+        selector: '#catSpecial [data-present="law-search"]',
+        point: 1,
+        title: 'Thư viện văn bản pháp luật',
+        desc: 'Tra Nghị định, Thông tư, Luật... cập nhật đầy đủ và liên tục — tiện ích không thể thiếu với doanh nghiệp và người làm luật.'
+      },
+      {
+        selector: '#catSpecial [data-present="exam-search"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh và phụ huynh.'
+      },
+      {
+        selector: '#catSpecial [data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
+      },
+      {
+        selector: '#catSpecial [data-present="tech-search"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng thông minh — so sánh thông số, giá cả để chọn sản phẩm phù hợp nhất.'
+      }
     ]
   };
 
-  // W8: Auto-tag .cat-special-box elements with data-present attributes by h3 text
+  // W8: Auto-tag special box elements with data-present attributes by h3 text
   function pmLabelElements() {
     document.querySelectorAll('.cat-special-box').forEach(box => {
-      const text = (box.querySelector('h3') || {}).textContent || '';
+      const text = ((box.querySelector('h3') || {}).textContent || '').toLowerCase();
       if (text.includes('phạt nguội'))       box.dataset.present = 'traffic-fine';
       else if (text.includes('chứng khoán')) box.dataset.present = 'stock-search';
+      else if (text.includes('lãi suất'))    box.dataset.present = 'ebank-search';
       else if (text.includes('pháp luật'))   box.dataset.present = 'law-search';
       else if (text.includes('bệnh'))        box.dataset.present = 'disease-search';
       else if (text.includes('dự án'))       box.dataset.present = 'project-search';
-      else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
       else if (text.includes('đề thi'))      box.dataset.present = 'exam-search';
       else if (text.includes('quy hoạch'))   box.dataset.present = 'quyhoach-search';
       else if (text.includes('điểm đến'))    box.dataset.present = 'destination';
       else if (text.includes('công nghệ'))   box.dataset.present = 'tech-search';
+      else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
+      else if (text.includes('thời tiết'))   box.dataset.present = 'weather';
+    });
+    // Tag war-map widget (uses .war-map-full, not .cat-special-box)
+    document.querySelectorAll('.war-map-full').forEach(el => {
+      el.dataset.present = 'war-map';
+    });
+    // Tag match-schedule box (uses .match-schedule-box, not .cat-special-box)
+    document.querySelectorAll('.match-schedule-box').forEach(el => {
+      el.dataset.present = 'match-schedule';
     });
   }
 
@@ -3305,6 +3490,7 @@ ul, ol { list-style: none; }
     if (parts[0] === 'library') return 'library';
     if (parts[0] === 'article') return 'article';
     if (parts[0] === 'category' && parts[1] === 'goc-nhin-chuyen-gia') return 'expert';
+    if (parts[0] === 'category') return 'category';
     if (parts[0] === 'home' || parts[0] === '') return 'home';
     return null;
   }
@@ -3456,6 +3642,14 @@ ul, ol { list-style: none; }
     }
   }
   window.togglePresent = togglePresent;
+
+  // Allow external code (e.g. renderLibSearchTab) to re-init after dynamic content renders
+  window.pmReinit = function() {
+    if (!presentOn) return;
+    pmLabelElements();
+    pmInitObserver(pmGetPageKey());
+    setTimeout(pmOnScrollStop, 300);
+  };
 
   // Scroll listener (W5)
   window.addEventListener('scroll', () => {

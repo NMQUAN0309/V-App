@@ -1409,7 +1409,27 @@ input, select { font-family: inherit; }
 
     let resultsHTML = '';
     if (!q) {
-      resultsHTML = `<div class="m-lib-no-results">Nhập từ khóa để tra cứu.</div>`;
+      const specialSubs = [
+        {special: 'war-map'}, {special: 'traffic-fine'}, {special: 'stock-search'},
+        {special: 'ebank-search'}, {special: 'project-search'}, {special: 'quyhoach-search'},
+        {special: 'disease-search'}, {special: 'law-search'}, {special: 'exam-search'},
+        {special: 'destination-search'}, {special: 'thietbi-search'},
+      ];
+      resultsHTML = `<div style="padding:4px 0 8px">
+        <div style="font-size:.75rem;font-weight:700;color:var(--ink-secondary);margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase">Công cụ tra cứu chuyên biệt</div>
+        ${specialSubs.map(s => {
+          let html = buildMobileSpecial(s);
+          if (s.special === 'war-map') {
+            html = html
+              .replace('id="mWmSvgWrap"', 'id="mLibWmSvgWrap"')
+              .replace('id="mWmLegend"', 'id="mLibWmLegend"')
+              .replace('id="mWmArticles"', 'id="mLibWmArticles"')
+              .replace('id="mWmArtTitle"', 'id="mLibWmArtTitle"')
+              .replace('id="mWmArtList"', 'id="mLibWmArtList"');
+          }
+          return html;
+        }).join('')}
+      </div>`;
     } else {
       const ql = q.toLowerCase();
       let matches = [];
@@ -1451,7 +1471,12 @@ input, select { font-family: inherit; }
     const doSearch = () => mLibDoSearch($('#mLibSearchInput').value.trim());
     $('#mLibSearchBtn').onclick = doSearch;
     $('#mLibSearchInput').onkeydown = e => { if (e.key === 'Enter') doSearch(); };
-    if (!q) setTimeout(() => { const inp = $('#mLibSearchInput'); if (inp) inp.focus(); }, 50);
+    if (!q) {
+      initMobileWarMap('mLibWm');
+      setTimeout(() => { if (window.mPmReinit) window.mPmReinit(); }, 100);
+    } else {
+      setTimeout(() => { const inp = $('#mLibSearchInput'); if (inp) inp.focus(); }, 50);
+    }
   }
 
   function mLibRenderAI() {
@@ -2094,6 +2119,7 @@ input, select { font-family: inherit; }
       if (sub && sub.special) {
         specialContainer.innerHTML = buildMobileSpecial(sub);
         if (sub.special === 'war-map') initMobileWarMap();
+        setTimeout(() => { if (window.mPmReinit) window.mPmReinit(); }, 100);
       }
     }
 
@@ -2275,12 +2301,13 @@ input, select { font-family: inherit; }
     return html;
   }
 
-  async function initMobileWarMap() {
-    const wrap = document.getElementById('mWmSvgWrap');
+  async function initMobileWarMap(prefix) {
+    prefix = prefix || 'mWm';
+    const wrap = document.getElementById(prefix + 'SvgWrap');
     if (!wrap) return;
-    const artPanel = document.getElementById('mWmArticles');
-    const artTitle = document.getElementById('mWmArtTitle');
-    const artList  = document.getElementById('mWmArtList');
+    const artPanel = document.getElementById(prefix + 'Articles');
+    const artTitle = document.getElementById(prefix + 'ArtTitle');
+    const artList  = document.getElementById(prefix + 'ArtList');
 
     const WAR_LABELS = {
       'ukraine-russia':   'Chiến tranh Ukraine — Nga',
@@ -2336,7 +2363,7 @@ input, select { font-family: inherit; }
     }
 
     // Legend item clicks
-    document.querySelectorAll('#mWmLegend .wm-mini-conflict').forEach(item => {
+    document.querySelectorAll('#' + prefix + 'Legend .wm-mini-conflict').forEach(item => {
       item.addEventListener('click', () => showConflictArts(item.dataset.conflict));
     });
   }
@@ -2673,6 +2700,36 @@ input, select { font-family: inherit; }
         point: 1,
         title: 'Dự báo thời tiết 7 ngày',
         desc: 'Thời tiết chi tiết các ngày tới theo từng địa điểm — lên kế hoạch di chuyển, du lịch mà không cần mở app thời tiết riêng.'
+      },
+      {
+        selector: '[data-present="war-map"]',
+        point: 1,
+        title: 'Bản đồ chiến sự',
+        desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '[data-present="match-schedule"]',
+        point: 1,
+        title: 'Lịch thi đấu bóng đá',
+        desc: 'Lịch trực tiếp các trận đấu lớn cập nhật liên tục — fan bóng đá theo dõi ngay trong luồng đọc tin, không bỏ lỡ trận nào.'
+      },
+      {
+        selector: '[data-present="exam"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh và phụ huynh.'
+      },
+      {
+        selector: '[data-present="tech"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng — so sánh thông số, giá cả để chọn sản phẩm phù hợp nhất.'
+      },
+      {
+        selector: '[data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
       }
     ],
     article: [
@@ -2713,6 +2770,72 @@ input, select { font-family: inherit; }
         point: 2,
         title: '"Bách khoa tri thức"',
         desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+      },
+      {
+        selector: '#mLibBody [data-present="war-map"]',
+        point: 1,
+        title: 'Bản đồ chiến sự',
+        desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '#mLibBody [data-present="traffic"]',
+        point: 1,
+        title: 'Tra cứu phạt nguội',
+        desc: 'Nhập biển số xe — xem ngay kết quả vi phạm giao thông bị camera ghi nhận, không cần truy cập trang Cục CSGT.'
+      },
+      {
+        selector: '#mLibBody [data-present="stock"]',
+        point: 1,
+        title: 'Tra cứu mã chứng khoán',
+        desc: 'Giá, khối lượng giao dịch, biến động mã CK theo thời gian thực — theo dõi danh mục đầu tư ngay trên app.'
+      },
+      {
+        selector: '#mLibBody [data-present="ebank"]',
+        point: 1,
+        title: 'Tra cứu lãi suất ngân hàng',
+        desc: 'So sánh lãi suất gửi tiết kiệm và vay vốn của hàng chục ngân hàng theo kỳ hạn — hỗ trợ quyết định tài chính cá nhân.'
+      },
+      {
+        selector: '#mLibBody [data-present="project"]',
+        point: 1,
+        title: 'Tra cứu dự án bất động sản',
+        desc: 'Kiểm tra pháp lý, tiến độ, chủ đầu tư các dự án BĐS toàn quốc — hỗ trợ quyết định mua nhà và đầu tư có căn cứ.'
+      },
+      {
+        selector: '#mLibBody [data-present="quyhoach"]',
+        point: 1,
+        title: 'Tra cứu quy hoạch',
+        desc: 'Kiểm tra thông tin quy hoạch đất đai theo tỉnh thành, quận huyện — biết rõ khu đất thuộc quy hoạch gì trước khi giao dịch.'
+      },
+      {
+        selector: '#mLibBody [data-present="disease"]',
+        point: 1,
+        title: 'Tra cứu thông tin bệnh',
+        desc: 'Triệu chứng, nguyên nhân, điều trị, phòng ngừa — chủ động sức khỏe thay vì chỉ đọc tin y tế thụ động.'
+      },
+      {
+        selector: '#mLibBody [data-present="law"]',
+        point: 1,
+        title: 'Thư viện văn bản pháp luật',
+        desc: 'Nghị định, Thông tư, Luật — tra cứu nhanh ngay trên app, không cần rời ra trang tra cứu khác.'
+      },
+      {
+        selector: '#mLibBody [data-present="exam"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh và phụ huynh.'
+      },
+      {
+        selector: '#mLibBody [data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
+      },
+      {
+        selector: '#mLibBody [data-present="tech"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng — so sánh thông số, giá cả để chọn sản phẩm phù hợp nhất.'
       }
     ],
     expert: [
@@ -2722,13 +2845,82 @@ input, select { font-family: inherit; }
         title: '"Góc nhìn chuyên gia"',
         desc: 'Bài viết chuyên sâu từ chuyên gia hàng đầu: kinh tế, tài chính, sức khỏe, giáo dục — phân tích bền vững, không chỉ tin nhất thời.'
       }
+    ],
+    category: [
+      {
+        selector: '#mCatSpecial [data-present="war-map"]',
+        point: 1,
+        title: 'Bản đồ chiến sự',
+        desc: 'Trực quan hóa 3 xung đột lớn: Ukraine-Nga, Israel-Gaza, Mỹ-Iran — cập nhật theo diễn biến, giúp theo dõi tình hình toàn cầu.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="traffic"]',
+        point: 1,
+        title: 'Tra cứu phạt nguội',
+        desc: 'Nhập biển số xe — xem ngay kết quả vi phạm giao thông bị camera ghi nhận, không cần truy cập trang Cục CSGT.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="stock"]',
+        point: 1,
+        title: 'Tra cứu mã chứng khoán',
+        desc: 'Giá, khối lượng giao dịch, biến động mã CK theo thời gian thực — theo dõi danh mục đầu tư ngay trên app.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="ebank"]',
+        point: 1,
+        title: 'Tra cứu lãi suất ngân hàng',
+        desc: 'So sánh lãi suất gửi tiết kiệm và vay vốn của hàng chục ngân hàng theo kỳ hạn — hỗ trợ quyết định tài chính cá nhân.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="project"]',
+        point: 1,
+        title: 'Tra cứu dự án bất động sản',
+        desc: 'Kiểm tra pháp lý, tiến độ, chủ đầu tư các dự án BĐS toàn quốc — hỗ trợ quyết định mua nhà và đầu tư có căn cứ.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="quyhoach"]',
+        point: 1,
+        title: 'Tra cứu quy hoạch',
+        desc: 'Kiểm tra thông tin quy hoạch đất đai theo tỉnh thành, quận huyện — biết rõ khu đất thuộc quy hoạch gì trước khi giao dịch.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="disease"]',
+        point: 1,
+        title: 'Tra cứu thông tin bệnh',
+        desc: 'Triệu chứng, nguyên nhân, điều trị, phòng ngừa — chủ động sức khỏe thay vì chỉ đọc tin y tế thụ động.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="law"]',
+        point: 1,
+        title: 'Thư viện văn bản pháp luật',
+        desc: 'Nghị định, Thông tư, Luật — tra cứu nhanh ngay trên app, không cần rời ra trang tra cứu khác.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="exam"]',
+        point: 1,
+        title: 'Tra cứu đề thi & đáp án',
+        desc: 'Đề thi và đáp án từ cấp trường đến quốc gia, theo từng môn và năm học — công cụ học tập cho học sinh và phụ huynh.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="destination"]',
+        point: 1,
+        title: 'Khám phá điểm đến du lịch',
+        desc: 'Tìm kiếm địa danh, thành phố trong và ngoài nước — gợi ý hành trình, điểm check-in, đặc sản địa phương ngay trên trang.'
+      },
+      {
+        selector: '#mCatSpecial [data-present="tech"]',
+        point: 1,
+        title: 'Tìm kiếm sản phẩm công nghệ',
+        desc: 'Tra cứu điện thoại, laptop, tivi, đồ gia dụng — so sánh thông số, giá cả để chọn sản phẩm phù hợp nhất.'
+      }
     ]
   };
 
-  // M7: Auto-tag .m-box elements with data-present attributes by label text
+  // M7: Auto-tag special box elements with data-present attributes
   function mPmLabelElements() {
+    // Home page .m-box (by .m-box-label text) — case-insensitive
     document.querySelectorAll('.m-box').forEach(box => {
-      const text = (box.querySelector('.m-box-label') || {}).textContent || '';
+      const text = ((box.querySelector('.m-box-label') || {}).textContent || '').toLowerCase();
       if (text.includes('phạt nguội'))       box.dataset.present = 'traffic';
       else if (text.includes('chứng khoán')) box.dataset.present = 'stock';
       else if (text.includes('pháp luật'))   box.dataset.present = 'law';
@@ -2739,6 +2931,23 @@ input, select { font-family: inherit; }
       else if (text.includes('đề thi'))      box.dataset.present = 'exam';
       else if (text.includes('điểm đến'))    box.dataset.present = 'destination';
       else if (text.includes('công nghệ'))   box.dataset.present = 'tech';
+    });
+    // Match schedule box (uses .m-match-box, not .m-box)
+    document.querySelectorAll('.m-match-box').forEach(el => { el.dataset.present = 'match-schedule'; });
+    // Library/category .m-cat-special (by h3 text) — case-insensitive
+    document.querySelectorAll('.m-cat-special').forEach(box => {
+      const text = ((box.querySelector('h3') || {}).textContent || '').toLowerCase();
+      if (text.includes('phạt nguội'))       box.dataset.present = 'traffic';
+      else if (text.includes('chứng khoán')) box.dataset.present = 'stock';
+      else if (text.includes('lãi suất'))    box.dataset.present = 'ebank';
+      else if (text.includes('pháp luật'))   box.dataset.present = 'law';
+      else if (text.includes('bệnh'))        box.dataset.present = 'disease';
+      else if (text.includes('dự án'))       box.dataset.present = 'project';
+      else if (text.includes('đề thi'))      box.dataset.present = 'exam';
+      else if (text.includes('quy hoạch'))   box.dataset.present = 'quyhoach';
+      else if (text.includes('điểm đến'))    box.dataset.present = 'destination';
+      else if (text.includes('công nghệ'))   box.dataset.present = 'tech';
+      else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
     });
   }
 
@@ -2756,6 +2965,7 @@ input, select { font-family: inherit; }
     if (parts[0] === 'library') return 'library';
     if (parts[0] === 'article') return 'article';
     if (parts[0] === 'category' && parts[1] === 'goc-nhin-chuyen-gia') return 'expert';
+    if (parts[0] === 'category') return 'category';
     if (parts[0] === 'home' || parts[0] === '') return 'home';
     return null;
   }
@@ -2855,6 +3065,14 @@ input, select { font-family: inherit; }
     }
   }
   window.mTogglePresent = mTogglePresent;
+
+  // Allow external code (e.g. mLibRenderSearch) to re-init after dynamic content renders
+  window.mPmReinit = function() {
+    if (!mPresentOn) return;
+    mPmLabelElements();
+    mInitObserver(mGetPageKey());
+    setTimeout(mOnScrollStop, 300);
+  };
 
   // Scroll listener (M5)
   window.addEventListener('scroll', () => {

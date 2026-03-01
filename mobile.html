@@ -1778,6 +1778,10 @@ input, select { font-family: inherit; }
       stream.appendChild(card);
     });
 
+    // Bản đồ Việt Nam — bên dưới 5 bài top, bên trên Kinh tế
+    stream.appendChild(renderBoxVnMapHome());
+    initVnMapMini('homeVnMapWrap');
+
     // === KINH TẾ (in a visible card/frame) ===
     const kdCat = D.CATEGORIES.find(c => c.id === 'kinh-te');
     const kdArts = D.MOBILE_CATEGORY_ARTICLES['kinh-te'];
@@ -1854,15 +1858,14 @@ input, select { font-family: inherit; }
     // === REMAINING CATEGORIES ===
     // Boxes that appear after specific categories
     const boxAfter = {
-      'thoi-su':  renderBoxVnMapHome,
+      'thoi-su':  renderBoxWeather,
       'the-thao': renderBoxMobileMatchSchedule,
       'the-gioi': renderBoxWarMapHome,
       'phap-luat': renderBoxLawSearch,
       'giao-duc':  renderBoxExamSearch,
-      'giai-tri':  renderBoxWeather,
+      'giai-tri':  renderBoxLunarCalendar,
     };
     const boxInit = {
-      'thoi-su':  () => initVnMapMini('homeVnMapWrap'),
       'the-gioi': () => initWarMapMini('homeWmWrap'),
     };
     const remCats = D.CATEGORIES.filter(c => !D.MOBILE_STREAM_CATEGORIES.includes(c.id) && c.id !== 'video');
@@ -1955,6 +1958,47 @@ input, select { font-family: inherit; }
     box.innerHTML = `<div class="m-box-inner">
       <div class="m-box-label">Thời tiết 7 ngày tới</div>
       <div class="m-weather-grid">${days}</div>
+    </div>`;
+    return box;
+  }
+
+  function renderBoxLunarCalendar() {
+    const now = new Date();
+    const y = now.getFullYear(), mo = now.getMonth(), d = now.getDate();
+    const DOW = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+    const MON = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+    const firstDow = new Date(y, mo, 1).getDay();
+    const daysInMo = new Date(y, mo + 1, 0).getDate();
+    const lunarDay = ((d - 1 + 12) % 30) + 1;
+    let cells = '';
+    for (let i = 0; i < firstDow; i++) cells += '<span></span>';
+    for (let day = 1; day <= daysInMo; day++) {
+      const t = day === d;
+      cells += `<span style="${t ? 'background:var(--red);color:#fff;border-radius:50%;font-weight:700;' : ''}">${day}</span>`;
+    }
+    const box = el('div', 'm-box');
+    box.setAttribute('data-present', 'lunar-calendar');
+    box.innerHTML = `<div class="m-box-inner">
+      <div class="m-box-label">📅 Lịch vạn niên</div>
+      <div style="display:flex;gap:12px;align-items:center;padding-bottom:10px;border-bottom:1px solid #eee;margin-bottom:10px;">
+        <div style="font-size:2.8rem;font-weight:900;color:var(--red);line-height:1;min-width:52px;text-align:center;">${d}</div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;color:#222;">${DOW[now.getDay()]}</div>
+          <div style="font-size:.8rem;color:#666;">${MON[mo]}, ${y}</div>
+          <div style="font-size:.8rem;color:#b71c1c;margin-top:3px;">🌙 Ngày ${lunarDay} · Tháng Giêng · Bính Ngọ</div>
+        </div>
+      </div>
+      <div style="font-size:.82rem;color:#444;display:grid;gap:6px;margin-bottom:10px;">
+        <div style="display:flex;gap:6px;"><span style="color:#999;white-space:nowrap;">Can chi:</span><span style="font-weight:600;">Mậu Dần</span></div>
+        <div style="display:flex;gap:6px;"><span style="color:#999;white-space:nowrap;">Tiết khí:</span><span style="font-weight:600;">Vũ Thủy</span></div>
+        <div style="display:flex;gap:6px;"><span style="color:#999;white-space:nowrap;">Giờ hoàng đạo:</span><span style="font-weight:600;">Tý · Mão · Ngọ · Dậu</span></div>
+      </div>
+      <div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:.75rem;font-weight:700;color:#999;margin-bottom:4px;">
+          <span>CN</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:.8rem;gap:3px 0;">${cells}</div>
+      </div>
     </div>`;
     return box;
   }

@@ -146,10 +146,10 @@ input, select { font-family: inherit; }
   font-size: .75rem; height: 28px; line-height: 28px;
 }
 .m-ticker-track {
-  display: flex; gap: 32px; white-space: nowrap;
-  animation: mTickerScroll 25s linear infinite;
+  display: flex; white-space: nowrap; width: max-content;
+  animation: mTickerScroll 18s linear infinite;
 }
-.m-ticker-track span { display: inline-flex; align-items: center; gap: 5px; }
+.m-ticker-track > span { display: inline-flex; align-items: center; gap: 5px; padding-right: 32px; }
 .m-ticker-track .dot { display: inline-block; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.5); }
 @keyframes mTickerScroll {
   0% { transform: translateX(0); }
@@ -1309,7 +1309,7 @@ input, select { font-family: inherit; }
     const t = D.TICKER_DATA;
     const items = [t.weather, t.date, t.lunarDate, t.gold, t.stock];
     let html = '';
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       items.forEach(item => { html += `<span><span class="dot"></span> ${item}</span>`; });
     }
     $('#mTickerTrack').innerHTML = html;
@@ -2527,12 +2527,24 @@ input, select { font-family: inherit; }
       specialContainer.appendChild(vnBox);
       setTimeout(() => initVnMapMini('catVnMapWrap'), 0);
     }
-    if (catId === 'the-gioi' && !subId) {
+    // Categories whose special box shows at category level (not just in sub)
+    const M_CAT_LEVEL_SPECIALS = {
+      'suc-khoe': 'cac-benh',
+      'giao-duc': 'de-thi-dap-an',
+      'doi-song-du-lich': 'diem-den',
+      'phap-luat': 'thu-vien-phap-luat'
+    };
+    if (catId === 'the-gioi') {
       specialContainer.innerHTML += buildMobileSpecial({special: 'war-map'});
       setTimeout(() => initMobileWarMap(), 0);
       setTimeout(() => { if (window.mPmReinit) window.mPmReinit(); }, 200);
-    }
-    if (subId) {
+    } else if (M_CAT_LEVEL_SPECIALS[catId]) {
+      const specialSub = cat.subs.find(s => s.id === M_CAT_LEVEL_SPECIALS[catId]);
+      if (specialSub) {
+        specialContainer.innerHTML = buildMobileSpecial(specialSub);
+        setTimeout(() => { if (window.mPmReinit) window.mPmReinit(); }, 100);
+      }
+    } else if (subId) {
       const sub = cat.subs.find(s => s.id === subId);
       if (sub && sub.special && sub.special !== 'war-map') {
         specialContainer.innerHTML = buildMobileSpecial(sub);

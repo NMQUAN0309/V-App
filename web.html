@@ -96,7 +96,7 @@ ul, ol { list-style: none; }
 }
 .ticker-track {
   display: flex; gap: 48px; white-space: nowrap;
-  animation: tickerScroll 30s linear infinite;
+  animation: tickerScroll 18s linear infinite;
 }
 .ticker-track span { display: inline-flex; align-items: center; gap: 8px; }
 .ticker-track .dot {
@@ -2563,10 +2563,23 @@ ul, ol { list-style: none; }
     // Special box
     const specialContainer = $('#catSpecial');
     specialContainer.innerHTML = '';
-    if (catId === 'the-gioi' && !subId) {
+    // Categories whose special box shows at category level (not just in sub)
+    const CAT_LEVEL_SPECIALS = {
+      'suc-khoe': 'cac-benh',
+      'giao-duc': 'de-thi-dap-an',
+      'doi-song-du-lich': 'diem-den',
+      'phap-luat': 'thu-vien-phap-luat'
+    };
+    if (catId === 'the-gioi') {
       specialContainer.innerHTML = buildWarMapWidget();
       initWarMap();
       setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 200);
+    } else if (CAT_LEVEL_SPECIALS[catId]) {
+      const specialSub = cat.subs.find(s => s.id === CAT_LEVEL_SPECIALS[catId]);
+      if (specialSub) {
+        specialContainer.innerHTML = buildSpecialBox(specialSub);
+        setTimeout(() => { if (window.pmReinit) window.pmReinit(); }, 100);
+      }
     } else if (subId) {
       const sub = cat.subs.find(s => s.id === subId);
       if (sub && sub.special && sub.special !== 'war-map') {

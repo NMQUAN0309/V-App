@@ -1124,28 +1124,43 @@ input, select { font-family: inherit; }
   0%,100%{ box-shadow: 0 0 0 8px rgba(229,57,53,0.08); }
   50%{ box-shadow: 0 0 0 15px rgba(229,57,53,0.03); }
 }
+/* Ticker có overflow:hidden nên outline bị clip — dùng inset shadow thay thế */
+.m-ticker.present-m-lit {
+  outline: none;
+  box-shadow: inset 0 0 0 3px #E53935;
+  animation: none;
+}
 
 .m-present-sheet {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 10001;
   background: #fff; border-radius: 16px 16px 0 0; border-top: 4px solid #E53935;
   padding: 10px 16px 34px; box-shadow: 0 -8px 32px rgba(0,0,0,0.18);
   transform: translateY(100%); transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
-  font-family: 'Noto Sans', sans-serif; max-height: 62vh; overflow-y: auto;
+  font-family: 'Noto Sans', sans-serif; max-height: 35vh; overflow-y: auto;
 }
 .m-present-sheet.mps-show { transform: translateY(0); }
-.m-ps-card { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-.m-ps-card:last-child { border-bottom: none; }
-.m-ps-card-top {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
-  margin-bottom: 5px;
+.m-ps-card { padding: 10px 0; }
+.m-ps-card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
 }
-.m-ps-card-title { font-weight: 700; font-size: 0.9rem; color: #111; line-height: 1.35; }
+.m-ps-card-counter { font-size: 0.71rem; color: #E53935; font-weight: 700; letter-spacing: 0.04em; }
 .m-ps-card-close {
   background: none; border: none; color: #bbb;
   font-size: 1.05rem; cursor: pointer; padding: 0 4px; line-height: 1; flex-shrink: 0;
 }
 .m-ps-card-close:active { color: #444; }
+.m-ps-card-title { font-weight: 700; font-size: 0.9rem; color: #111; line-height: 1.35; margin-bottom: 5px; }
 .m-ps-card-desc { font-size: 0.81rem; color: #555; line-height: 1.58; }
+.m-ps-card-footer { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.m-nav-btn {
+  background: none; border: 1.5px solid #ddd; border-radius: 50%;
+  width: 30px; height: 30px; font-size: 1.2rem; color: #888;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; padding: 0;
+}
+.m-nav-btn:active { border-color: #E53935; color: #E53935; }
+.m-ps-progress-bar { flex: 1; height: 3px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }
+.m-ps-progress-fill { height: 100%; width: 0%; background: #E53935; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -2824,7 +2839,7 @@ input, select { font-family: inherit; }
 
     // Utilities
     html += `<div class="m-utilities">
-      <h3>Tiện ích liên quan</h3>
+      <h3>Dịch vụ hệ sinh thái Vingroup</h3>
       <div class="m-utilities-grid">`;
     D.UTILITIES.forEach(u => {
       html += `<div class="m-utility-card"><span class="m-utility-icon">${u.icon}</span><span>${u.name}</span></div>`;
@@ -3030,15 +3045,22 @@ input, select { font-family: inherit; }
         selector: '#mTabQuantam',
         point: 1,
         maxScroll: 160,
-        title: '"Quan tâm" — Cá nhân hóa nội dung',
-        desc: 'Chọn chủ đề yêu thích, hệ thống tự lọc bài phù hợp — feed tin riêng của từng người đọc, không còn lướt tin không liên quan.'
+        title: '"Quan tâm" — Feed được lọc riêng cho bạn',
+        desc: 'Chọn lĩnh vực theo dõi — kinh tế, thể thao, sức khỏe, giải trí... — ứng dụng tự ưu tiên đúng nội dung phù hợp. Feed tin cá nhân, không lẫn thứ không liên quan.'
       },
       {
         selector: '#mTabLatest',
         point: 1,
         maxScroll: 160,
-        title: '"Mới nhất" — Tất cả tin theo thời gian',
-        desc: 'Toàn bộ tin từ mọi chuyên mục, sắp xếp theo thời điểm đăng mới nhất — không bỏ sót bất kỳ tin nào vừa cập nhật.'
+        title: '"Mới nhất" — Tất cả tin, không lọc, không bỏ sót',
+        desc: 'Gộp toàn bộ bài vừa đăng từ mọi chuyên mục vào một luồng duy nhất, sắp theo thứ tự mới nhất — dành cho ai muốn nắm trọn bức tranh thời sự mà không bỏ qua bất kỳ tin gì.'
+      },
+      {
+        selector: '#mTabLibrary',
+        point: 1,
+        maxScroll: 160,
+        title: 'Bách khoa tri thức — Tra cứu mọi thứ',
+        desc: 'Kho tra cứu đa chiều, luôn cập nhật: chứng khoán, bất động sản, pháp luật, y học, lịch sử, công nghệ... Tìm bất kỳ chủ đề gì, đào sâu đến đâu cũng được.'
       },
       {
         selector: '.m-ticker',
@@ -3149,14 +3171,14 @@ input, select { font-family: inherit; }
       {
         selector: '.m-utilities',
         point: 1,
-        title: 'Tiện ích tra cứu liên quan',
-        desc: 'Gợi ý công cụ tra cứu phù hợp với chủ đề bài đang đọc — tiếp cận thông tin chuyên sâu hơn ngay tại trang, không cần tìm kiếm riêng.'
+        title: 'Dịch vụ hệ sinh thái Vingroup',
+        desc: 'Từ bài vừa đọc, tiếp cận ngay các dịch vụ trong hệ sinh thái Vingroup: gọi xe VinFast, đặt phòng Vinpearl, đặt sân golf, tìm nhà hàng, tra cứu tuyến bus... Tích hợp sẵn trong trải nghiệm đọc tin, không cần rời trang.'
       },
       {
         selector: '.m-related',
         point: 1,
-        title: '"Toàn cảnh" — Đa chiều, đa nguồn',
-        desc: 'Luồng thông tin từ nhiều nguồn, đa chiều về cùng sự kiện, có thêm bài viết góc nhìn chuyên sâu của các chuyên gia — người đọc tự đánh giá, không bị dẫn dắt một chiều.'
+        title: '"Toàn cảnh" — Tin sâu hơn về cùng sự kiện',
+        desc: 'Tổng hợp những bài viết trực tiếp liên quan đến sự kiện vừa đọc — phân tích chuyên sâu, góc nhìn đa chiều từ nhiều tác giả và nguồn khác nhau, giúp bạn nắm bức tranh đầy đủ thay vì chỉ đọc một chiều.'
       },
       {
         selector: '#mSticky',
@@ -3169,14 +3191,32 @@ input, select { font-family: inherit; }
       {
         selector: '.m-lib-header',
         point: 2,
-        title: '"Bách khoa tri thức"',
-        desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+        title: 'Bách khoa tri thức',
+        desc: 'Không chỉ đọc tin — đây là kho tra cứu sống, liên tục được cập nhật. Tìm bất kỳ chủ đề, sự kiện, khái niệm nào trong mọi lĩnh vực: kinh tế, pháp luật, y học, lịch sử, công nghệ — không giới hạn, không mất phí.'
       },
       {
         selector: '.m-lib-tabs',
         point: 1,
         title: 'Ba chế độ tra cứu',
         desc: 'Chủ đề — Tra cứu — Hỏi AI: ba cách tiếp cận tri thức khác nhau, chuyển đổi chỉ một chạm theo nhu cầu của từng lúc.'
+      },
+      {
+        selector: '.m-lib-tab[data-tab="topics"]',
+        point: 1,
+        title: '"Chủ đề" — Thế giới qua lăng kính tri thức',
+        desc: 'Từ vũ trụ đến văn hóa, từ lịch sử đến khoa học — kho kiến thức phổ thông được tổ chức rõ ràng theo từng chủ đề, giúp bạn khám phá và đào sâu bất kỳ lĩnh vực nào theo cách của mình.'
+      },
+      {
+        selector: '.m-lib-tab[data-tab="search"]',
+        point: 1,
+        title: '"Tra cứu" — Giải quyết chuyện thực tế ngay lúc cần',
+        desc: 'Phạt nguội, lãi suất ngân hàng, dự án bất động sản, quy hoạch đất, tỷ giá... Những thứ cần tra cứu thường ngày gộp về một nơi — tìm xong là xong, không lòng vòng.'
+      },
+      {
+        selector: '.m-lib-tab[data-tab="ai"]',
+        point: 1,
+        title: '"Hỏi AI" — Đặt câu hỏi bất kỳ, nhận trả lời ngay',
+        desc: 'Không cần tìm kiếm thủ công qua nhiều trang. Hỏi trực tiếp và nhận phân tích chuyên sâu, đa chiều — từ thời sự đến pháp luật, từ y học đến công nghệ, AI sẵn sàng giải đáp tức thì.'
       },
       {
         selector: '#mLibBody [data-present="war-map"]',
@@ -3340,7 +3380,7 @@ input, select { font-family: inherit; }
       else if (text.includes('bệnh'))        box.dataset.present = 'disease';
       else if (text.includes('dự án'))       box.dataset.present = 'project';
       else if (text.includes('thời tiết'))   box.dataset.present = 'weather';
-      else if (text.includes('bản đồ việt nam')) box.dataset.present = 'vn-map';
+      else if (text.includes('bản đồ việt nam') || text.includes('tin nóng')) box.dataset.present = 'vn-map';
       else if (text.includes('chiến sự'))    box.dataset.present = 'war-map';
       else if (text.includes('đề thi'))      box.dataset.present = 'exam';
       else if (text.includes('điểm đến'))    box.dataset.present = 'destination';
@@ -3370,8 +3410,12 @@ input, select { font-family: inherit; }
   let mPmScrollTimer = null;
   let mPmVisibleMap = new Map();
   let mLitEls = new Set();
-  let mDismissedEls = new Set();
   let mPmPageKey = 'home';
+  let mQueue = [];
+  let mIndex = 0;
+  let mAutoTimer = null;
+  let mPaused = false;
+  let mSwipeAttached = false;
 
   function mGetPageKey() {
     const hash = location.hash || '#home';
@@ -3412,54 +3456,118 @@ input, select { font-family: inherit; }
     items.forEach(({ el }) => { mPmObserver.observe(el); });
   }
 
-  // Returns up to 3 visible items sorted by proximity to viewport center
+  // Returns visible items sorted top→bottom, left→right
   function mFindVisible(pageKey) {
-    const vh = window.innerHeight;
-    const viewCenter = vh * 0.42;
     const scrollY = window.scrollY || window.pageYOffset;
     const candidates = [];
     mGetItems(pageKey).forEach(({ el, ann }) => {
       const ratio = mPmVisibleMap.get(el) || 0;
       if (ratio < 0.05) return;
       if (ann.maxScroll !== undefined && scrollY > ann.maxScroll) return;
-      if (mDismissedEls.has(el)) return;
       const rect = el.getBoundingClientRect();
-      const elCenter = rect.top + rect.height / 2;
-      const dist = Math.abs(elCenter - viewCenter);
-      candidates.push({ el, ann, dist });
+      candidates.push({ el, ann, rect });
     });
-    candidates.sort((a, b) => a.dist - b.dist);
-    return candidates.slice(0, 3);
+    candidates.sort((a, b) => {
+      const aTop = a.rect.top + scrollY;
+      const bTop = b.rect.top + scrollY;
+      if (Math.abs(aTop - bTop) > 40) return aTop - bTop; // trên trước
+      return a.rect.left - b.rect.left;                    // trái trước
+    });
+    return candidates;
   }
 
-  // Render all visible annotations as stacked cards in the bottom sheet
+  // Calculate display duration based on text length (3–5 seconds)
+  function mCardDuration(ann) {
+    const MIN = 5000;  // ms tối thiểu (chú thích ngắn)
+    const MAX = 9000;  // ms tối đa (chú thích dài)
+    const PER_WORD = 400; // ms cộng thêm mỗi từ vượt quá 10 từ
+    const words = (ann.title + ' ' + ann.desc).split(/\s+/).length;
+    return Math.min(MAX, Math.max(MIN, MIN + (words - 10) * PER_WORD));
+  }
+
+  function mStopTimer() {
+    clearTimeout(mAutoTimer);
+    mAutoTimer = null;
+  }
+
+  function mScheduleAdvance(ms) {
+    mStopTimer();
+    mAutoTimer = setTimeout(() => {
+      if (mPaused) return;
+      mIndex = (mIndex + 1) % mQueue.length;
+      mShowCard();
+    }, ms);
+  }
+
+  function mShowCard() {
+    const cards = document.getElementById('mPsCards');
+    const sheet = document.getElementById('mPresentSheet');
+    mClearLit();
+    mStopTimer();
+    cards.innerHTML = '';
+    const item = mQueue[mIndex];
+    if (!item) { sheet.classList.remove('mps-show'); return; }
+    const total = mQueue.length;
+    const duration = mCardDuration(item.ann);
+    const card = document.createElement('div');
+    card.className = 'm-ps-card';
+    card.innerHTML =
+      '<div class="m-ps-card-header">' +
+        '<span class="m-ps-card-counter">' + (mIndex + 1) + ' / ' + total + '</span>' +
+        '<button class="m-ps-card-close" aria-label="Thoát present mode">✕</button>' +
+      '</div>' +
+      '<div class="m-ps-card-title">' + item.ann.title + '</div>' +
+      '<div class="m-ps-card-desc">' + item.ann.desc + '</div>' +
+      '<div class="m-ps-card-footer">' +
+        '<button class="m-nav-btn" id="mPrev" aria-label="Trước">‹</button>' +
+        '<div class="m-ps-progress-bar"><div class="m-ps-progress-fill" id="mProgressFill"></div></div>' +
+        '<button class="m-nav-btn" id="mNext" aria-label="Tiếp">›</button>' +
+      '</div>';
+    if (total === 1) {
+      card.querySelector('#mPrev').style.visibility = 'hidden';
+      card.querySelector('#mNext').style.visibility = 'hidden';
+    }
+    card.querySelector('.m-ps-card-close').addEventListener('click', () => { mTogglePresent(); });
+    card.querySelector('#mPrev').addEventListener('click', () => {
+      mIndex = (mIndex - 1 + mQueue.length) % mQueue.length;
+      mShowCard();
+    });
+    card.querySelector('#mNext').addEventListener('click', () => {
+      mIndex = (mIndex + 1) % mQueue.length;
+      mShowCard();
+    });
+    cards.appendChild(card);
+    // Sync glow: only current item's element
+    item.el.classList.add('present-m-lit');
+    mLitEls.add(item.el);
+    // Animate progress bar
+    requestAnimationFrame(() => {
+      const fill = document.getElementById('mProgressFill');
+      if (!fill) return;
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      requestAnimationFrame(() => {
+        fill.style.transition = 'width ' + duration + 'ms linear';
+        fill.style.width = '100%';
+      });
+    });
+    sheet.classList.add('mps-show');
+    mScheduleAdvance(duration);
+  }
+
+  // Render sequential annotation queue from visible items
   function mRenderSheet(items) {
     const cards = document.getElementById('mPsCards');
     const sheet = document.getElementById('mPresentSheet');
     mClearLit();
+    mStopTimer();
     cards.innerHTML = '';
     if (!items.length) { sheet.classList.remove('mps-show'); return; }
-    items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'm-ps-card';
-      card.innerHTML =
-        '<div class="m-ps-card-top">' +
-          '<div class="m-ps-card-title">' + item.ann.title + '</div>' +
-          '<button class="m-ps-card-close" aria-label="Đóng">✕</button>' +
-        '</div>' +
-        '<div class="m-ps-card-desc">' + item.ann.desc + '</div>';
-      card.querySelector('.m-ps-card-close').addEventListener('click', () => {
-        mDismissedEls.add(item.el);
-        item.el.classList.remove('present-m-lit');
-        mLitEls.delete(item.el);
-        card.remove();
-        if (!cards.querySelector('.m-ps-card')) sheet.classList.remove('mps-show');
-      });
-      cards.appendChild(card);
-      item.el.classList.add('present-m-lit');
-      mLitEls.add(item.el);
-    });
-    sheet.classList.add('mps-show');
+    const sameSet = items.length === mQueue.length &&
+      items.every((it, i) => it.el === mQueue[i].el);
+    if (!sameSet) mIndex = 0;
+    mQueue = items;
+    mShowCard();
   }
 
   function mOnScrollStop() {
@@ -3468,10 +3576,12 @@ input, select { font-family: inherit; }
   }
 
   function mHideAll() {
+    mStopTimer();
+    mQueue = [];
+    mIndex = 0;
     document.getElementById('mPsCards').innerHTML = '';
     document.getElementById('mPresentSheet').classList.remove('mps-show');
     mClearLit();
-    mDismissedEls.clear();
   }
 
   function mTogglePresent() {
@@ -3482,6 +3592,29 @@ input, select { font-family: inherit; }
       mPmLabelElements();
       mPmPageKey = mGetPageKey();
       mInitObserver(mPmPageKey);
+      // Attach swipe gesture to bottom sheet (once)
+      if (!mSwipeAttached) {
+        mSwipeAttached = true;
+        let mTouchStartX = 0;
+        const sheet = document.getElementById('mPresentSheet');
+        sheet.addEventListener('touchstart', e => {
+          mTouchStartX = e.touches[0].clientX;
+          mPaused = true;
+        }, { passive: true });
+        sheet.addEventListener('touchend', e => {
+          const dx = e.changedTouches[0].clientX - mTouchStartX;
+          mPaused = false;
+          if (!mQueue.length) return;
+          if (Math.abs(dx) > 40) {
+            mIndex = dx < 0
+              ? (mIndex + 1) % mQueue.length
+              : (mIndex - 1 + mQueue.length) % mQueue.length;
+            mShowCard();
+          } else {
+            mScheduleAdvance(mCardDuration(mQueue[mIndex].ann));
+          }
+        }, { passive: true });
+      }
       setTimeout(mOnScrollStop, 350);
     } else {
       mClearObserver();
@@ -3502,6 +3635,7 @@ input, select { font-family: inherit; }
   window.addEventListener('scroll', () => {
     if (!mPresentOn) return;
     clearTimeout(mPmScrollTimer);
+    mStopTimer();
     document.getElementById('mPsCards').innerHTML = '';
     document.getElementById('mPresentSheet').classList.remove('mps-show');
     mClearLit();

@@ -1386,31 +1386,51 @@ ul, ol { list-style: none; }
   0%,100%{ box-shadow: 0 0 0 9px rgba(229,57,53,0.08); }
   50%{ box-shadow: 0 0 0 16px rgba(229,57,53,0.03); }
 }
+/* Ticker có overflow:hidden nên outline bị clip — dùng inset shadow thay thế */
+.ticker-bar.present-annotated.present-lit {
+  outline: none;
+  box-shadow: inset 0 0 0 3px #E53935;
+  animation: none;
+}
 
-/* Present mode: fixed right-side panel with stacked cards */
+/* Present mode: fixed right-side panel (sequential card) */
 .pm-panel {
   position: fixed; right: 16px; top: 72px; z-index: 10001;
   display: flex; flex-direction: column; gap: 8px;
-  pointer-events: none; max-height: calc(100vh - 100px);
+  pointer-events: auto; max-height: calc(100vh - 100px);
 }
 .pm-card {
   width: 262px; background: #fff; border-radius: 12px;
   border-left: 4px solid #E53935; padding: 13px 15px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.07);
-  pointer-events: auto; font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   animation: pp-in 0.22s ease both;
 }
 @keyframes pp-in {
   from { opacity:0; transform: scale(.95) translateX(10px); }
   to   { opacity:1; transform: scale(1)  translateX(0); }
 }
+.pm-card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;
+}
+.pm-card-counter { font-size: 0.72rem; color: #E53935; font-weight: 700; letter-spacing: 0.04em; }
 .pm-card-close {
-  float: right; background: none; border: none; color: #bbb;
-  font-size: 1.05rem; cursor: pointer; padding: 0 0 6px 6px; line-height: 1;
+  background: none; border: none; color: #bbb;
+  font-size: 1.05rem; cursor: pointer; padding: 0 0 0 6px; line-height: 1;
 }
 .pm-card-close:hover { color: #444; }
 .pm-card-title { font-weight: 700; font-size: 0.87rem; color: #111; line-height: 1.35; margin-bottom: 6px; }
 .pm-card-desc { font-size: 0.79rem; color: #555; line-height: 1.58; }
+.pm-card-footer { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.pm-nav-btn {
+  background: none; border: 1.5px solid #ddd; border-radius: 50%;
+  width: 26px; height: 26px; font-size: 1.1rem; color: #888;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  line-height: 1; padding: 0; flex-shrink: 0;
+}
+.pm-nav-btn:hover { border-color: #E53935; color: #E53935; }
+.pm-progress-bar { flex: 1; height: 3px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }
+.pm-progress-fill { height: 100%; width: 0%; background: #E53935; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -3106,7 +3126,7 @@ ul, ol { list-style: none; }
           </div>
         </div>`;
       }
-      case 'vn-map-box': return `<div class="cat-special-box">
+      case 'vn-map-box': return `<div class="cat-special-box" data-present="vn-map">
         <h3>Tin nóng</h3>
         <div class="vn-map-web-wrap" id="homeVnMapWrap">
           <div class="wm-loading"><div class="wm-loading-spinner"></div><span>Đang tải bản đồ...</span></div>
@@ -3307,7 +3327,7 @@ ul, ol { list-style: none; }
 
     // Utilities
     html += `<div class="utilities-section fade-up">
-      <h3>Tiện ích liên quan</h3>
+      <h3>Dịch vụ hệ sinh thái Vingroup</h3>
       <div class="utilities-grid">`;
     D.UTILITIES.forEach(u => {
       html += `<div class="utility-card">
@@ -3524,18 +3544,25 @@ ul, ol { list-style: none; }
         selector: '#navLatest',
         point: 1,
         maxScroll: 200,
-        title: '"Mới nhất" — Tất cả tin theo thời gian',
-        desc: 'Toàn bộ tin từ mọi chuyên mục, sắp xếp theo thời điểm đăng mới nhất — không bỏ sót bất kỳ tin nào vừa cập nhật.'
+        title: '"Mới nhất" — Tất cả tin, không lọc, không bỏ sót',
+        desc: 'Gộp toàn bộ bài vừa đăng từ mọi chuyên mục vào một luồng duy nhất, sắp theo thứ tự mới nhất — dành cho ai muốn nắm trọn bức tranh thời sự mà không bỏ qua bất kỳ tin gì.'
       },
       {
         selector: '#navQuantam',
         point: 1,
         maxScroll: 200,
-        title: '"Quan tâm" — Cá nhân hóa nội dung',
-        desc: 'Chọn chủ đề yêu thích, hệ thống tự lọc bài phù hợp — không còn lướt qua hàng chục tin không liên quan để tìm bài mình thích.'
+        title: '"Quan tâm" — Feed được lọc riêng cho bạn',
+        desc: 'Chọn lĩnh vực theo dõi — kinh tế, thể thao, sức khỏe, giải trí... — hệ thống tự ưu tiên đúng nội dung phù hợp. Feed tin cá nhân, không lẫn thứ không liên quan.'
       },
       {
-        selector: '.top-cluster',
+        selector: 'a[href="#library"].nav-special-btn',
+        point: 1,
+        maxScroll: 200,
+        title: 'Bách khoa tri thức — Tra cứu mọi thứ',
+        desc: 'Kho tra cứu đa chiều, luôn cập nhật: chứng khoán, bất động sản, pháp luật, y học, lịch sử, công nghệ... Tìm bất kỳ chủ đề gì, đào sâu đến đâu cũng được.'
+      },
+      {
+        selector: '.top-grid',
         point: 1,
         title: 'Khu vực tin nổi bật',
         desc: 'Giao diện tham khảo cấu trúc theo VNExpress nhưng đã tinh chỉnh để có sự khác biệt: bài lớn ưu tiên hình ảnh, phân cấp thông tin rõ ràng — độc giả nắm bắt tin quan trọng chỉ trong 3 giây.'
@@ -3653,28 +3680,46 @@ ul, ol { list-style: none; }
       {
         selector: '.utilities-section',
         point: 1,
-        title: 'Tiện ích tra cứu liên quan',
-        desc: 'Gợi ý công cụ tra cứu phù hợp với chủ đề bài đang đọc — tiếp cận thông tin chuyên sâu hơn ngay tại trang, không cần tìm kiếm riêng.'
+        title: 'Dịch vụ hệ sinh thái Vingroup',
+        desc: 'Từ bài vừa đọc, tiếp cận ngay các dịch vụ trong hệ sinh thái Vingroup: gọi xe VinFast, đặt phòng Vinpearl, đặt sân golf, tìm nhà hàng, tra cứu tuyến bus... Tích hợp sẵn trong trải nghiệm đọc tin, không cần rời trang.'
       },
       {
         selector: '.related-section',
         point: 1,
-        title: '"Toàn cảnh" — Đa chiều, đa nguồn',
-        desc: 'Luồng thông tin từ nhiều nguồn, đa chiều về cùng sự kiện, có thêm bài viết góc nhìn chuyên sâu của các chuyên gia — người đọc tự đánh giá, không bị dẫn dắt một chiều.'
+        title: '"Toàn cảnh" — Tin sâu hơn về cùng sự kiện',
+        desc: 'Tổng hợp những bài viết trực tiếp liên quan đến sự kiện vừa đọc — phân tích chuyên sâu, góc nhìn đa chiều từ nhiều tác giả và nguồn khác nhau, giúp bạn nắm bức tranh đầy đủ thay vì chỉ đọc một chiều.'
       }
     ],
     library: [
       {
         selector: '.lib-header',
         point: 2,
-        title: '"Bách khoa tri thức"',
-        desc: 'Kho tri thức cập nhật theo từng phút. Tự do tra cứu, đào sâu mọi vấn đề trong mọi lĩnh vực — không giới hạn chủ đề.'
+        title: 'Bách khoa tri thức',
+        desc: 'Không chỉ đọc tin — đây là kho tra cứu sống, liên tục được cập nhật. Tìm bất kỳ chủ đề, sự kiện, khái niệm nào trong mọi lĩnh vực: kinh tế, pháp luật, y học, lịch sử, công nghệ — không giới hạn, không mất phí.'
       },
       {
         selector: '.lib-tabs-bar',
         point: 1,
         title: 'Ba chế độ tra cứu',
         desc: 'Chủ đề — Tra cứu — Hỏi AI: ba cách tiếp cận tri thức khác nhau, chuyển đổi chỉ một chạm theo nhu cầu của từng lúc.'
+      },
+      {
+        selector: '.lib-tab[data-tab="topics"]',
+        point: 1,
+        title: '"Chủ đề" — Thế giới qua lăng kính tri thức',
+        desc: 'Từ vũ trụ đến văn hóa, từ lịch sử đến khoa học — kho kiến thức phổ thông được tổ chức rõ ràng theo từng chủ đề, giúp bạn khám phá và đào sâu bất kỳ lĩnh vực nào theo cách của mình.'
+      },
+      {
+        selector: '.lib-tab[data-tab="search"]',
+        point: 1,
+        title: '"Tra cứu" — Giải quyết chuyện thực tế ngay lúc cần',
+        desc: 'Phạt nguội, lãi suất ngân hàng, dự án bất động sản, quy hoạch đất, tỷ giá... Những thứ cần tra cứu thường ngày gộp về một nơi — tìm xong là xong, không lòng vòng.'
+      },
+      {
+        selector: '.lib-tab[data-tab="ai"]',
+        point: 1,
+        title: '"Hỏi AI" — Đặt câu hỏi bất kỳ, nhận trả lời ngay',
+        desc: 'Không cần tìm kiếm thủ công qua nhiều trang. Hỏi trực tiếp và nhận phân tích chuyên sâu, đa chiều — từ thời sự đến pháp luật, từ y học đến công nghệ, AI sẵn sàng giải đáp tức thì.'
       },
       {
         selector: '#libBody [data-present="war-map"]',
@@ -3860,8 +3905,11 @@ ul, ol { list-style: none; }
   let pmScrollTimer = null;
   let pmVisibleMap = new Map();
   let pmLitEls = new Set();
-  let pmDismissedEls = new Set();
   let pmPageKey = 'home';
+  let pmQueue = [];
+  let pmIndex = 0;
+  let pmAutoTimer = null;
+  let pmPaused = false;
 
   function pmGetPageKey() {
     const hash = location.hash || '#home';
@@ -3905,49 +3953,120 @@ ul, ol { list-style: none; }
     });
   }
 
-  // Returns up to 3 visible items sorted by proximity to viewport center
+  // Returns visible items sorted top→bottom, left→right
   function pmFindVisible(pageKey) {
-    const vh = window.innerHeight;
-    const viewCenter = vh * 0.42;
     const scrollY = window.scrollY || window.pageYOffset;
     const candidates = [];
     pmGetItems(pageKey).forEach(({ el, ann }) => {
       const ratio = pmVisibleMap.get(el) || 0;
       if (ratio < 0.05) return;
       if (ann.maxScroll !== undefined && scrollY > ann.maxScroll) return;
-      if (pmDismissedEls.has(el)) return;
       const rect = el.getBoundingClientRect();
-      const elCenter = rect.top + rect.height / 2;
-      const dist = Math.abs(elCenter - viewCenter);
-      candidates.push({ el, ann, dist });
+      candidates.push({ el, ann, rect });
     });
-    candidates.sort((a, b) => a.dist - b.dist);
-    return candidates.slice(0, 3);
+    candidates.sort((a, b) => {
+      const aTop = a.rect.top + scrollY;
+      const bTop = b.rect.top + scrollY;
+      if (Math.abs(aTop - bTop) > 40) return aTop - bTop; // trên trước
+      return a.rect.left - b.rect.left;                    // trái trước
+    });
+    return candidates;
   }
 
-  // Render all visible annotations as stacked cards in the right panel
+  // Calculate display duration based on text length (3–5 seconds)
+  function pmCardDuration(ann) {
+    const MIN = 5000;  // ms tối thiểu (chú thích ngắn)
+    const MAX = 9000;  // ms tối đa (chú thích dài)
+    const PER_WORD = 400; // ms cộng thêm mỗi từ vượt quá 10 từ
+    const words = (ann.title + ' ' + ann.desc).split(/\s+/).length;
+    return Math.min(MAX, Math.max(MIN, MIN + (words - 10) * PER_WORD));
+  }
+
+  function pmStopTimer() {
+    clearTimeout(pmAutoTimer);
+    pmAutoTimer = null;
+  }
+
+  function pmScheduleAdvance(ms) {
+    pmStopTimer();
+    pmAutoTimer = setTimeout(() => {
+      if (pmPaused) return;
+      pmIndex = (pmIndex + 1) % pmQueue.length;
+      pmShowCard();
+    }, ms);
+  }
+
+  function pmShowCard() {
+    const panel = document.getElementById('pmPanel');
+    pmClearLit();
+    pmStopTimer();
+    panel.innerHTML = '';
+    const item = pmQueue[pmIndex];
+    if (!item) return;
+    const total = pmQueue.length;
+    const duration = pmCardDuration(item.ann);
+    const card = document.createElement('div');
+    card.className = 'pm-card';
+    card.innerHTML =
+      '<div class="pm-card-header">' +
+        '<span class="pm-card-counter">' + (pmIndex + 1) + ' / ' + total + '</span>' +
+        '<button class="pm-card-close" aria-label="Thoát present mode">✕</button>' +
+      '</div>' +
+      '<div class="pm-card-title">' + item.ann.title + '</div>' +
+      '<div class="pm-card-desc">' + item.ann.desc + '</div>' +
+      '<div class="pm-card-footer">' +
+        '<button class="pm-nav-btn" id="pmPrev" aria-label="Trước">‹</button>' +
+        '<div class="pm-progress-bar"><div class="pm-progress-fill" id="pmProgressFill"></div></div>' +
+        '<button class="pm-nav-btn" id="pmNext" aria-label="Tiếp">›</button>' +
+      '</div>';
+    if (total === 1) {
+      card.querySelector('#pmPrev').style.visibility = 'hidden';
+      card.querySelector('#pmNext').style.visibility = 'hidden';
+    }
+    card.querySelector('.pm-card-close').addEventListener('click', () => { togglePresent(); });
+    card.querySelector('#pmPrev').addEventListener('click', () => {
+      pmIndex = (pmIndex - 1 + pmQueue.length) % pmQueue.length;
+      pmShowCard();
+    });
+    card.querySelector('#pmNext').addEventListener('click', () => {
+      pmIndex = (pmIndex + 1) % pmQueue.length;
+      pmShowCard();
+    });
+    card.addEventListener('mouseenter', () => { pmPaused = true; });
+    card.addEventListener('mouseleave', () => {
+      pmPaused = false;
+      pmScheduleAdvance(duration);
+    });
+    panel.appendChild(card);
+    // Sync glow: only current item's element
+    item.el.classList.add('present-lit');
+    pmLitEls.add(item.el);
+    // Animate progress bar
+    requestAnimationFrame(() => {
+      const fill = document.getElementById('pmProgressFill');
+      if (!fill) return;
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      requestAnimationFrame(() => {
+        fill.style.transition = 'width ' + duration + 'ms linear';
+        fill.style.width = '100%';
+      });
+    });
+    pmScheduleAdvance(duration);
+  }
+
+  // Render sequential annotation queue from visible items
   function pmRenderPanel(items) {
     const panel = document.getElementById('pmPanel');
     pmClearLit();
+    pmStopTimer();
     panel.innerHTML = '';
     if (!items.length) return;
-    items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'pm-card';
-      card.innerHTML =
-        '<button class="pm-card-close" aria-label="Đóng">✕</button>' +
-        '<div class="pm-card-title">' + item.ann.title + '</div>' +
-        '<div class="pm-card-desc">' + item.ann.desc + '</div>';
-      card.querySelector('.pm-card-close').addEventListener('click', () => {
-        pmDismissedEls.add(item.el);
-        item.el.classList.remove('present-lit');
-        pmLitEls.delete(item.el);
-        card.remove();
-      });
-      panel.appendChild(card);
-      item.el.classList.add('present-lit');
-      pmLitEls.add(item.el);
-    });
+    const sameSet = items.length === pmQueue.length &&
+      items.every((it, i) => it.el === pmQueue[i].el);
+    if (!sameSet) pmIndex = 0;
+    pmQueue = items;
+    pmShowCard();
   }
 
   function pmOnScrollStop() {
@@ -3956,9 +4075,11 @@ ul, ol { list-style: none; }
   }
 
   function pmHideAll() {
+    pmStopTimer();
+    pmQueue = [];
+    pmIndex = 0;
     document.getElementById('pmPanel').innerHTML = '';
     pmClearLit();
-    pmDismissedEls.clear();
   }
 
   function togglePresent() {
@@ -3992,6 +4113,7 @@ ul, ol { list-style: none; }
   window.addEventListener('scroll', () => {
     if (!presentOn) return;
     clearTimeout(pmScrollTimer);
+    pmStopTimer();
     document.getElementById('pmPanel').innerHTML = '';
     pmClearLit();
     pmScrollTimer = setTimeout(pmOnScrollStop, 450);

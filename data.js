@@ -157,14 +157,14 @@ const QUOTES = [
 
 // --- TIỆN ÍCH LIÊN QUAN ---
 const UTILITIES = [
-  { name: "Tra cứu mã chứng khoán", icon: "📈", link: "#" },
-  { name: "Tỷ giá ngoại tệ", icon: "💱", link: "#" },
-  { name: "Giá vàng hôm nay", icon: "🥇", link: "#" },
-  { name: "Kết quả xổ số", icon: "🎰", link: "#" },
-  { name: "Lịch âm hôm nay", icon: "📅", link: "#" },
-  { name: "Tra cứu phạt nguội", icon: "🚗", link: "#" },
-  { name: "Thời tiết", icon: "🌤️", link: "#" },
-  { name: "Tra cứu điểm thi", icon: "📝", link: "#" }
+  { name: "Gọi xe VinFast", icon: "🚗", link: "#" },
+  { name: "Đặt phòng Vinpearl", icon: "🏨", link: "#" },
+  { name: "Tìm món ăn", icon: "🍜", link: "#" },
+  { name: "Tra cứu tuyến bus", icon: "🚌", link: "#" },
+  { name: "Đặt sân golf", icon: "⛳", link: "#" },
+  { name: "Khám bệnh Vinmec", icon: "🏥", link: "#" },
+  { name: "Trường Vinschool", icon: "🏫", link: "#" },
+  { name: "VinID ưu đãi", icon: "🎁", link: "#" }
 ];
 
 // --- LINK MẪU ---

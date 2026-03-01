@@ -22,7 +22,9 @@
       "WebFetch(domain:baochinhphu.vn)",
       "WebFetch(domain:thethaovanhoa.vn)",
       "mcp__playwright__browser_install",
-      "mcp__playwright__browser_evaluate"
+      "mcp__playwright__browser_evaluate",
+      "Bash(wc -l \"/c/Users/nmqua/Dropbox/Bot/V-App redesign/\"*.html \"/c/Users/nmqua/Dropbox/Bot/V-App redesign/\"*.js)",
+      "Bash(grep -n \"pmPanel\\\\|mPsCards\\\\|mPresentSheet\" \"/c/Users/nmqua/Dropbox/Bot/V-App redesign/\"*.html)"
     ]
   }
 }

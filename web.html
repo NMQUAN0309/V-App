@@ -1781,6 +1781,34 @@ ul, ol { list-style: none; }
 
     // Mouse drag to scroll
     enableDragScroll(catsScroll);
+
+    // Auto-scroll liên tục — pause khi hover hoặc drag
+    (function() {
+      const clone = catsInner.cloneNode(true);
+      clone.removeAttribute('id');
+      catsScroll.appendChild(clone);
+
+      let paused = false, dragging = false;
+      const SPEED = 0.5; // px/frame
+
+      function tick() {
+        if (!paused && !dragging) {
+          catsScroll.scrollLeft += SPEED;
+          const w = catsInner.offsetWidth;
+          if (w > 0 && catsScroll.scrollLeft >= w) {
+            catsScroll.scrollLeft -= w;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+
+      catsScroll.addEventListener('mouseenter', () => { paused = true; });
+      catsScroll.addEventListener('mouseleave', () => { paused = false; });
+      catsScroll.addEventListener('mousedown',  () => { dragging = true; });
+      document.addEventListener('mouseup',      () => { dragging = false; });
+
+      requestAnimationFrame(tick);
+    })();
   }
 
   function enableDragScroll(el) {
